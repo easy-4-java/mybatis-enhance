@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.github.hiwepy</groupId>
+        <groupId>io.github.hiwepy</groupId>
         <artifactId>mybatis-enhance</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
@@ -57,10 +57,11 @@
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-spring</artifactId>
+            <optional>true</optional>
         </dependency>
         <!-- For Mybatis Eenhance -->
         <dependency>
-            <groupId>com.github.hiwepy</groupId>
+            <groupId>io.github.hiwepy</groupId>
             <artifactId>mybatis-enhance-annotation</artifactId>
             <version>${project.version}</version>
         </dependency>

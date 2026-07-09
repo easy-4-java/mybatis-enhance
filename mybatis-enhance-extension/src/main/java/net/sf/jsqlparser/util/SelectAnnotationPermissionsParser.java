@@ -206,10 +206,10 @@ public class SelectAnnotationPermissionsParser extends StatementVisitorAdapter
     public void visit(InExpression inExpression) {
         if (inExpression.getLeftExpression() != null) {
             inExpression.getLeftExpression().accept(this);
-        } else if (inExpression.getLeftItemsList() != null) {
-            inExpression.getLeftItemsList().accept(this);
         }
-        inExpression.getRightItemsList().accept(this);
+        if (inExpression.getRightExpression() != null) {
+            inExpression.getRightExpression().accept(this);
+        }
     }
 
     @Override

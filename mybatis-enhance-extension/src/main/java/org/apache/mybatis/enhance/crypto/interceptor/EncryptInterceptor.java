@@ -10,8 +10,6 @@ import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
 import org.apache.mybatis.enhance.crypto.annotation.EncryptField;
 import org.apache.mybatis.enhance.crypto.handler.FieldCryptoHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 import java.util.concurrent.Executor;
@@ -23,13 +21,22 @@ import java.util.concurrent.Executor;
 @Intercepts({
     @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})
 })
-@Component
 public class EncryptInterceptor implements Interceptor {
 
     private static final String METHOD = "update";
 
-    @Setter(onMethod_ = {@Autowired})
     private FieldCryptoHandler fieldEncryptUtil;
+
+    public EncryptInterceptor() {
+    }
+
+    public EncryptInterceptor(FieldCryptoHandler fieldEncryptUtil) {
+        this.fieldEncryptUtil = fieldEncryptUtil;
+    }
+
+    public void setFieldEncryptUtil(FieldCryptoHandler fieldEncryptUtil) {
+        this.fieldEncryptUtil = fieldEncryptUtil;
+    }
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
