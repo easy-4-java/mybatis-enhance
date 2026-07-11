@@ -15,12 +15,13 @@
  */
 package org.apache.mybatis.enhance.i18n.interceptor;
 
+import cn.hutool.core.annotation.AnnotationUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.resultset.ResultSetHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
-import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.AbstractInterceptorAdapter;
@@ -32,12 +33,8 @@ import org.apache.mybatis.enhance.annotation.I18nMapper;
 import org.apache.mybatis.enhance.annotation.I18nSwitch;
 import org.apache.mybatis.enhance.i18n.i18n.handler.DataI18nHandler;
 import org.apache.mybatis.enhance.i18n.i18n.handler.def.DefaultDataI18nHandler;
-import org.mybatis.spring.cache.BeanMethodDefinitionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.util.DigestUtils;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -53,31 +50,25 @@ public abstract class AbstractDataI18nInterceptor extends AbstractInterceptorAda
 	protected boolean isRequireIntercept(Invocation invocation, StatementHandler statementHandler, MetaStatementHandler metaStatementHandler) {
 		// 通过反射获取到当前MappedStatement
 		MappedStatement mappedStatement = metaStatementHandler.getMappedStatement();
-		// 获取对应的BoundSql，这个BoundSql其实跟我们利用StatementHandler获取到的BoundSql是同一个对象。
-		BoundSql boundSql = metaStatementHandler.getBoundSql();
-		Object paramObject = boundSql.getParameterObject();
-		//提取被国际化注解标记的方法
-		Method method = BeanMethodDefinitionFactory.getMethodDefinition(mappedStatement.getId(), paramObject != null ? new Class<?>[] {paramObject.getClass()} : null);
+		//提取被国际化注解标记的方法：直接从 MetaStatementHandler 获取当前执行方法（替代 BeanMethodDefinitionFactory）
+		Method method = metaStatementHandler.getMethod();
 		return  SqlCommandType.SELECT.equals(mappedStatement.getSqlCommandType()) && method != null &&
-				AnnotationUtils.findAnnotation(method, I18nSwitch.class) != null;
+				AnnotationUtil.getAnnotation(method, I18nSwitch.class) != null;
 	}
 
 	@Override
 	protected boolean isRequireIntercept(Invocation invocation,ResultSetHandler resultSetHandler,MetaResultSetHandler metaResultSetHandler) {
 		// 通过反射获取到当前MappedStatement
 		MappedStatement mappedStatement = metaResultSetHandler.getMappedStatement();
-		// 获取对应的BoundSql，这个BoundSql其实跟我们利用StatementHandler获取到的BoundSql是同一个对象。
-		BoundSql boundSql = metaResultSetHandler.getBoundSql();
-		Object paramObject = boundSql.getParameterObject();
-		//提取被国际化注解标记的方法
-		Method method = BeanMethodDefinitionFactory.getMethodDefinition(mappedStatement.getId(), paramObject != null ? new Class<?>[] {paramObject.getClass()} : null);
+		//提取被国际化注解标记的方法：直接从 MetaResultSetHandler 获取当前执行方法（替代 BeanMethodDefinitionFactory）
+		Method method = metaResultSetHandler.getMethod();
 		return  SqlCommandType.SELECT.equals(mappedStatement.getSqlCommandType()) && method != null &&
-				AnnotationUtils.findAnnotation(method, I18nMapper.class) != null;
+				AnnotationUtil.getAnnotation(method, I18nMapper.class) != null;
 	}
 
 	protected boolean isIntercepted(CacheKey cacheKey) {
 		//获取当前线程绑定的上下文对象
-		String uniqueKey = DigestUtils.md5DigestAsHex(cacheKey.toString().getBytes());
+		String uniqueKey = DigestUtil.md5Hex(cacheKey.toString().getBytes());
 		if(! extraContext.containsKey(uniqueKey)){
 			return true;
 		}
@@ -108,7 +99,13 @@ public abstract class AbstractDataI18nInterceptor extends AbstractInterceptorAda
 		if(!StringUtils.isEmpty(i18nHandlerClazz)){
 			try {
 				Class<?> clazz = Class.forName(i18nHandlerClazz);
-				this.i18nHandler = BeanUtils.instantiateClass(clazz, DataI18nHandler.class);
+				// 替代 org.springframework.beans.BeanUtils.instantiateClass(clazz, DataI18nHandler.class)
+				Object instance = clazz.getDeclaredConstructor().newInstance();
+				if (instance instanceof DataI18nHandler) {
+					this.i18nHandler = (DataI18nHandler) instance;
+				} else {
+					log.warn("Class :" + i18nHandlerClazz + " is not a DataI18nHandler !");
+				}
 			} catch (ClassNotFoundException e) {
 				log.warn("Class :" + i18nHandlerClazz + " is not found !");
 			} catch (Exception e) {

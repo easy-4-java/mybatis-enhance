@@ -450,7 +450,6 @@
 				<version>${slf4j.version}</version>
 				<scope>test</scope>
 			</dependency>
-
 			<!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
 			<dependency>
 				<groupId>commons-beanutils</groupId>
@@ -485,9 +484,11 @@
 	</dependencyManagement>
 
 	<modules>
+		<module>mybatis-enhance-spi</module>
 		<module>mybatis-enhance-annotation</module>
 		<module>mybatis-enhance-core</module>
 		<module>mybatis-enhance-extension</module>
+		<module>mybatis-enhance-typehandler</module>
 	</modules>
 
 	<dependencies>

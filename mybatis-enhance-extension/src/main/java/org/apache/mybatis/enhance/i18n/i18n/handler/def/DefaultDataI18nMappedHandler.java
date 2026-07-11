@@ -24,8 +24,10 @@ import org.apache.mybatis.enhance.i18n.i18n.handler.DataI18nMappedHandler;
 import org.apache.mybatis.enhance.i18n.i18n.handler.DataI18nMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.util.*;
@@ -38,6 +40,23 @@ public class DefaultDataI18nMappedHandler implements DataI18nMappedHandler {
 	protected static final ConcurrentMap<Class<?> , DataI18nMapper> COMPLIED_I18N_MAPPER = new ConcurrentHashMap<Class<?> , DataI18nMapper>();
 	protected static final ConcurrentMap<Class<?> , Field[]> COMPLIED_FIELDS = new ConcurrentHashMap<Class<?> , Field[]>();
 	protected static final ConcurrentMap<Class<?> , String> COMPLIED_PRIMARYS = new ConcurrentHashMap<Class<?> , String>();
+
+	/**
+	 * 获取类的属性描述符（替代 {@code org.springframework.beans.BeanUtils.getPropertyDescriptors}）：
+	 * 使用 JDK {@link Introspector}，并停止在 Object.class 之前。
+	 */
+	protected static PropertyDescriptor[] getPropertyDescriptors(Class<?> clazz) {
+		if (clazz == null) {
+			return new PropertyDescriptor[0];
+		}
+		try {
+			BeanInfo beanInfo = Introspector.getBeanInfo(clazz, Object.class);
+			return beanInfo.getPropertyDescriptors();
+		} catch (IntrospectionException e) {
+			LOG.error(e.getLocalizedMessage(), e);
+			return new PropertyDescriptor[0];
+		}
+	}
 
 	protected Field[] getCachedFields(Class<?> clazz) {
 		Field[] ret = COMPLIED_FIELDS.get(clazz);
@@ -121,7 +140,7 @@ public class DefaultDataI18nMappedHandler implements DataI18nMappedHandler {
 					}
 				}
 			} else {
-				PropertyDescriptor[] i18nDescriptors = BeanUtils.getPropertyDescriptors(i18nObject.getClass());
+				PropertyDescriptor[] i18nDescriptors = getPropertyDescriptors(i18nObject.getClass());
 				//循环原查询结果列
 				for (String orgin_column : orginMap.keySet()) {
 					//循环国际化数据结果列
@@ -139,7 +158,7 @@ public class DefaultDataI18nMappedHandler implements DataI18nMappedHandler {
 		//原查询行数据对象不是Map
 		else {
 
-			PropertyDescriptor[] orginDescriptors = BeanUtils.getPropertyDescriptors(orginObject.getClass());
+			PropertyDescriptor[] orginDescriptors = getPropertyDescriptors(orginObject.getClass());
 			if(i18nObject instanceof Map ){
 				Map<String,Object>  i18nMap = ((Map<String,Object>) i18nObject);
 				//循环原查询结果列
@@ -155,7 +174,7 @@ public class DefaultDataI18nMappedHandler implements DataI18nMappedHandler {
 					}
 				}
 			} else {
-				PropertyDescriptor[] i18nDescriptors = BeanUtils.getPropertyDescriptors(i18nObject.getClass());
+				PropertyDescriptor[] i18nDescriptors = getPropertyDescriptors(i18nObject.getClass());
 				//循环原查询结果列
 				for (PropertyDescriptor propDes : orginDescriptors) {
 					//循环国际化数据结果列

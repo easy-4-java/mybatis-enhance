@@ -2,7 +2,7 @@
 
 
 
- import org.springframework.util.StringUtils;
+ import org.apache.commons.lang3.StringUtils;
 
  import java.util.Collection;
  import java.util.Map;
@@ -121,11 +121,11 @@
  	 * @param message the exception message to use if the assertion fails
  	 * @see StringUtils#hasLength
  	 */
- 	public static void hasLength(String text, String message) {
- 		if (StringUtils.isEmpty(text)) {
- 			throw new IllegalArgumentException(message);
- 		}
- 	}
+	public static void hasLength(String text, String message) {
+		if (StringUtils.isBlank(text)) {
+			throw new IllegalArgumentException(message);
+		}
+	}
 
  	/**
  	 * Assert that the given String is not empty; that is,
@@ -147,11 +147,11 @@
  	 * @param message the exception message to use if the assertion fails
  	 * @see StringUtils#hasText
  	 */
- 	public static void hasText(String text, String message) {
- 		if (StringUtils.isEmpty(text)) {
- 			throw new IllegalArgumentException(message);
- 		}
- 	}
+	public static void hasText(String text, String message) {
+		if (StringUtils.isBlank(text)) {
+			throw new IllegalArgumentException(message);
+		}
+	}
 
  	/**
  	 * Assert that the given String has valid text content; that is, it must not
@@ -173,7 +173,7 @@
  	 * @param message the exception message to use if the assertion fails
  	 */
  	public static void doesNotContain(String textToSearch, String substring, String message) {
- 		if (StringUtils.hasText(textToSearch) && StringUtils.hasText(substring) &&
+ 		if (StringUtils.isNotBlank(textToSearch) && StringUtils.isNotBlank(substring) &&
  				textToSearch.indexOf(substring) != -1) {
  			throw new IllegalArgumentException(message);
  		}

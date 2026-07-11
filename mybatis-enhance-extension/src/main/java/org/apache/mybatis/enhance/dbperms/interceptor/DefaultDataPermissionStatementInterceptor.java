@@ -15,6 +15,7 @@
  */
 package org.apache.mybatis.enhance.dbperms.interceptor;
 
+import cn.hutool.core.annotation.AnnotationUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -34,7 +35,6 @@ import org.apache.mybatis.enhance.dbperms.parser.def.TablePermissionAutowirePars
 import org.apache.mybatis.enhance.dbperms.parser.def.TablePermissionScriptParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
@@ -98,7 +98,7 @@ public class DefaultDataPermissionStatementInterceptor extends AbstractDataPermi
 			// Method method = BeanMethodDefinitionFactory.getMethodDefinition(mappedStatement.getId());
 			if(Objects.nonNull(method)) {
 				// 获取 @RequiresPermissions 注解标记
-				RequiresPermissions permissions = AnnotationUtils.findAnnotation(method, RequiresPermissions.class);
+				RequiresPermissions permissions = AnnotationUtil.getAnnotation(method, RequiresPermissions.class);
 				// 需要权限控制
 				if(Objects.nonNull(permissions)) {
 					// 框架自动进行数据权限注入
@@ -123,7 +123,7 @@ public class DefaultDataPermissionStatementInterceptor extends AbstractDataPermi
 				}
 
 				// 获取 @RequiresPermission 注解标记
-				RequiresPermission permission = AnnotationUtils.findAnnotation(method, RequiresPermission.class);
+				RequiresPermission permission = AnnotationUtil.getAnnotation(method, RequiresPermission.class);
 				if (Objects.nonNull(permission)) {
 					originalSQL = annotationPermissionParser.parser(metaStatementHandler, originalSQL, permission);
 					// 将处理后的物理分页sql重新写入作为执行SQL
@@ -136,7 +136,7 @@ public class DefaultDataPermissionStatementInterceptor extends AbstractDataPermi
 				}
 
 				// 获取 @RequiresSpecialPermission 注解标记
-				RequiresSpecialPermission specialPermission = AnnotationUtils.findAnnotation(method, RequiresSpecialPermission.class);
+				RequiresSpecialPermission specialPermission = AnnotationUtil.getAnnotation(method, RequiresSpecialPermission.class);
 				if (Objects.nonNull(specialPermission)) {
 					originalSQL = annotationPermissionParser.parser(metaStatementHandler, originalSQL, specialPermission);
 					// 将处理后的物理分页sql重新写入作为执行SQL
@@ -151,7 +151,7 @@ public class DefaultDataPermissionStatementInterceptor extends AbstractDataPermi
 			// 获取接口类型
 			Class<?> mapperInterface = metaStatementHandler.getMapperInterface();
 			if(Objects.nonNull(mapperInterface)) {
-				RequiresPermissions	permissions = AnnotationUtils.findAnnotation(mapperInterface, RequiresPermissions.class);
+				RequiresPermissions	permissions = AnnotationUtil.getAnnotation(mapperInterface, RequiresPermissions.class);
 				// 需要权限控制
 				if (Objects.nonNull(permissions)) {
 					// 框架自动进行数据权限注入

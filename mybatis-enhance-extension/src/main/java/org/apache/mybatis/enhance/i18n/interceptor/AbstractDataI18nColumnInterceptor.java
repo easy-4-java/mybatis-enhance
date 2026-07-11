@@ -15,6 +15,7 @@
  */
 package org.apache.mybatis.enhance.i18n.interceptor;
 
+import cn.hutool.core.annotation.AnnotationUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -30,7 +31,6 @@ import org.apache.mybatis.enhance.annotation.I18nLocale;
 import org.apache.mybatis.enhance.annotation.I18nSwitch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.reflect.Method;
 import java.util.Locale;
@@ -57,9 +57,9 @@ public abstract class AbstractDataI18nColumnInterceptor extends AbstractDataI18n
 			//提取被国际化注解标记的方法
 			//Method method = BeanMethodDefinitionFactory.getMethodDefinition(mappedStatement.getId());
 			//获取替换模式下的国际化注解标记
-			I18nSwitch i18nSwitch = AnnotationUtils.findAnnotation(method, I18nSwitch.class);
+			I18nSwitch i18nSwitch = method == null ? null : AnnotationUtil.getAnnotation(method, I18nSwitch.class);
 			//解析注解映射关系
-			I18nColumn[] i18nColumns  = i18nSwitch.value();
+			I18nColumn[] i18nColumns  = i18nSwitch == null ? null : i18nSwitch.value();
 			if(i18nColumns != null && i18nColumns.length > 0){
 				String originalSQL = (String) metaBoundSql.getValue("sql");
 				//循环标记对象

@@ -20,7 +20,6 @@ import org.apache.ibatis.binding.MetaStatementHandler;
 import org.apache.mybatis.enhance.dbperms.dto.*;
 import org.apache.mybatis.enhance.utils.RandomString;
 import org.apache.mybatis.enhance.utils.StringUtils;
-import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -38,6 +37,13 @@ public class DefaultTablePermissionScriptHandler implements ITablePermissionScri
 	protected static RandomString randomString = new RandomString(4);
 	private BiFunction<MetaStatementHandler, String, Optional<DataPermissionPayload>> permissionsProvider;
 	private static Map<Pattern, String> patternMap = new HashMap<>();
+
+	/**
+	 * 判断集合是否为空（替代 {@code org.springframework.util.CollectionUtils.isEmpty}）。
+	 */
+	private static boolean isEmpty(Collection<?> collection) {
+		return collection == null || collection.isEmpty();
+	}
 
 	static {
 		// { x.id in (表,字段) }
@@ -58,13 +64,13 @@ public class DefaultTablePermissionScriptHandler implements ITablePermissionScri
 		if(null != permissionPayload && permissionPayload.isPresent()) {
 			DataPermissionPayload payload = permissionPayload.get();
 			// 普通权限
-			if(!CollectionUtils.isEmpty(payload.getPermissions())) {
+			if(!isEmpty(payload.getPermissions())) {
 				// 当前表对应的数据权限
 				List<DataPermission> permissionsList = payload.getPermissions().parallelStream()
 		    				.filter(permission -> StringUtils.equalsIgnoreCase(permission.getTable(), resolved.getTable()))
 		    				.collect(Collectors.toList());
 		    	// 进行判空
-				if(CollectionUtils.isEmpty(permissionsList)) {
+				if(isEmpty(permissionsList)) {
 					for (DataPermission permission : permissionsList) {
 						for (DataPermissionColumn column : permission.getColumns()) {
 							if(null == column.getPerms() && !StringUtils.equalsIgnoreCase(column.getColumn(), resolved.getRelated())) {
@@ -110,7 +116,7 @@ public class DefaultTablePermissionScriptHandler implements ITablePermissionScri
 				resolved.setRelated(ruleStrs[1]);
 
 				List<String> permsList = this.resolved(metaHandler, resolved);
-				if(!CollectionUtils.isEmpty(permsList)) {
+				if(!isEmpty(permsList)) {
 					String part = permsList.parallelStream().map(perm -> StringUtils.quote(perm)).collect(Collectors.joining(","));
 					segmentSQL = segmentSQL.substring(0, begain) + part + segmentSQL.substring(end);
 				}

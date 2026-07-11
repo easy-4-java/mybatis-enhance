@@ -65,6 +65,12 @@
             <artifactId>mybatis-enhance-annotation</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- For Mybatis Enhance SPI（PageParam / Dialect / SqlInfoSink 等纯接口契约） -->
+        <dependency>
+            <groupId>io.github.hiwepy</groupId>
+            <artifactId>mybatis-enhance-spi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -15,6 +15,8 @@
  */
 package org.apache.mybatis.enhance.dbperms.interceptor;
 
+import cn.hutool.core.annotation.AnnotationUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.binding.MetaStatementHandler;
 import org.apache.ibatis.cache.CacheKey;
@@ -28,8 +30,6 @@ import org.apache.mybatis.enhance.annotation.NotRequiresPermission;
 import org.apache.mybatis.enhance.annotation.RequiresPermission;
 import org.apache.mybatis.enhance.annotation.RequiresPermissions;
 import org.apache.mybatis.enhance.annotation.RequiresSpecialPermission;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.util.DigestUtils;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -50,20 +50,20 @@ public abstract class AbstractDataPermissionInterceptor extends AbstractIntercep
 		// 获取接口类型
 		Class<?> mapperInterface = metaStatementHandler.getMapperInterface();
 		// 无需数据权限控制
-		if(Objects.nonNull(mapperInterface) && AnnotationUtils.findAnnotation(mapperInterface, NotRequiresPermission.class) != null) {
+		if(Objects.nonNull(mapperInterface) && AnnotationUtil.getAnnotation(mapperInterface, NotRequiresPermission.class) != null) {
 			return false;
 		}
-		if( Objects.nonNull(method) &&  AnnotationUtils.findAnnotation(method, NotRequiresPermission.class) != null) {
+		if( Objects.nonNull(method) &&  AnnotationUtil.getAnnotation(method, NotRequiresPermission.class) != null) {
 			return false;
 		}
 		// 需要数据权限控制
 		if (SqlCommandType.SELECT.equals(mappedStatement.getSqlCommandType())) {
-			if (Objects.nonNull(mapperInterface) && AnnotationUtils.findAnnotation(mapperInterface, RequiresPermissions.class) != null) {
+			if (Objects.nonNull(mapperInterface) && AnnotationUtil.getAnnotation(mapperInterface, RequiresPermissions.class) != null) {
 				return true;
 			}
-			if (Objects.nonNull(method) && (AnnotationUtils.findAnnotation(method, RequiresPermissions.class) != null
-					|| AnnotationUtils.findAnnotation(method, RequiresPermission.class) != null
-					|| AnnotationUtils.findAnnotation(method, RequiresSpecialPermission.class) != null)) {
+			if (Objects.nonNull(method) && (AnnotationUtil.getAnnotation(method, RequiresPermissions.class) != null
+					|| AnnotationUtil.getAnnotation(method, RequiresPermission.class) != null
+					|| AnnotationUtil.getAnnotation(method, RequiresSpecialPermission.class) != null)) {
 				return true;
 			}
 		}
@@ -73,7 +73,7 @@ public abstract class AbstractDataPermissionInterceptor extends AbstractIntercep
 
 	protected boolean isIntercepted(CacheKey cacheKey) {
 		//获取当前线程绑定的上下文对象
-		String uniqueKey = DigestUtils.md5DigestAsHex(cacheKey.toString().getBytes());
+		String uniqueKey = DigestUtil.md5Hex(cacheKey.toString().getBytes());
 		if(! extraContext.containsKey(uniqueKey)){
 			return true;
 		}

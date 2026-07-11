@@ -2,7 +2,7 @@ package org.apache.ibatis.utils.uid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
@@ -106,7 +106,7 @@ public class Sequence {
 		StringBuffer mpid = new StringBuffer();
 		mpid.append(datacenterId);
 		String name = ManagementFactory.getRuntimeMXBean().getName();
-		if (StringUtils.hasText(name)) {
+		if (StringUtils.isNotBlank(name)) {
 			/*
 			 * GET jvmPid
 			 */

@@ -17,8 +17,8 @@ package org.apache.mybatis.enhance.i18n.i18n.handler;
 
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.binding.MetaResultSetHandler;
-import org.springframework.util.ObjectUtils;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Locale;
@@ -26,13 +26,41 @@ import java.util.Locale;
 @SuppressWarnings("unchecked")
 public abstract class AbstractDataI18nHandler implements DataI18nHandler {
 
+	/**
+	 * 将对象转换为 Object[] 数组（替代 {@code org.springframework.util.ObjectUtils.toObjectArray}）：
+	 * null 返回空数组；数组（含基本类型数组）逐元素转换；Collection 转 Object[]；其它包成单元素数组。
+	 */
+	private static Object[] toObjectArray(Object source) {
+		if (source == null) {
+			return new Object[0];
+		}
+		if (source instanceof Object[]) {
+			return (Object[]) source;
+		}
+		if (source.getClass().isArray()) {
+			int length = Array.getLength(source);
+			if (length == 0) {
+				return new Object[0];
+			}
+			Object[] newArray = new Object[length];
+			for (int i = 0; i < length; i++) {
+				newArray[i] = Array.get(source, i);
+			}
+			return newArray;
+		}
+		if (source instanceof Collection) {
+			return ((Collection<?>) source).toArray();
+		}
+		return new Object[]{source};
+	}
+
 	@Override
 	public Object handle(Locale locale,Invocation invocation,MetaResultSetHandler metaResultSetHandler, Object orginData, Object i18nData) throws Exception  {
 		Collection<Object> orginList  = null;
 		Collection<Object> i18nList   = null;
 		// 原始数据集合化转换
 		if(!Collection.class.isAssignableFrom(orginData.getClass())){
-			orginList  = Arrays.asList(ObjectUtils.toObjectArray(orginData));
+			orginList  = Arrays.asList(toObjectArray(orginData));
 		} else {
 			orginList  = (Collection<Object>) orginData;
 		}
@@ -42,7 +70,7 @@ public abstract class AbstractDataI18nHandler implements DataI18nHandler {
 		}
 		// 国际化数据集合化转换
 		if(!Collection.class.isAssignableFrom(i18nData.getClass())){
-			i18nList  = Arrays.asList(ObjectUtils.toObjectArray(i18nData));
+			i18nList  = Arrays.asList(toObjectArray(i18nData));
 		} else {
 			i18nList  = (Collection<Object>) i18nData;
 		}

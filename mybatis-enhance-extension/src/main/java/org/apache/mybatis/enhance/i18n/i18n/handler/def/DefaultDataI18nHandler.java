@@ -15,6 +15,7 @@
  */
 package org.apache.mybatis.enhance.i18n.i18n.handler.def;
 
+import cn.hutool.core.annotation.AnnotationUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -26,10 +27,8 @@ import org.apache.mybatis.enhance.annotation.I18nPrimary;
 import org.apache.mybatis.enhance.i18n.i18n.handler.AbstractDataI18nHandler;
 import org.apache.mybatis.enhance.i18n.i18n.handler.DataI18nMappedHandler;
 import org.apache.mybatis.enhance.i18n.i18n.handler.DataI18nMapper;
-import org.mybatis.spring.cache.BeanMethodDefinitionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -106,11 +105,14 @@ public class DefaultDataI18nHandler extends AbstractDataI18nHandler {
 		try {
 			// 利用反射获取到FastResultSetHandler的mappedStatement属性，从而获取到MappedStatement；
 			MappedStatement mappedStatement = metaResultSetHandler.getMappedStatement();
-			//提取被国际化注解标记的方法
-			Method method = BeanMethodDefinitionFactory.getMethodDefinition(mappedStatement.getId());
+			//提取被国际化注解标记的方法：直接从 MetaResultSetHandler 获取当前执行方法（替代 BeanMethodDefinitionFactory）
+			Method method = metaResultSetHandler.getMethod();
+			if (method == null) {
+				return orginList;
+			}
 			// 找到Dao方法上的国际化注解
-			I18nPrimary i18nPrimary = AnnotationUtils.findAnnotation(method, I18nPrimary.class);
-			I18nMapper i18nMapper = AnnotationUtils.findAnnotation(method, I18nMapper.class);
+			I18nPrimary i18nPrimary = AnnotationUtil.getAnnotation(method, I18nPrimary.class);
+			I18nMapper i18nMapper = AnnotationUtil.getAnnotation(method, I18nMapper.class);
 			// 循环原始数据
 			for (Object orginObject : orginList) {
 				//数据关联主键名称

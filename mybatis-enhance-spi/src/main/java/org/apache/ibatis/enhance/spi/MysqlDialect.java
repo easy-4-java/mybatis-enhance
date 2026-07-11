@@ -1,0 +1,45 @@
+/*
+ * Copyright 2017-2026 the original author hiwepy.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.ibatis.enhance.spi;
+
+/**
+ * MySQL 方言默认实现。
+ *
+ * <p>分页：{@code SELECT ... LIMIT offset, size}。
+ * 计数：{@code SELECT COUNT(1) FROM (originalSql) TOTAL}。
+ *
+ * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @since 1.0.x
+ */
+public final class MysqlDialect implements Dialect {
+
+    /** 单例（无状态）。 */
+    public static final MysqlDialect INSTANCE = new MysqlDialect();
+
+    private MysqlDialect() {
+    }
+
+    @Override
+    public String buildPaginationSql(String originalSql, long offset, long size) {
+        return originalSql + " LIMIT " + offset + ", " + size;
+    }
+
+    @Override
+    public String buildCountSql(String originalSql) {
+        return "SELECT COUNT(1) FROM (" + originalSql + ") TOTAL";
+    }
+
+}

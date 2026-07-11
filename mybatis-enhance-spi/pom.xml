@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.hiwepy</groupId>
+        <artifactId>mybatis-enhance</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>mybatis-enhance-spi</artifactId>
+
+    <properties>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <description>
+        mybatis-enhance SPI 子模块：纯 JDK 接口契约（Fillable / AggregateRecognizer / PageParam / Dialect）。
+        零运行时依赖，作为拦截器插件与领域框架（如 ddd4j）之间的解耦边界。
+    </description>
+
+    <dependencies>
+        <!-- 零运行时依赖：仅 JDK -->
+    </dependencies>
+</project>
