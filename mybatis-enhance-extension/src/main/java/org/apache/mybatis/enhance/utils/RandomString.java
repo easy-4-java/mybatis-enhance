@@ -54,7 +54,7 @@ public class RandomString {
 
     /**
      * Creates a random {@link String} provider where each {@link String} is of
-     * {@link net.bytebuddy.utility.RandomString#DEFAULT_LENGTH} length.
+     * {@link #DEFAULT_LENGTH} length.
      */
     public RandomString() {
         this(DEFAULT_LENGTH);
@@ -74,7 +74,7 @@ public class RandomString {
     }
 
     /**
-     * Creates a random {@link String} of {@link net.bytebuddy.utility.RandomString#DEFAULT_LENGTH} length.
+     * Creates a random {@link String} of {@link #DEFAULT_LENGTH} length.
      *
      * @return A random {@link String}.
      */

@@ -15,88 +15,106 @@
  */
 package org.apache.mybatis.enhance.i18n.interceptor;
 
+import cn.hutool.core.annotation.AnnotationUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.binding.MetaStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
-import org.apache.ibatis.binding.MetaStatementHandler;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
-import org.apache.mybatis.enhance.annotation.I18nColumn;
-import org.apache.mybatis.enhance.annotation.I18nLocale;
-import org.apache.mybatis.enhance.annotation.I18nSwitch;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.AnnotationUtils;
+import org.apache.mybatis.enhance.annotation.i18n.I18nColumn;
+import org.apache.mybatis.enhance.annotation.i18n.I18nLocale;
+import org.apache.mybatis.enhance.annotation.i18n.I18nSwitch;
 
 import java.lang.reflect.Method;
 import java.util.Locale;
 
+/**
+ * {@code AbstractDataI18nColumnInterceptor} MyBatis 拦截器。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 @Slf4j
 public abstract class AbstractDataI18nColumnInterceptor extends AbstractDataI18nInterceptor {
 
-	@Override
-	public Object doStatementIntercept(Invocation invocation,StatementHandler statementHandler,MetaStatementHandler metaStatementHandler) throws Throwable {
+    /**
+     * 执行 {@code doStatementIntercept} 定义的框架操作。
+     *
+     * @param invocation           MyBatis 插件调用上下文
+     * @param statementHandler     语句处理器
+     * @param metaStatementHandler 调用参数 {@code metaStatementHandler}
+     * @return 处理结果
+     * @throws Throwable 底层操作失败时抛出
+     */
+    @Override
+    public Object doStatementIntercept(Invocation invocation, StatementHandler statementHandler, MetaStatementHandler metaStatementHandler) throws Throwable {
 
-		//检查是否需要进行拦截处理
-		if (isRequireIntercept(invocation, statementHandler, metaStatementHandler)) {
-			// 利用反射获取到FastResultSetHandler的mappedStatement属性，从而获取到MappedStatement；
-			MappedStatement mappedStatement = metaStatementHandler.getMappedStatement();
+        //检查是否需要进行拦截处理
+        if (isRequireIntercept(invocation, statementHandler, metaStatementHandler)) {
+            // 利用反射获取到FastResultSetHandler的mappedStatement属性，从而获取到MappedStatement；
+            MappedStatement mappedStatement = metaStatementHandler.getMappedStatement();
 
-			// 获取对应的BoundSql，这个BoundSql其实跟我们利用StatementHandler获取到的BoundSql是同一个对象。
-			BoundSql boundSql = metaStatementHandler.getBoundSql();
-			MetaObject metaBoundSql = SystemMetaObject.forObject(boundSql);
-			// 获取当前上下文中的Locale对象
-			Locale locale = this.getLocale();
+            // 获取对应的BoundSql，这个BoundSql其实跟我们利用StatementHandler获取到的BoundSql是同一个对象。
+            BoundSql boundSql = metaStatementHandler.getBoundSql();
+            MetaObject metaBoundSql = SystemMetaObject.forObject(boundSql);
+            // 获取当前上下文中的Locale对象
+            Locale locale = this.getLocale();
 
-			Method method = metaStatementHandler.getMethod();
+            Method method = metaStatementHandler.getMethod();
 
-			//提取被国际化注解标记的方法
-			//Method method = BeanMethodDefinitionFactory.getMethodDefinition(mappedStatement.getId());
-			//获取替换模式下的国际化注解标记
-			I18nSwitch i18nSwitch = AnnotationUtils.findAnnotation(method, I18nSwitch.class);
-			//解析注解映射关系
-			I18nColumn[] i18nColumns  = i18nSwitch.value();
-			if(i18nColumns != null && i18nColumns.length > 0){
-				String originalSQL = (String) metaBoundSql.getValue("sql");
-				//循环标记对象
-				for (I18nColumn i18nColumn : i18nColumns) {
-					if(i18nColumn != null && !StringUtils.isEmpty(i18nColumn.column()) ){
-						//获取国际化语言映射列
-						I18nLocale[] locales = i18nColumn.i18n();
-						for (I18nLocale i18nLocale : locales) {
-							//国际化语言匹配
-							if(locale.toString().equals(i18nLocale.locale().getLocale().toString())){
-								//根据参数决定替换值
-								String newColumn = StringUtils.isEmpty(i18nLocale.alias()) ? i18nLocale.column() : i18nLocale.column() + " as " + i18nLocale.alias();
-								//替换特殊标记的语句，如：@name =>> name_yw as name
-								originalSQL.replaceAll("@" + i18nColumn.column(), newColumn );
-								break;
-							}
-						}
-					}
-				}
-				// 将处理后的物理分页sql重新写入作为执行SQL
-				metaBoundSql.setValue("sql", originalSQL);
-				if (log.isDebugEnabled()) {
-					log.debug(" I18n SQL : "+ statementHandler.getBoundSql().getSql());
-				}
-			}
-		}
-		// 将执行权交给下一个拦截器
-		return invocation.proceed();
-	}
+            //提取被国际化注解标记的方法
+            //Method method = BeanMethodDefinitionFactory.getMethodDefinition(mappedStatement.getId());
+            //获取替换模式下的国际化注解标记
+            I18nSwitch i18nSwitch = method == null ? null : AnnotationUtil.getAnnotation(method, I18nSwitch.class);
+            //解析注解映射关系
+            I18nColumn[] i18nColumns = i18nSwitch == null ? null : i18nSwitch.value();
+            if (i18nColumns != null && i18nColumns.length > 0) {
+                String originalSQL = (String) metaBoundSql.getValue("sql");
+                //循环标记对象
+                for (I18nColumn i18nColumn : i18nColumns) {
+                    if (i18nColumn != null && !StringUtils.isEmpty(i18nColumn.column())) {
+                        //获取国际化语言映射列
+                        I18nLocale[] locales = i18nColumn.i18n();
+                        for (I18nLocale i18nLocale : locales) {
+                            //国际化语言匹配
+                            if (locale.toString().equals(i18nLocale.locale().getLocale().toString())) {
+                                //根据参数决定替换值
+                                String newColumn = StringUtils.isEmpty(i18nLocale.alias()) ? i18nLocale.column() : i18nLocale.column() + " as " + i18nLocale.alias();
+                                //替换特殊标记的语句，如：@name =>> name_yw as name
+                                originalSQL.replaceAll("@" + i18nColumn.column(), newColumn);
+                                break;
+                            }
+                        }
+                    }
+                }
+                // 将处理后的物理分页sql重新写入作为执行SQL
+                metaBoundSql.setValue("sql", originalSQL);
+                if (log.isDebugEnabled()) {
+                    log.debug(" I18n SQL : " + statementHandler.getBoundSql().getSql());
+                }
+            }
+        }
+        // 将执行权交给下一个拦截器
+        return invocation.proceed();
+    }
 
-	@Override
-	public Object plugin(Object target) {
-		if (target instanceof StatementHandler) {
+    /**
+     * 完成 {@code plugin} 对应的框架处理。
+     *
+     * @param target 目标对象
+     * @return 处理结果
+     */
+    @Override
+    public Object plugin(Object target) {
+        if (target instanceof StatementHandler) {
             return Plugin.wrap(target, this);
         } else {
             return target;
         }
-	}
+    }
 
 }

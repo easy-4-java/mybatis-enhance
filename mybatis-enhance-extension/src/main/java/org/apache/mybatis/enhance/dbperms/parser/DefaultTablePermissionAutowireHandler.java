@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2018, hiwepy (https://github.com/hiwepy).
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -38,116 +38,133 @@ import java.util.stream.Stream;
  */
 public class DefaultTablePermissionAutowireHandler implements ITablePermissionAutowireHandler {
 
-	public static Pattern pattern_find = Pattern.compile("(?:(?:\\#\\{)([\\S]*?)(?:\\}))+", Pattern.CASE_INSENSITIVE);
-	protected static RandomString randomString = new RandomString(4);
-	private BiFunction<MetaStatementHandler, String, Optional<DataPermissionPayload>> permissionsProvider;
-	private String alias = "t0";
+    public static Pattern pattern_find = Pattern.compile("(?:(?:\\#\\{)([\\S]*?)(?:\\}))+", Pattern.CASE_INSENSITIVE);
+    protected static RandomString randomString = new RandomString(4);
+    private BiFunction<MetaStatementHandler, String, Optional<DataPermissionPayload>> permissionsProvider;
+    private String alias = "t0";
 
-	public DefaultTablePermissionAutowireHandler(
-			BiFunction<MetaStatementHandler, String, Optional<DataPermissionPayload>> permissionsProvider) {
-		this.permissionsProvider = permissionsProvider;
-	}
+    /**
+     * 创建实例并初始化运行所需的上下文。
+     *
+     * @param permissionsProvider 调用参数 {@code permissionsProvider}
+     */
+    public DefaultTablePermissionAutowireHandler(
+            BiFunction<MetaStatementHandler, String, Optional<DataPermissionPayload>> permissionsProvider) {
+        this.permissionsProvider = permissionsProvider;
+    }
 
 
-	@Override
-	public String dynamicPermissionedSQL(MetaStatementHandler metaHandler, String tableName) {
-		// 查询数据权限
-		Optional<DataPermissionPayload> permissionPayload = getPermissionsProvider().apply(metaHandler, tableName);
-		if(null != permissionPayload && permissionPayload.isPresent()) {
-			DataPermissionPayload payload = permissionPayload.get();
-			// 构建限制条件
-			List<String> conditionParts = new ArrayList<>();
-			// 普通权限
-			if(CollectionUtils.isNotEmpty(payload.getPermissions())) {
+    /**
+     * 完成 {@code dynamicPermissionedSQL} 对应的框架处理。
+     *
+     * @param metaHandler 调用参数 {@code metaHandler}
+     * @param tableName 调用参数 {@code tableName}
+     * @return 处理结果
+     */
+    @Override
+    public String dynamicPermissionedSQL(MetaStatementHandler metaHandler, String tableName) {
+        // 查询数据权限
+        Optional<DataPermissionPayload> permissionPayload = getPermissionsProvider().apply(metaHandler, tableName);
+        if (null != permissionPayload && permissionPayload.isPresent()) {
+            DataPermissionPayload payload = permissionPayload.get();
+            // 构建限制条件
+            List<String> conditionParts = new ArrayList<>();
+            // 普通权限
+            if (CollectionUtils.isNotEmpty(payload.getPermissions())) {
 
-				// 当前表对应的数据权限（可能有多列限制条件）
-				List<DataPermission> permissionsList = payload.getPermissions().parallelStream()
-		    				.filter(permission -> StringUtils.equalsIgnoreCase(permission.getTable(), tableName))
-		    				.collect(Collectors.toList());
+                // 当前表对应的数据权限（可能有多列限制条件）
+                List<DataPermission> permissionsList = payload.getPermissions().parallelStream()
+                        .filter(permission -> StringUtils.equalsIgnoreCase(permission.getTable(), tableName))
+                        .collect(Collectors.toList());
 
-				// 进行判空
-				if(CollectionUtils.isEmpty(permissionsList)) {
-					return null;
-				}
+                // 进行判空
+                if (CollectionUtils.isEmpty(permissionsList)) {
+                    return null;
+                }
 
-				// 单条限制规则（优先处理SQL替换类型）
-				if(permissionsList.size() == 1) {
-					DataPermission permission = permissionsList.get(0);
-					if (StringUtils.isNotBlank(permission.getSql()) && pattern_find.matcher(permission.getSql()).find()) {
-						Map<String, String> variables = new HashMap<String, String>();
-						// 数据对象表
-						variables.put("table", tableName);
-						// 字段限制值
-						for (DataPermissionColumn column : permission.getColumns()) {
-							if(!StringUtils.isNotBlank(column.getPerms())) {
-								continue;
-							}
-							// 字段对应的变量
-							String[] permsArr = StringUtils.split(column.getPerms(),",");
-							if(permsArr.length == 1) {
-								variables.put(StringUtils.lowerCase(column.getColumn()), permsArr[0]);
-							} else {
-								variables.put(StringUtils.lowerCase(column.getColumn()), Stream.of(permsArr)
-										.map(perm -> StringUtils.quote(perm)).collect(Collectors.joining(",")));
-							}
-						}
-						return PatternFormatUtils.format(permission.getSql(), variables);
-					}
-				}
+                // 单条限制规则（优先处理SQL替换类型）
+                if (permissionsList.size() == 1) {
+                    DataPermission permission = permissionsList.get(0);
+                    if (StringUtils.isNotBlank(permission.getSql()) && pattern_find.matcher(permission.getSql()).find()) {
+                        Map<String, String> variables = new HashMap<String, String>();
+                        // 数据对象表
+                        variables.put("table", tableName);
+                        // 字段限制值
+                        for (DataPermissionColumn column : permission.getColumns()) {
+                            if (!StringUtils.isNotBlank(column.getPerms())) {
+                                continue;
+                            }
+                            // 字段对应的变量
+                            String[] permsArr = StringUtils.split(column.getPerms(), ",");
+                            if (permsArr.length == 1) {
+                                variables.put(StringUtils.lowerCase(column.getColumn()), permsArr[0]);
+                            } else {
+                                variables.put(StringUtils.lowerCase(column.getColumn()), Stream.of(permsArr)
+                                        .map(perm -> StringUtils.quote(perm)).collect(Collectors.joining(",")));
+                            }
+                        }
+                        return PatternFormatUtils.format(permission.getSql(), variables);
+                    }
+                }
 
-				// 普通权限SQL
-				conditionParts.add(SqlBuildUtils.conditionParts(alias, permissionsList));
-			}
-			// 特殊权限
-			if(CollectionUtils.isNotEmpty(payload.getSpecialPermissions())) {
+                // 普通权限SQL
+                conditionParts.add(SqlBuildUtils.conditionParts(alias, permissionsList));
+            }
+            // 特殊权限
+            if (CollectionUtils.isNotEmpty(payload.getSpecialPermissions())) {
 
-				// 查找匹配的特殊权限（可能有多列限制条件）
-	        	List<DataSpecialPermission> permissionsList = payload.getSpecialPermissions().stream()
-						.filter(permission -> StringUtils.equalsIgnoreCase(permission.getTable(), tableName) && CollectionUtils.isNotEmpty(permission.getColumns()))
-						.collect(Collectors.toList());
+                // 查找匹配的特殊权限（可能有多列限制条件）
+                List<DataSpecialPermission> permissionsList = payload.getSpecialPermissions().stream()
+                        .filter(permission -> StringUtils.equalsIgnoreCase(permission.getTable(), tableName) && CollectionUtils.isNotEmpty(permission.getColumns()))
+                        .collect(Collectors.toList());
 
-	        	// 进行判空
-				if(CollectionUtils.isNotEmpty(permissionsList)) {
+                // 进行判空
+                if (CollectionUtils.isNotEmpty(permissionsList)) {
 
-					conditionParts.add(SqlBuildUtils.conditionSpecialParts(alias, permissionsList));
+                    conditionParts.add(SqlBuildUtils.conditionSpecialParts(alias, permissionsList));
 
-				} else {
+                } else {
 
-					Optional<DataSpecialPermission> permissionsSpecial = payload.getSpecialPermissions().stream()
-							.filter(permission -> StringUtils.equalsIgnoreCase(permission.getTable(), tableName) && StringUtils.containsIgnoreCase(permission.getSql(), "SELECT"))
-							.findFirst();
-					// 单个限制规则（优先处理SQL替换类型）
-					if(permissionsSpecial.isPresent()) {
-						DataSpecialPermission permission = permissionsSpecial.get();
-						Map<String, String> variables = new HashMap<String, String>();
-		    			// 数据对象表
-		    			variables.put("table", permission.getTable());
-		    			return PatternFormatUtils.format(permission.getSql(), variables);
-					}
+                    Optional<DataSpecialPermission> permissionsSpecial = payload.getSpecialPermissions().stream()
+                            .filter(permission -> StringUtils.equalsIgnoreCase(permission.getTable(), tableName) && StringUtils.containsIgnoreCase(permission.getSql(), "SELECT"))
+                            .findFirst();
+                    // 单个限制规则（优先处理SQL替换类型）
+                    if (permissionsSpecial.isPresent()) {
+                        DataSpecialPermission permission = permissionsSpecial.get();
+                        Map<String, String> variables = new HashMap<String, String>();
+                        // 数据对象表
+                        variables.put("table", permission.getTable());
+                        return PatternFormatUtils.format(permission.getSql(), variables);
+                    }
 
-				}
+                }
 
-			}
+            }
 
-			conditionParts = conditionParts.parallelStream().filter(item -> !Objects.isNull(item)).collect(Collectors.toList());
-			if (CollectionUtils.isNotEmpty(conditionParts)) {
+            conditionParts = conditionParts.parallelStream().filter(item -> !Objects.isNull(item)).collect(Collectors.toList());
+            if (CollectionUtils.isNotEmpty(conditionParts)) {
 
-				StringBuilder builder = new StringBuilder();
-				builder.append("(");
-				builder.append("  SELECT ").append(alias).append(".* ");
-				builder.append("  FROM ").append(tableName).append(" ").append(alias);
-				builder.append(" WHERE ");
-				builder.append(conditionParts.stream().collect(Collectors.joining(payload.getRelation().getOperator())));
-				builder.append(" ) ");
-				return builder.toString();
-			}
-		}
+                StringBuilder builder = new StringBuilder();
+                builder.append("(");
+                builder.append("  SELECT ").append(alias).append(".* ");
+                builder.append("  FROM ").append(tableName).append(" ").append(alias);
+                builder.append(" WHERE ");
+                builder.append(conditionParts.stream().collect(Collectors.joining(payload.getRelation().getOperator())));
+                builder.append(" ) ");
+                return builder.toString();
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public BiFunction<MetaStatementHandler, String, Optional<DataPermissionPayload>> getPermissionsProvider() {
-		return permissionsProvider;
-	}
+    /**
+     * 获取 {@code permissionsProvider}。
+     *
+     * @return 对应的属性值
+     */
+    public BiFunction<MetaStatementHandler, String, Optional<DataPermissionPayload>> getPermissionsProvider() {
+        return permissionsProvider;
+    }
 
 }

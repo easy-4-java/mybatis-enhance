@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2018, hiwepy (https://github.com/hiwepy).
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -38,7 +38,6 @@ public final class TableNameParser {
     private static final String TOKEN_ORACLE_HINT_START = "/**+";
     private static final String TOKEN_ORACLE_HINT_END = "*/";
     private static final String TOKEN_SINGLE_LINE_COMMENT = "--";
-    private static String TOKEN_NEWLINE = "\\r\\n|\\r|\\n|\\n\\r";
     private static final String TOKEN_SEMI_COLON = ";";
     private static final String TOKEN_PARAN_START = "(";
     private static final String TOKEN_COMMA = ",";
@@ -49,17 +48,15 @@ public final class TableNameParser {
     private static final String TOKEN_CREATE = "create";
     private static final String TOKEN_INDEX = "index";
     private static final String TOKEN_ASTERICK = "*";
-
     private static final String KEYWORD_JOIN = "join";
     private static final String KEYWORD_INTO = "into";
     private static final String KEYWORD_TABLE = "table";
     private static final String KEYWORD_FROM = "from";
     private static final String KEYWORD_USING = "using";
     private static final String KEYWORD_UPDATE = "update";
-
     private static final List<String> concerned = Arrays.asList(KEYWORD_TABLE, KEYWORD_INTO, KEYWORD_JOIN, KEYWORD_USING, KEYWORD_UPDATE);
     private static final List<String> ignored = Arrays.asList(TOKEN_PARAN_START, TOKEN_SET, TOKEN_OF, TOKEN_DUAL);
-
+    private static String TOKEN_NEWLINE = "\\r\\n|\\r|\\n|\\n\\r";
     private Map<String, String> tables = new HashMap<>();
 
     /**
@@ -119,7 +116,7 @@ public final class TableNameParser {
 
     private String normalized(final String sql) {
         String normalized = sql.trim().replaceAll(TOKEN_NEWLINE, SPACE).replaceAll(TOKEN_COMMA, " , ")
-            .replaceAll("\\(", " ( ").replaceAll("\\)", " ) ");
+                .replaceAll("\\(", " ( ").replaceAll("\\)", " ) ");
         if (normalized.endsWith(TOKEN_SEMI_COLON)) {
             normalized = normalized.substring(0, normalized.length() - 1);
         }
