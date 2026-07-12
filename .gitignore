@@ -2,48 +2,52 @@
 *.iml
 *.ipr
 *.iws
-.idea
+.idea/
 .classpath
 .factorypath
 .project
 .settings
 .springBeans
 .apt_generated
+.sts4-cache
 .metadata
 .recommenders
 rebel.xml
+.vscode/
 
 ### Gradle ###
 .gradle
-/build/
 !gradle/wrapper/gradle-wrapper.jar
+
+### Maven ###
+target/
+dependency-reduced-pom.xml
+pom.xml.versionsBackup
+.flattened-pom.xml
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
 ### NetBeans ###
 nbproject/private/
 nbbuild/
-dist/
 nbdist/
 .nb-gradle/
-
-### Maven ###
-target/
-target
-dependency-reduced-pom.xml
-pom.xml.versionsBackup
-.flattened-pom.xml
+dist/
 
 ### Build ###
-/build
 build/
-build
+!**/src/main/**/build/
+!**/src/test/**/build/
 build.log
-bin
 bin/
 lib/
 codes/
+/code
+gen_code
 
 ### Logs ###
-/logs/
+logs/
 *.log
 log.*/
 transaction-logs
@@ -53,8 +57,8 @@ transaction-logs
 *.war
 *.ear
 *.tar
-*.tar.gz
 *.gz
+!/libs/*.jar
 
 ### Temporary files ###
 *#
@@ -76,7 +80,6 @@ Thumbs.db
 Servers
 
 ### Application specific ###
-/code
 MANIFEST.MF
 _site/
 activemq-data
@@ -86,17 +89,44 @@ manifest.yml
 overridedb.*
 secrets.yml
 upload
-gen_code
 
-### Node ###
-node_modules
+### Node / Frontend ###
+node_modules/
+**/.output/
+**/.vite/
+**/.cache/
+**/.parcel-cache/
+**/*.tsbuildinfo
+**/.env.local
+**/.env.*.local
+**/coverage/
+**/storybook-static/
+**/boba-tea-shop/supervisor-agent/**/static/
+
+### Python ###
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+
+### Docs ###
+docs/_build
+
+### Rust ###
+Cargo.lock
 
 ### Server ###
 /server/nacos-server/data
 /server/nacos-server/logs
 
-### Libraries ###
-!/libs/*.jar
+### AI / vibe coding ###
+.claude
+openspec
+AGENTS.md
+CLAUDE.md
+.agentscope/
+**/*.db
 
 ### Development tools ###
 .fastRequest
