@@ -71,10 +71,29 @@ public interface EnhanceInterceptor {
      * @param executor        MyBatis 执行器
      * @param mappedStatement 当前映射语句
      * @param parameter       写入参数
+     * @param boundSql        已绑定的 SQL
      * @param affectedRows    受影响行数
      * @throws SQLException 增强处理失败时抛出
      */
     default void afterUpdate(Executor executor, MappedStatement mappedStatement, Object parameter,
-                             int affectedRows) throws SQLException {
+                             BoundSql boundSql, int affectedRows) throws SQLException {
+    }
+
+    /**
+     * SQL 执行及结果增强全部完成后的生命周期通知。
+     *
+     * <p>该通知同时覆盖查询、插入、更新、删除以及异常路径，适用于监控、追踪等旁路能力。
+     * 实现不得抛出异常影响 SQL 主流程；调度方会隔离实现抛出的异常。</p>
+     *
+     * @param executor     MyBatis 执行器，可能是代理对象
+     * @param mappedStatement 当前映射语句
+     * @param parameter    Mapper 调用参数
+     * @param boundSql     已绑定的 SQL
+     * @param result       执行结果，失败时可能为 {@code null}
+     * @param failure      执行或结果增强异常，成功时为 {@code null}
+     * @param elapsedNanos Executor 实际执行耗时（纳秒）
+     */
+    default void afterExecution(Executor executor, MappedStatement mappedStatement, Object parameter,
+                                BoundSql boundSql, Object result, Throwable failure, long elapsedNanos) {
     }
 }

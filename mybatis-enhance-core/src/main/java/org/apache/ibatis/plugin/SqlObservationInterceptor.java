@@ -4,6 +4,7 @@ import org.apache.ibatis.enhance.spi.SqlObservation;
 import org.apache.ibatis.enhance.spi.SqlObservationSink;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
 import org.slf4j.Logger;
@@ -86,8 +87,12 @@ public class SqlObservationInterceptor implements Interceptor {
         } finally {
             long elapsed = System.currentTimeMillis() - startTime;
             try {
-                SqlObservation observation =
-                        new SqlObservation(sql, collectSortedParams(statementHandler, metaObject), elapsed);
+                MappedStatement mappedStatement =
+                        (MappedStatement) metaObject.getValue("delegate.mappedStatement");
+                String mappedStatementId = Objects.nonNull(mappedStatement) ? mappedStatement.getId() : null;
+                SqlObservation observation = new SqlObservation(
+                        mappedStatementId, sql, collectSortedParams(statementHandler, metaObject),
+                        elapsed * 1_000_000L, null);
                 for (SqlObservationSink sink : sinks) {
                     try {
                         sink.accept(observation);

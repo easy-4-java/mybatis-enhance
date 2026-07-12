@@ -32,6 +32,6 @@ public final class SqlLoggingSink implements SqlObservationSink {
             return;
         }
         log.info("SQL [elapsed={}ms] {} | params={}",
-                observation.elapsedMs(), observation.sql(), observation.sortedParams());
+                observation.elapsedMillis(), observation.sql(), observation.sortedParams());
     }
 }
