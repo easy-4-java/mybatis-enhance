@@ -15,72 +15,108 @@
  */
 package org.apache.mybatis.enhance.i18n.i18n.bundle;
 
+import java.util.Objects;
+
 /***
  * <p>A simple string key/string value pair.</p>
  *
- * <p>This is useful as an argument type for options whose values take on the form <kbd>key=value</kbd>, such as JVM
+ * <p>This is useful as an argument type for options whose values take on the form {@code key=value}, such as JVM
  * command line system properties.</p>
  *
  * @author <a href="mailto:pholser@alumni.rice.edu">Paul Holser</a>
  */
 public final class KeyValuePair {
 
-	public static final String EMPTY = "";
+    public static final String EMPTY = "";
     public final String key;
     public final String value;
 
-    private KeyValuePair( String key, String value ) {
+    private KeyValuePair(String key, String value) {
         this.key = key;
         this.value = value;
     }
 
     /***
-     * Parses a string assumed to be of the form <kbd>key=value</kbd> into its parts.
+     * Parses a string assumed to be of the form {@code key=value} into its parts.
      *
      * @param asString key-value string
      * @return a key-value pair
      * @throws NullPointerException if {@code stringRepresentation} is {@code null}
      */
-    public static KeyValuePair valueOf( String asString ) {
-        int equalsIndex = asString.indexOf( '=' );
-        if ( equalsIndex == -1 )
-            return new KeyValuePair( asString, EMPTY );
+    public static KeyValuePair valueOf(String asString) {
+        Objects.requireNonNull(asString, "Key-value string must not be null");
+        int equalsIndex = asString.indexOf('=');
+        if (equalsIndex == -1) {
+            return new KeyValuePair(asString, EMPTY);
+        }
 
-        String aKey = asString.substring( 0, equalsIndex );
-        String aValue = equalsIndex == asString.length() - 1 ? EMPTY : asString.substring( equalsIndex + 1 );
+        String aKey = asString.substring(0, equalsIndex);
+        String aValue = equalsIndex == asString.length() - 1 ? EMPTY : asString.substring(equalsIndex + 1);
 
-        return new KeyValuePair( aKey, aValue );
+        return new KeyValuePair(aKey, aValue);
     }
 
+    /**
+     * 获取 {@code empty}。
+     *
+     * @return 对应的属性值
+     */
+    public static String getEmpty() {
+        return EMPTY;
+    }
+
+    /**
+     * 比较当前对象与指定对象是否相等。
+     *
+     * @param that 调用参数 {@code that}
+     * @return 处理结果
+     */
     @Override
-    public boolean equals( Object that ) {
-        if ( !( that instanceof KeyValuePair ) )
+    public boolean equals(Object that) {
+        if (!(that instanceof KeyValuePair)) {
             return false;
+        }
 
         KeyValuePair other = (KeyValuePair) that;
-        return key.equals( other.key ) && value.equals( other.value );
+        return key.equals(other.key) && value.equals(other.value);
     }
 
+    /**
+     * 计算当前对象的哈希值。
+     *
+     * @return 条件成立时返回 {@code true}，否则返回 {@code false}
+     */
     @Override
     public int hashCode() {
         return key.hashCode() ^ value.hashCode();
     }
 
+    /**
+     * 转换 {@code toString} 定义的框架操作。
+     *
+     * @return 处理结果
+     */
     @Override
     public String toString() {
         return key + '=' + value;
     }
 
-	public static String getEmpty() {
-		return EMPTY;
-	}
+    /**
+     * 获取 {@code key}。
+     *
+     * @return 对应的属性值
+     */
+    public String getKey() {
+        return key;
+    }
 
-	public String getKey() {
-		return key;
-	}
-
-	public String getValue() {
-		return value;
-	}
+    /**
+     * 获取 {@code value}。
+     *
+     * @return 对应的属性值
+     */
+    public String getValue() {
+        return value;
+    }
 
 }

@@ -18,13 +18,29 @@ package org.apache.mybatis.enhance.i18n.i18n.bundle;
 import java.util.Enumeration;
 import java.util.ResourceBundle;
 
+/**
+ * {@code EmptyResourceBundle} 框架组件。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 public class EmptyResourceBundle extends ResourceBundle {
 
+    /**
+     * 获取 {@code keys}。
+     *
+     * @return 对应的属性值
+     */
     @Override
     public Enumeration<String> getKeys() {
         return null; // dummy
     }
 
+    /**
+     * 处理 {@code handleGetObject} 定义的框架操作。
+     *
+     * @param key 键
+     * @return 处理结果
+     */
     @Override
     protected Object handleGetObject(String key) {
         return null; // dummy
