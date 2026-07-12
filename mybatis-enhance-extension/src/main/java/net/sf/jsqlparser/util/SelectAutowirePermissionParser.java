@@ -18,7 +18,7 @@ public class SelectAutowirePermissionParser extends AbstractPermissionTableVisit
      * 创建实例并初始化运行所需的上下文。
      *
      * @param tablePermissionHandler 调用参数 {@code tablePermissionHandler}
-     * @param metaHandler 调用参数 {@code metaHandler}
+     * @param metaHandler            调用参数 {@code metaHandler}
      */
     public SelectAutowirePermissionParser(ITablePermissionAutowireHandler tablePermissionHandler,
                                           MetaStatementHandler metaHandler) {

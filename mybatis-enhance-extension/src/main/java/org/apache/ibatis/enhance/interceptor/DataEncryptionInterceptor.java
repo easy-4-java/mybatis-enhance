@@ -40,7 +40,7 @@ public class DataEncryptionInterceptor implements EnhanceInterceptor {
      * 创建可显式控制开关的参数加密增强器。
      *
      * @param dataEncryptionHandler 实体加密处理器
-     * @param enabled 是否启用
+     * @param enabled               是否启用
      */
     public DataEncryptionInterceptor(DataEncryptionHandler dataEncryptionHandler, boolean enabled) {
         this.dataEncryptionHandler = Objects.requireNonNull(
@@ -51,12 +51,12 @@ public class DataEncryptionInterceptor implements EnhanceInterceptor {
     /**
      * 执行前置处理 {@code beforeQuery} 定义的框架操作。
      *
-     * @param executor MyBatis 执行器
+     * @param executor        MyBatis 执行器
      * @param mappedStatement 映射语句
-     * @param parameter 方法参数
-     * @param rowBounds 分页边界
-     * @param resultHandler 结果处理器
-     * @param boundSql 绑定 SQL
+     * @param parameter       方法参数
+     * @param rowBounds       分页边界
+     * @param resultHandler   结果处理器
+     * @param boundSql        绑定 SQL
      */
     @Override
     public void beforeQuery(Executor executor, MappedStatement mappedStatement, Object parameter,
@@ -67,9 +67,9 @@ public class DataEncryptionInterceptor implements EnhanceInterceptor {
     /**
      * 执行前置处理 {@code beforeUpdate} 定义的框架操作。
      *
-     * @param executor MyBatis 执行器
+     * @param executor        MyBatis 执行器
      * @param mappedStatement 映射语句
-     * @param parameter 方法参数
+     * @param parameter       方法参数
      */
     @Override
     public void beforeUpdate(Executor executor, MappedStatement mappedStatement, Object parameter) {

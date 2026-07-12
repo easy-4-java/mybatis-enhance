@@ -19,6 +19,7 @@ public @interface DecryptField {
      * @return 算法名称
      */
     String algorithmType();
+
     /**
      * 获取分组密码工作模式。
      *

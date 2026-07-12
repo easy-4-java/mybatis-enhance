@@ -42,16 +42,27 @@ public class ModelsFillsInterceptor implements EnhanceInterceptor {
                 aggregateRecognizer, "Aggregate recognizer must not be null");
     }
 
+    private static AggregateRecognizer resolveRecognizer() {
+        Iterator<AggregateRecognizer> recognizers = ServiceLoader
+                .load(AggregateRecognizer.class).iterator();
+        if (recognizers.hasNext()) {
+            AggregateRecognizer recognizer = recognizers.next();
+            log.debug("Using aggregate recognizer: {}", recognizer.getClass().getName());
+            return recognizer;
+        }
+        return DefaultAggregateRecognizer.INSTANCE;
+    }
+
     /**
      * 执行后置处理 {@code afterQuery} 定义的框架操作。
      *
-     * @param executor MyBatis 执行器
+     * @param executor        MyBatis 执行器
      * @param mappedStatement 映射语句
-     * @param parameter 方法参数
-     * @param rowBounds 分页边界
-     * @param resultHandler 结果处理器
-     * @param boundSql 绑定 SQL
-     * @param results 调用参数 {@code results}
+     * @param parameter       方法参数
+     * @param rowBounds       分页边界
+     * @param resultHandler   结果处理器
+     * @param boundSql        绑定 SQL
+     * @param results         调用参数 {@code results}
      */
     @Override
     public void afterQuery(Executor executor, MappedStatement mappedStatement, Object parameter,
@@ -67,16 +78,5 @@ public class ModelsFillsInterceptor implements EnhanceInterceptor {
                 return;
             }
         }
-    }
-
-    private static AggregateRecognizer resolveRecognizer() {
-        Iterator<AggregateRecognizer> recognizers = ServiceLoader
-                .load(AggregateRecognizer.class).iterator();
-        if (recognizers.hasNext()) {
-            AggregateRecognizer recognizer = recognizers.next();
-            log.debug("Using aggregate recognizer: {}", recognizer.getClass().getName());
-            return recognizer;
-        }
-        return DefaultAggregateRecognizer.INSTANCE;
     }
 }

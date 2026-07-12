@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2018, hiwepy (https://github.com/hiwepy).
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -40,7 +40,7 @@ import org.apache.mybatis.enhance.dbperms.parser.ITablePermissionParser;
 @Accessors(chain = true)
 public class TablePermissionAnnotationParser implements ITablePermissionParser {
 
-	private volatile boolean initialized = false;
+    private volatile boolean initialized = false;
 
     /**
      * Initialize the object.
@@ -59,7 +59,10 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
     /**
      * Internal initialization of the object.
      */
-    protected void internalInit() {};
+    protected void internalInit() {
+    }
+
+    ;
 
     /**
      * 解析 {@code parser} 定义的框架操作。
@@ -70,23 +73,23 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
      * @return 处理结果
      */
     public String parser(MetaStatementHandler metaHandler, String sql, RequiresPermission[] permissions) {
-    	if (!this.doFilter(metaHandler, sql)) {
-   		 	return sql;
-		}
-    	this.init();
-    	String parsedSQL = sql;
-    	try {
+        if (!this.doFilter(metaHandler, sql)) {
+            return sql;
+        }
+        this.init();
+        String parsedSQL = sql;
+        try {
             Statement statement = CCJSqlParserUtil.parse(sql);
             if (null != statement && statement instanceof Select) {
-            	Select select = (Select) statement;
-            	// 动态修改SQL
-            	select.accept(new SelectAnnotationPermissionsParser(metaHandler, permissions));
-            	// 获取处理后的SQL
-            	parsedSQL = select.getSelectBody().toString();
+                Select select = (Select) statement;
+                // 动态修改SQL
+                select.accept(new SelectAnnotationPermissionsParser(metaHandler, permissions));
+                // 获取处理后的SQL
+                parsedSQL = select.getSelectBody().toString();
             }
-		} catch (JSQLParserException e) {
-			throw new MybatisException(String.format("Failed to process, please exclude the tableName or statementId.\n Error SQL: %s", e, sql), e);
-		}
+        } catch (JSQLParserException e) {
+            throw new MybatisException(String.format("Failed to process, please exclude the tableName or statementId.\n Error SQL: %s", e, sql), e);
+        }
         return parsedSQL;
     }
 
@@ -99,82 +102,82 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
      * @return 处理结果
      */
     public String parser(MetaStatementHandler metaHandler, String sql, RequiresPermission permission) {
-    	if (!this.doFilter(metaHandler, sql)) {
-      		return sql;
-   		}
-       	this.init();
-       	String parsedSQL = sql;
-    	try {
+        if (!this.doFilter(metaHandler, sql)) {
+            return sql;
+        }
+        this.init();
+        String parsedSQL = sql;
+        try {
             Statement statement = CCJSqlParserUtil.parse(sql);
             if (null != statement && statement instanceof Select) {
-            	Select select = (Select) statement;
-            	// 动态修改SQL
-            	select.accept(new SelectAnnotationPermissionParser(metaHandler, permission));
-            	// 获取处理后的SQL
-            	parsedSQL = select.getSelectBody().toString();
+                Select select = (Select) statement;
+                // 动态修改SQL
+                select.accept(new SelectAnnotationPermissionParser(metaHandler, permission));
+                // 获取处理后的SQL
+                parsedSQL = select.getSelectBody().toString();
             }
-		} catch (JSQLParserException e) {
-			throw new MybatisException(String.format("Failed to process, please exclude the tableName or statementId.\n Error SQL: %s", e, sql), e);
-		}
+        } catch (JSQLParserException e) {
+            throw new MybatisException(String.format("Failed to process, please exclude the tableName or statementId.\n Error SQL: %s", e, sql), e);
+        }
         return parsedSQL;
     }
 
-	/**
-	 * 解析 {@code parser} 定义的框架操作。
-	 *
-	 * @param metaHandler 调用参数 {@code metaHandler}
-	 * @param sql SQL 文本
-	 * @param permissions 调用参数 {@code permissions}
-	 * @return 处理结果
-	 */
-	public String parser(MetaStatementHandler metaHandler, String sql, RequiresSpecialPermission[] permissions) {
-		if (!this.doFilter(metaHandler, sql)) {
-   		 	return sql;
-		}
-    	this.init();
-    	String parsedSQL = sql;
-    	try {
+    /**
+     * 解析 {@code parser} 定义的框架操作。
+     *
+     * @param metaHandler 调用参数 {@code metaHandler}
+     * @param sql SQL 文本
+     * @param permissions 调用参数 {@code permissions}
+     * @return 处理结果
+     */
+    public String parser(MetaStatementHandler metaHandler, String sql, RequiresSpecialPermission[] permissions) {
+        if (!this.doFilter(metaHandler, sql)) {
+            return sql;
+        }
+        this.init();
+        String parsedSQL = sql;
+        try {
             Statement statement = CCJSqlParserUtil.parse(sql);
             if (null != statement && statement instanceof Select) {
-            	Select select = (Select) statement;
-            	// 动态修改SQL
-            	select.accept(new SelectAnnotationSpecialPermissionsParser(metaHandler, permissions));
-            	// 获取处理后的SQL
-            	parsedSQL = select.getSelectBody().toString();
+                Select select = (Select) statement;
+                // 动态修改SQL
+                select.accept(new SelectAnnotationSpecialPermissionsParser(metaHandler, permissions));
+                // 获取处理后的SQL
+                parsedSQL = select.getSelectBody().toString();
             }
-		} catch (JSQLParserException e) {
-			throw new MybatisException(String.format("Failed to process, please exclude the tableName or statementId.\n Error SQL: %s", e, sql), e);
-		}
+        } catch (JSQLParserException e) {
+            throw new MybatisException(String.format("Failed to process, please exclude the tableName or statementId.\n Error SQL: %s", e, sql), e);
+        }
         return parsedSQL;
-	}
+    }
 
-	/**
-	 * 解析 {@code parser} 定义的框架操作。
-	 *
-	 * @param metaHandler 调用参数 {@code metaHandler}
-	 * @param sql SQL 文本
-	 * @param permission 调用参数 {@code permission}
-	 * @return 处理结果
-	 */
-	public String parser(MetaStatementHandler metaHandler, String sql, RequiresSpecialPermission permission) {
-		if (!this.doFilter(metaHandler, sql)) {
-      		return sql;
-   		}
-       	this.init();
-       	String parsedSQL = sql;
-    	try {
+    /**
+     * 解析 {@code parser} 定义的框架操作。
+     *
+     * @param metaHandler 调用参数 {@code metaHandler}
+     * @param sql SQL 文本
+     * @param permission 调用参数 {@code permission}
+     * @return 处理结果
+     */
+    public String parser(MetaStatementHandler metaHandler, String sql, RequiresSpecialPermission permission) {
+        if (!this.doFilter(metaHandler, sql)) {
+            return sql;
+        }
+        this.init();
+        String parsedSQL = sql;
+        try {
             Statement statement = CCJSqlParserUtil.parse(sql);
             if (null != statement && statement instanceof Select) {
-            	Select select = (Select) statement;
-            	// 动态修改SQL
-            	select.accept(new SelectAnnotationSpecialPermissionParser(metaHandler, permission));
-            	// 获取处理后的SQL
-            	parsedSQL = select.getSelectBody().toString();
+                Select select = (Select) statement;
+                // 动态修改SQL
+                select.accept(new SelectAnnotationSpecialPermissionParser(metaHandler, permission));
+                // 获取处理后的SQL
+                parsedSQL = select.getSelectBody().toString();
             }
-		} catch (JSQLParserException e) {
-			throw new MybatisException(String.format("Failed to process, please exclude the tableName or statementId.\n Error SQL: %s", e, sql), e);
-		}
+        } catch (JSQLParserException e) {
+            throw new MybatisException(String.format("Failed to process, please exclude the tableName or statementId.\n Error SQL: %s", e, sql), e);
+        }
         return parsedSQL;
-	}
+    }
 
 }

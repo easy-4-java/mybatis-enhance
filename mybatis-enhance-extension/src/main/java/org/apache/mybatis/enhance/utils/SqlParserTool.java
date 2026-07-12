@@ -15,25 +15,13 @@ import net.sf.jsqlparser.statement.execute.Execute;
 import net.sf.jsqlparser.statement.insert.Insert;
 import net.sf.jsqlparser.statement.merge.Merge;
 import net.sf.jsqlparser.statement.replace.Replace;
-import net.sf.jsqlparser.statement.select.FromItem;
-import net.sf.jsqlparser.statement.select.Join;
-import net.sf.jsqlparser.statement.select.Limit;
-import net.sf.jsqlparser.statement.select.PlainSelect;
-import net.sf.jsqlparser.statement.select.Select;
-import net.sf.jsqlparser.statement.select.SelectBody;
-import net.sf.jsqlparser.statement.select.SelectItem;
-import net.sf.jsqlparser.statement.select.SubSelect;
-import net.sf.jsqlparser.statement.select.WithItem;
+import net.sf.jsqlparser.statement.select.*;
 import net.sf.jsqlparser.statement.truncate.Truncate;
 import net.sf.jsqlparser.statement.update.Update;
 import net.sf.jsqlparser.statement.upsert.Upsert;
 import net.sf.jsqlparser.util.TablesNamesFinder;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * JSqlParser 3.1 SQL 结构访问工具。
@@ -163,7 +151,7 @@ public final class SqlParserTool {
      * 设置普通 SELECT 的 INTO 表列表；非普通 SELECT 不做处理。
      *
      * @param selectBody SELECT AST
-     * @param tables INTO 表列表
+     * @param tables     INTO 表列表
      */
     public static void setIntoTables(SelectBody selectBody, List<Table> tables) {
         if (selectBody instanceof PlainSelect) {
@@ -185,7 +173,7 @@ public final class SqlParserTool {
      * 为普通 SELECT 设置 LIMIT 行数。
      *
      * @param selectBody SELECT AST
-     * @param rows 最大返回行数
+     * @param rows       最大返回行数
      */
     public static void setLimit(SelectBody selectBody, long rows) {
         if (selectBody instanceof PlainSelect) {

@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2018 (https://github.com/hiwepy).
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -29,23 +29,25 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD})
 public @interface RequiresPermissionForeign {
 
-	/**
-	 * 获取主表字段与关联表字段之间的比较条件。
-	 *
-	 * @return 关联字段条件
-	 */
-	ForeignCondition condition();
-	/**
-	 * 获取关联表名称。
-	 *
-	 * @return 关联表名；空字符串表示未配置
-	 */
-	String table() default "";
-	/**
-	 * 获取关联表字段名称。
-	 *
-	 * @return 关联列名；空字符串表示未配置
-	 */
-	String column() default "";
+    /**
+     * 获取主表字段与关联表字段之间的比较条件。
+     *
+     * @return 关联字段条件
+     */
+    ForeignCondition condition();
+
+    /**
+     * 获取关联表名称。
+     *
+     * @return 关联表名；空字符串表示未配置
+     */
+    String table() default "";
+
+    /**
+     * 获取关联表字段名称。
+     *
+     * @return 关联列名；空字符串表示未配置
+     */
+    String column() default "";
 
 }

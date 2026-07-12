@@ -50,7 +50,8 @@ public abstract class BaseTypeHandler<T> extends org.apache.ibatis.type.BaseType
      * @return 当前处理器目标类型的类型引用
      */
     public TypeReference<T> typeReference() {
-        return new TypeReference<T>() {};
+        return new TypeReference<T>() {
+        };
     }
 
     /**

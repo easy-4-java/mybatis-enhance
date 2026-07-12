@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2018 (https://github.com/hiwepy).
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -26,21 +26,21 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD,ElementType.FIELD})
+@Target({ElementType.METHOD, ElementType.FIELD})
 public @interface I18nColumn {
 
-	/**
-	 * 获取目标属性或基础列名称。
-	 *
-	 * @return 目标列名称；空字符串表示由处理器根据上下文推断
-	 */
-	String column() default "";
+    /**
+     * 获取目标属性或基础列名称。
+     *
+     * @return 目标列名称；空字符串表示由处理器根据上下文推断
+     */
+    String column() default "";
 
-	/**
-	 * 获取各语言环境对应的物理列配置。
-	 *
-	 * @return 语言列配置，至少应包含一个元素
-	 */
-	I18nLocale[] i18n();
+    /**
+     * 获取各语言环境对应的物理列配置。
+     *
+     * @return 语言列配置，至少应包含一个元素
+     */
+    I18nLocale[] i18n();
 
 }

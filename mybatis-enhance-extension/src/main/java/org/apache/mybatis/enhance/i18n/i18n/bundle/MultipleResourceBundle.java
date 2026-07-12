@@ -28,58 +28,58 @@ import java.util.ResourceBundle;
  */
 public class MultipleResourceBundle extends ResourceBundle {
 
-	protected ResourceBundle[] bundles;
-	protected static Logger LOG = LoggerFactory.getLogger(MultipleResourceBundle.class);
+    protected static Logger LOG = LoggerFactory.getLogger(MultipleResourceBundle.class);
+    protected ResourceBundle[] bundles;
 
-	/**
-	 * 创建实例并初始化运行所需的上下文。
-	 *
-	 */
-	public MultipleResourceBundle() {
+    /**
+     * 创建实例并初始化运行所需的上下文。
+     *
+     */
+    public MultipleResourceBundle() {
     }
 
-	/**
-	 * 创建实例并初始化运行所需的上下文。
-	 *
-	 * @param bundles 调用参数 {@code bundles}
-	 */
-	public MultipleResourceBundle(ResourceBundle ...bundles){
-		this.bundles = bundles;
-	}
+    /**
+     * 创建实例并初始化运行所需的上下文。
+     *
+     * @param bundles 调用参数 {@code bundles}
+     */
+    public MultipleResourceBundle(ResourceBundle... bundles) {
+        this.bundles = bundles;
+    }
 
-	/**
-	 * 处理 {@code handleGetObject} 定义的框架操作。
-	 *
-	 * @param key 键
-	 * @return 处理结果
-	 */
-	@Override
-	protected Object handleGetObject(String key) {
-		if (key == null) {
+    /**
+     * 处理 {@code handleGetObject} 定义的框架操作。
+     *
+     * @param key 键
+     * @return 处理结果
+     */
+    @Override
+    protected Object handleGetObject(String key) {
+        if (key == null) {
             throw new NullPointerException("key is null ");
         }
-		for (ResourceBundle bundle : bundles) {
-			try {
-				Object value = bundle.getObject(key);
-				if(value != null){
-					return value;
-				}
-			} catch (Exception e) {
-				// ingrone e
-				LOG.warn(e.getMessage());
-			}
-		}
-		return null;
-	}
+        for (ResourceBundle bundle : bundles) {
+            try {
+                Object value = bundle.getObject(key);
+                if (value != null) {
+                    return value;
+                }
+            } catch (Exception e) {
+                // ingrone e
+                LOG.warn(e.getMessage());
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * 获取 {@code keys}。
-	 *
-	 * @return 对应的属性值
-	 */
-	@Override
-	public Enumeration<String> getKeys() {
-        return new ResourceBundleEnumeration( this.parent, this.bundles);
-	}
+    /**
+     * 获取 {@code keys}。
+     *
+     * @return 对应的属性值
+     */
+    @Override
+    public Enumeration<String> getKeys() {
+        return new ResourceBundleEnumeration(this.parent, this.bundles);
+    }
 
 };

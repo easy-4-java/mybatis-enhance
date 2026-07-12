@@ -44,93 +44,93 @@ import java.util.Properties;
 @Slf4j
 public abstract class AbstractDataPermissionInterceptor extends AbstractInterceptorAdapter {
 
-	/**
-	 * 判断当前 Mapper 类型或方法是否声明数据权限规则。
-	 *
-	 * @param invocation MyBatis 插件调用上下文
-	 * @param statementHandler 语句处理器
-	 * @param metaStatementHandler 语句元数据视图
-	 * @return SELECT 且需要权限控制时返回 {@code true}
-	 */
-	@Override
-	protected boolean isRequireIntercept(Invocation invocation, StatementHandler statementHandler, MetaStatementHandler metaStatementHandler) {
-		// 通过反射获取到当前MappedStatement
-		MappedStatement mappedStatement = metaStatementHandler.getMappedStatement();
-		// 获取对应的BoundSql，这个BoundSql其实跟我们利用StatementHandler获取到的BoundSql是同一个对象。
-		// BoundSql boundSql = metaStatementHandler.getBoundSql();
-		// Object paramObject = boundSql.getParameterObject();
-		// 提取被数据权限注解标记的方法
-		Method method = metaStatementHandler.getMethod();
-		// 获取接口类型
-		Class<?> mapperInterface = metaStatementHandler.getMapperInterface();
-		// 无需数据权限控制
-		if(Objects.nonNull(mapperInterface) && AnnotationUtil.getAnnotation(mapperInterface, NotRequiresPermission.class) != null) {
-			return false;
-		}
-		if( Objects.nonNull(method) &&  AnnotationUtil.getAnnotation(method, NotRequiresPermission.class) != null) {
-			return false;
-		}
-		// 需要数据权限控制
-		if (SqlCommandType.SELECT.equals(mappedStatement.getSqlCommandType())) {
-			if (Objects.nonNull(mapperInterface) && AnnotationUtil.getAnnotation(mapperInterface, RequiresPermissions.class) != null) {
-				return true;
-			}
-			if (Objects.nonNull(method) && (AnnotationUtil.getAnnotation(method, RequiresPermissions.class) != null
-					|| AnnotationUtil.getAnnotation(method, RequiresPermission.class) != null
-					|| AnnotationUtil.getAnnotation(method, RequiresSpecialPermission.class) != null)) {
-				return true;
-			}
-		}
-		//BeanMethodDefinitionFactory.getMethodDefinition(mappedStatement.getId(), paramObject != null ? new Class<?>[] {paramObject.getClass()} : null);
-		return false;
-	}
+    /**
+     * 判断当前 Mapper 类型或方法是否声明数据权限规则。
+     *
+     * @param invocation           MyBatis 插件调用上下文
+     * @param statementHandler     语句处理器
+     * @param metaStatementHandler 语句元数据视图
+     * @return SELECT 且需要权限控制时返回 {@code true}
+     */
+    @Override
+    protected boolean isRequireIntercept(Invocation invocation, StatementHandler statementHandler, MetaStatementHandler metaStatementHandler) {
+        // 通过反射获取到当前MappedStatement
+        MappedStatement mappedStatement = metaStatementHandler.getMappedStatement();
+        // 获取对应的BoundSql，这个BoundSql其实跟我们利用StatementHandler获取到的BoundSql是同一个对象。
+        // BoundSql boundSql = metaStatementHandler.getBoundSql();
+        // Object paramObject = boundSql.getParameterObject();
+        // 提取被数据权限注解标记的方法
+        Method method = metaStatementHandler.getMethod();
+        // 获取接口类型
+        Class<?> mapperInterface = metaStatementHandler.getMapperInterface();
+        // 无需数据权限控制
+        if (Objects.nonNull(mapperInterface) && AnnotationUtil.getAnnotation(mapperInterface, NotRequiresPermission.class) != null) {
+            return false;
+        }
+        if (Objects.nonNull(method) && AnnotationUtil.getAnnotation(method, NotRequiresPermission.class) != null) {
+            return false;
+        }
+        // 需要数据权限控制
+        if (SqlCommandType.SELECT.equals(mappedStatement.getSqlCommandType())) {
+            if (Objects.nonNull(mapperInterface) && AnnotationUtil.getAnnotation(mapperInterface, RequiresPermissions.class) != null) {
+                return true;
+            }
+            if (Objects.nonNull(method) && (AnnotationUtil.getAnnotation(method, RequiresPermissions.class) != null
+                    || AnnotationUtil.getAnnotation(method, RequiresPermission.class) != null
+                    || AnnotationUtil.getAnnotation(method, RequiresSpecialPermission.class) != null)) {
+                return true;
+            }
+        }
+        //BeanMethodDefinitionFactory.getMethodDefinition(mappedStatement.getId(), paramObject != null ? new Class<?>[] {paramObject.getClass()} : null);
+        return false;
+    }
 
-	/**
-	 * 根据缓存键判断同一调用链中的语句是否已处理。
-	 *
-	 * @param cacheKey MyBatis 缓存键
-	 * @return 尚未处理时返回 {@code true}
-	 */
-	protected boolean isIntercepted(CacheKey cacheKey) {
-		//获取当前线程绑定的上下文对象
-		String uniqueKey = DigestUtil.md5Hex(cacheKey.toString().getBytes());
-		if(! extraContext.containsKey(uniqueKey)){
-			return true;
-		}
-		extraContext.put(uniqueKey, cacheKey);
-		return false;
-	}
+    /**
+     * 根据缓存键判断同一调用链中的语句是否已处理。
+     *
+     * @param cacheKey MyBatis 缓存键
+     * @return 尚未处理时返回 {@code true}
+     */
+    protected boolean isIntercepted(CacheKey cacheKey) {
+        //获取当前线程绑定的上下文对象
+        String uniqueKey = DigestUtil.md5Hex(cacheKey.toString().getBytes());
+        if (!extraContext.containsKey(uniqueKey)) {
+            return true;
+        }
+        extraContext.put(uniqueKey, cacheKey);
+        return false;
+    }
 
-	/**
-	 * 清理当前线程的拦截去重上下文。
-	 *
-	 * @param invocation MyBatis 插件调用上下文
-	 * @throws Throwable 底层操作失败时抛出
-	 */
-	@Override
-	public void doDestroyIntercept(Invocation invocation) throws Throwable {
-		extraContext.clear();
-	}
+    /**
+     * 清理当前线程的拦截去重上下文。
+     *
+     * @param invocation MyBatis 插件调用上下文
+     * @throws Throwable 底层操作失败时抛出
+     */
+    @Override
+    public void doDestroyIntercept(Invocation invocation) throws Throwable {
+        extraContext.clear();
+    }
 
-	/**
-	 * 使用 MyBatis 插件代理包装目标对象。
-	 *
-	 * @param target 目标对象
-	 * @return 插件代理
-	 */
-	@Override
-	public Object plugin(Object target) {
-		return Plugin.wrap(target, this);
-	}
+    /**
+     * 使用 MyBatis 插件代理包装目标对象。
+     *
+     * @param target 目标对象
+     * @return 插件代理
+     */
+    @Override
+    public Object plugin(Object target) {
+        return Plugin.wrap(target, this);
+    }
 
-	/**
-	 * 接收插件配置；基类当前没有通用配置项。
-	 *
-	 * @param properties MyBatis 插件属性
-	 */
-	@Override
-	public void setInterceptProperties(Properties properties) {
+    /**
+     * 接收插件配置；基类当前没有通用配置项。
+     *
+     * @param properties MyBatis 插件属性
+     */
+    @Override
+    public void setInterceptProperties(Properties properties) {
 
-	}
+    }
 
 }

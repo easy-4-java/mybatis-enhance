@@ -15,9 +15,8 @@ import java.util.Objects;
  */
 public final class SqlLoggingSink implements SqlObservationSink {
 
-    private static final Logger log = LoggerFactory.getLogger(SqlLoggingSink.class);
-
     public static final SqlLoggingSink INSTANCE = new SqlLoggingSink();
+    private static final Logger log = LoggerFactory.getLogger(SqlLoggingSink.class);
 
     private SqlLoggingSink() {
     }

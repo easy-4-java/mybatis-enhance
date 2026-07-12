@@ -13,7 +13,7 @@ public class DefaultDataSignatureReadWriteProvider implements DataSignatureReadW
     /**
      * 完成 {@code readSignature} 对应的框架处理。
      *
-     * @param rawObject 调用参数 {@code rawObject}
+     * @param rawObject   调用参数 {@code rawObject}
      * @param entityClass 调用参数 {@code entityClass}
      * @return 处理结果
      */
@@ -26,9 +26,9 @@ public class DefaultDataSignatureReadWriteProvider implements DataSignatureReadW
     /**
      * 完成 {@code writeSignature} 对应的框架处理。
      *
-     * @param rawObject 调用参数 {@code rawObject}
+     * @param rawObject   调用参数 {@code rawObject}
      * @param entityClass 调用参数 {@code entityClass}
-     * @param signValue 调用参数 {@code signValue}
+     * @param signValue   调用参数 {@code signValue}
      * @return 处理结果
      */
     @Override

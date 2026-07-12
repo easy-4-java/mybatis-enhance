@@ -14,9 +14,9 @@ import lombok.ToString;
 @ToString
 public class DataSpecialPermission extends DataPermission {
 
-	/***
-	 * 受限表字段名称（实体表字段列名称）
-	 */
-	private String column;
+    /***
+     * 受限表字段名称（实体表字段列名称）
+     */
+    private String column;
 
 }

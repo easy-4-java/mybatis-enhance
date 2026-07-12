@@ -14,25 +14,25 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequiresPermissions {
 
-	/**
-	 * 是否允许处理器根据实体和 Mapper 元数据自动发现权限配置。
-	 *
-	 * @return {@code true} 表示启用自动发现
-	 */
-	boolean autowire() default true;
+    /**
+     * 是否允许处理器根据实体和 Mapper 元数据自动发现权限配置。
+     *
+     * @return {@code true} 表示启用自动发现
+     */
+    boolean autowire() default true;
 
-	/**
-	 * 获取结构化数据权限规则。
-	 *
-	 * @return 表权限规则数组
-	 */
-	RequiresPermission[] value() default {};
+    /**
+     * 获取结构化数据权限规则。
+     *
+     * @return 表权限规则数组
+     */
+    RequiresPermission[] value() default {};
 
-	/**
-	 * 获取直接 SQL 形式的特殊权限规则。
-	 *
-	 * @return 特殊权限规则数组
-	 */
-	RequiresSpecialPermission[] special() default {};
+    /**
+     * 获取直接 SQL 形式的特殊权限规则。
+     *
+     * @return 特殊权限规则数组
+     */
+    RequiresSpecialPermission[] special() default {};
 
 }

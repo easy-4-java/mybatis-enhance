@@ -9,13 +9,13 @@ import org.apache.ibatis.reflection.MetaObject;
  */
 public interface MetaObjectHandler {
 
-	/*
-	 * <p>
-	 * 插入元对象字段填充
-	 * </p>
-	 * @param metaObject 元对象
-	 * @return
-	 */
-	void insertFill(MetaObject metaObject);
+    /*
+     * <p>
+     * 插入元对象字段填充
+     * </p>
+     * @param metaObject 元对象
+     * @return
+     */
+    void insertFill(MetaObject metaObject);
 
 }

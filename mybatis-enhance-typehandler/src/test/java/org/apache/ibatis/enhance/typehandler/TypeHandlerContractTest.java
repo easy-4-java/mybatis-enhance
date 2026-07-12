@@ -21,6 +21,19 @@ public class TypeHandlerContractTest {
 
     // ===== 原有：Date / Blob / RSA =====
 
+    private static Object defaultValue(Class<?> returnType) {
+        if (returnType == boolean.class) {
+            return false;
+        }
+        if (returnType == int.class) {
+            return 0;
+        }
+        if (returnType == long.class) {
+            return 0L;
+        }
+        return null;
+    }
+
     @Test
     public void dateHandlerShouldReturnNullForDatabaseNull() throws Exception {
         DateTypeHandler handler = new DateTypeHandler();
@@ -37,6 +50,8 @@ public class TypeHandlerContractTest {
         Assert.assertEquals("中文内容", handler.getNullableResult(resultSet, 1));
         Assert.assertEquals("中文内容", handler.getNullableResult(resultSet, "payload"));
     }
+
+    // ===== 新增：逗号数组基类 round-trip =====
 
     @Test
     public void rsaTemplateShouldDelegateEncryptionAndDecryption() throws Exception {
@@ -65,8 +80,6 @@ public class TypeHandlerContractTest {
         Assert.assertEquals("cipher:secret", storedValue.get());
         Assert.assertEquals("secret", handler.getNullableResult(resultSet("cipher:secret"), 1));
     }
-
-    // ===== 新增：逗号数组基类 round-trip =====
 
     @Test
     public void stringsTypeHandlerShouldRoundTripCommaSeparated() throws Exception {
@@ -101,14 +114,14 @@ public class TypeHandlerContractTest {
         Assert.assertNull(handler.convert(new Double[]{}));
     }
 
+    // ===== 新增：FastJSON 基类 round-trip =====
+
     @Test
     public void commaArrayHandlersShouldReturnEmptyArrayForNullOrEmptyString() throws Exception {
         LongsTypeHandler handler = new LongsTypeHandler();
         Assert.assertEquals(0, handler.parse(null).length);
         Assert.assertEquals(0, handler.parse("").length);
     }
-
-    // ===== 新增：FastJSON 基类 round-trip =====
 
     @Test
     public void fastJsonTypeHandlerShouldRoundTripObject() throws Exception {
@@ -119,6 +132,8 @@ public class TypeHandlerContractTest {
         JSONObject parsed = handler.parse(stored);
         Assert.assertEquals("张三", parsed.getString("name"));
     }
+
+    // ===== 新增：Hutool JSON 基类 round-trip =====
 
     @Test
     public void fastJsonArrayTypeHandlerShouldRoundTripArray() throws Exception {
@@ -131,8 +146,6 @@ public class TypeHandlerContractTest {
         Assert.assertEquals(2, parsed.size());
     }
 
-    // ===== 新增：Hutool JSON 基类 round-trip =====
-
     @Test
     public void jsonTypeHandlerShouldRoundTripObject() throws Exception {
         JsonTypeHandler handler = new JsonTypeHandler();
@@ -143,6 +156,8 @@ public class TypeHandlerContractTest {
         Assert.assertEquals("value", parsed.getStr("key"));
     }
 
+    // ===== 新增：List/Set 集合 + 空值 bug 回归 =====
+
     @Test
     public void jsonArrayTypeHandlerShouldRoundTripArray() throws Exception {
         JsonArrayTypeHandler handler = new JsonArrayTypeHandler();
@@ -151,8 +166,6 @@ public class TypeHandlerContractTest {
         cn.hutool.json.JSONArray parsed = handler.parse(stored);
         Assert.assertEquals(3, parsed.size());
     }
-
-    // ===== 新增：List/Set 集合 + 空值 bug 回归 =====
 
     @Test
     public void listStringTypeHandlerShouldRoundTrip() throws Exception {
@@ -186,6 +199,8 @@ public class TypeHandlerContractTest {
         Assert.assertNull(setHandler.parse(""));
     }
 
+    // ===== 辅助方法 =====
+
     @Test
     public void collectionHandlersShouldReadNullViaJdbc() throws Exception {
         // 通过 JDBC 路径验证空值处理（BaseTypeHandler 的 isBlank 判空）
@@ -198,8 +213,6 @@ public class TypeHandlerContractTest {
         Assert.assertNull(handler.getNullableResult(blankRs, 1));
     }
 
-    // ===== 辅助方法 =====
-
     private ResultSet resultSet(Object value) {
         return (ResultSet) Proxy.newProxyInstance(getClass().getClassLoader(),
                 new Class<?>[]{ResultSet.class}, (proxy, method, args) -> {
@@ -209,18 +222,5 @@ public class TypeHandlerContractTest {
                     }
                     return defaultValue(method.getReturnType());
                 });
-    }
-
-    private static Object defaultValue(Class<?> returnType) {
-        if (returnType == boolean.class) {
-            return false;
-        }
-        if (returnType == int.class) {
-            return 0;
-        }
-        if (returnType == long.class) {
-            return 0L;
-        }
-        return null;
     }
 }

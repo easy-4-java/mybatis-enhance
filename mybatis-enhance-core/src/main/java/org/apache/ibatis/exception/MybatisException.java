@@ -16,38 +16,38 @@
 package org.apache.ibatis.exception;
 
 /**
- *  自定义Mybatis 异常类
+ * 自定义Mybatis 异常类
  */
 public class MybatisException extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * 创建实例并初始化运行所需的上下文。
-	 *
-	 * @param message 调用参数 {@code message}
-	 */
-	public MybatisException(String message) {
-		super(message);
-	}
+    /**
+     * 创建实例并初始化运行所需的上下文。
+     *
+     * @param message 调用参数 {@code message}
+     */
+    public MybatisException(String message) {
+        super(message);
+    }
 
-	/**
-	 * 创建实例并初始化运行所需的上下文。
-	 *
-	 * @param throwable 调用参数 {@code throwable}
-	 */
-	public MybatisException(Throwable throwable) {
-		super(throwable);
-	}
+    /**
+     * 创建实例并初始化运行所需的上下文。
+     *
+     * @param throwable 调用参数 {@code throwable}
+     */
+    public MybatisException(Throwable throwable) {
+        super(throwable);
+    }
 
-	/**
-	 * 创建实例并初始化运行所需的上下文。
-	 *
-	 * @param message 调用参数 {@code message}
-	 * @param throwable 调用参数 {@code throwable}
-	 */
-	public MybatisException(String message, Throwable throwable) {
-		super(message, throwable);
-	}
+    /**
+     * 创建实例并初始化运行所需的上下文。
+     *
+     * @param message   调用参数 {@code message}
+     * @param throwable 调用参数 {@code throwable}
+     */
+    public MybatisException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
 
 }

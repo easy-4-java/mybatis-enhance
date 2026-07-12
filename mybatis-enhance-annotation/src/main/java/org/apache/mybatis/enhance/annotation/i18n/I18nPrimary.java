@@ -15,11 +15,11 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.FIELD})
 public @interface I18nPrimary {
 
-	/**
-	 * 获取主键对应的数据库列名。
-	 *
-	 * @return 主键列名；空字符串表示沿用字段映射名称
-	 */
-	String value() default "";
+    /**
+     * 获取主键对应的数据库列名。
+     *
+     * @return 主键列名；空字符串表示沿用字段映射名称
+     */
+    String value() default "";
 
 }

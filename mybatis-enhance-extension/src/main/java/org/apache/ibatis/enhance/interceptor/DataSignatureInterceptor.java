@@ -37,8 +37,8 @@ public class DataSignatureInterceptor implements EnhanceInterceptor {
      * 创建可分别控制签名和验签的增强器。
      *
      * @param dataSignatureHandler 实体签名处理器
-     * @param signEnabled 是否在写入前生成签名
-     * @param verifyEnabled 是否在查询后校验签名
+     * @param signEnabled          是否在写入前生成签名
+     * @param verifyEnabled        是否在查询后校验签名
      */
     public DataSignatureInterceptor(DataSignatureHandler dataSignatureHandler,
                                     boolean signEnabled, boolean verifyEnabled) {
@@ -51,9 +51,9 @@ public class DataSignatureInterceptor implements EnhanceInterceptor {
     /**
      * 执行前置处理 {@code beforeUpdate} 定义的框架操作。
      *
-     * @param executor MyBatis 执行器
+     * @param executor        MyBatis 执行器
      * @param mappedStatement 映射语句
-     * @param parameter 方法参数
+     * @param parameter       方法参数
      */
     @Override
     public void beforeUpdate(Executor executor, MappedStatement mappedStatement, Object parameter) {
@@ -70,13 +70,13 @@ public class DataSignatureInterceptor implements EnhanceInterceptor {
     /**
      * 执行后置处理 {@code afterQuery} 定义的框架操作。
      *
-     * @param executor MyBatis 执行器
+     * @param executor        MyBatis 执行器
      * @param mappedStatement 映射语句
-     * @param parameter 方法参数
-     * @param rowBounds 分页边界
-     * @param resultHandler 结果处理器
-     * @param boundSql 绑定 SQL
-     * @param results 调用参数 {@code results}
+     * @param parameter       方法参数
+     * @param rowBounds       分页边界
+     * @param resultHandler   结果处理器
+     * @param boundSql        绑定 SQL
+     * @param results         调用参数 {@code results}
      */
     @Override
     public void afterQuery(Executor executor, MappedStatement mappedStatement, Object parameter,

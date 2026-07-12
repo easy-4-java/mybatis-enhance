@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2018 (https://github.com/hiwepy).
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -28,25 +28,25 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 public @interface I18nLocale {
 
-	/**
-	 * 获取该列对应的语言环境。
-	 *
-	 * @return 语言环境，默认简体中文
-	 */
-	LocaleEnum locale() default LocaleEnum.zh_CN;
+    /**
+     * 获取该列对应的语言环境。
+     *
+     * @return 语言环境，默认简体中文
+     */
+    LocaleEnum locale() default LocaleEnum.zh_CN;
 
-	/**
-	 * 获取物理数据库列名。
-	 *
-	 * @return 语言列名
-	 */
-	String column();
+    /**
+     * 获取物理数据库列名。
+     *
+     * @return 语言列名
+     */
+    String column();
 
-	/**
-	 * 获取 SQL 投影使用的别名。
-	 *
-	 * @return 投影别名；空字符串表示使用目标字段名
-	 */
-	String alias() default "";
+    /**
+     * 获取 SQL 投影使用的别名。
+     *
+     * @return 投影别名；空字符串表示使用目标字段名
+     */
+    String alias() default "";
 
 }

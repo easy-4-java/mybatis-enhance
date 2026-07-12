@@ -27,11 +27,11 @@ import java.util.Objects;
  */
 public final class KeyValuePair {
 
-	public static final String EMPTY = "";
+    public static final String EMPTY = "";
     public final String key;
     public final String value;
 
-    private KeyValuePair( String key, String value ) {
+    private KeyValuePair(String key, String value) {
         this.key = key;
         this.value = value;
     }
@@ -43,17 +43,26 @@ public final class KeyValuePair {
      * @return a key-value pair
      * @throws NullPointerException if {@code stringRepresentation} is {@code null}
      */
-    public static KeyValuePair valueOf( String asString ) {
+    public static KeyValuePair valueOf(String asString) {
         Objects.requireNonNull(asString, "Key-value string must not be null");
-        int equalsIndex = asString.indexOf( '=' );
-        if ( equalsIndex == -1 ) {
-            return new KeyValuePair( asString, EMPTY );
+        int equalsIndex = asString.indexOf('=');
+        if (equalsIndex == -1) {
+            return new KeyValuePair(asString, EMPTY);
         }
 
-        String aKey = asString.substring( 0, equalsIndex );
-        String aValue = equalsIndex == asString.length() - 1 ? EMPTY : asString.substring( equalsIndex + 1 );
+        String aKey = asString.substring(0, equalsIndex);
+        String aValue = equalsIndex == asString.length() - 1 ? EMPTY : asString.substring(equalsIndex + 1);
 
-        return new KeyValuePair( aKey, aValue );
+        return new KeyValuePair(aKey, aValue);
+    }
+
+    /**
+     * 获取 {@code empty}。
+     *
+     * @return 对应的属性值
+     */
+    public static String getEmpty() {
+        return EMPTY;
     }
 
     /**
@@ -63,13 +72,13 @@ public final class KeyValuePair {
      * @return 处理结果
      */
     @Override
-    public boolean equals( Object that ) {
-        if ( !( that instanceof KeyValuePair ) ) {
+    public boolean equals(Object that) {
+        if (!(that instanceof KeyValuePair)) {
             return false;
         }
 
         KeyValuePair other = (KeyValuePair) that;
-        return key.equals( other.key ) && value.equals( other.value );
+        return key.equals(other.key) && value.equals(other.value);
     }
 
     /**
@@ -92,31 +101,22 @@ public final class KeyValuePair {
         return key + '=' + value;
     }
 
-	/**
-	 * 获取 {@code empty}。
-	 *
-	 * @return 对应的属性值
-	 */
-	public static String getEmpty() {
-		return EMPTY;
-	}
+    /**
+     * 获取 {@code key}。
+     *
+     * @return 对应的属性值
+     */
+    public String getKey() {
+        return key;
+    }
 
-	/**
-	 * 获取 {@code key}。
-	 *
-	 * @return 对应的属性值
-	 */
-	public String getKey() {
-		return key;
-	}
-
-	/**
-	 * 获取 {@code value}。
-	 *
-	 * @return 对应的属性值
-	 */
-	public String getValue() {
-		return value;
-	}
+    /**
+     * 获取 {@code value}。
+     *
+     * @return 对应的属性值
+     */
+    public String getValue() {
+        return value;
+    }
 
 }

@@ -26,29 +26,29 @@ import java.util.ListResourceBundle;
  */
 public class I18nListResourceBundle extends ListResourceBundle {
 
-	/***国际化信息集合repeatable*/
-	protected List<KeyValuePair> i18nList;
+    /***国际化信息集合repeatable*/
+    protected List<KeyValuePair> i18nList;
 
-	 /**
-	  * 创建实例并初始化运行所需的上下文。
-	  *
-	  * @param i18nList 调用参数 {@code i18nList}
-	  */
-	 public I18nListResourceBundle(List<KeyValuePair> i18nList) {
-		this.i18nList = i18nList;
-	}
+    /**
+     * 创建实例并初始化运行所需的上下文。
+     *
+     * @param i18nList 调用参数 {@code i18nList}
+     */
+    public I18nListResourceBundle(List<KeyValuePair> i18nList) {
+        this.i18nList = i18nList;
+    }
 
-	/**
-	 * 获取 {@code contents}。
-	 *
-	 * @return 对应的属性值
-	 */
-	protected Object[][] getContents() {
-		Object[][] objects = new Object[this.i18nList.size()][0];
-		for (int i = 0; i < this.i18nList.size(); i++) {
-			KeyValuePair pair = this.i18nList.get(i);
-			objects[i] = new Object[]{pair.getKey(), pair.getValue()};
-		}
-	    return objects;
-	}
+    /**
+     * 获取 {@code contents}。
+     *
+     * @return 对应的属性值
+     */
+    protected Object[][] getContents() {
+        Object[][] objects = new Object[this.i18nList.size()][0];
+        for (int i = 0; i < this.i18nList.size(); i++) {
+            KeyValuePair pair = this.i18nList.get(i);
+            objects[i] = new Object[]{pair.getKey(), pair.getValue()};
+        }
+        return objects;
+    }
 };

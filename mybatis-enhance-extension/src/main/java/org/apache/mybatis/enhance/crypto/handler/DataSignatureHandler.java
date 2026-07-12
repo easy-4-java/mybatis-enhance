@@ -19,7 +19,7 @@ public interface DataSignatureHandler {
     /**
      * 校验查询对象的持久化签名，不匹配时由实现抛出校验异常。
      *
-     * @param rawObject 待验签查询对象
+     * @param rawObject   待验签查询对象
      * @param entityClass 对象对应的实体类型
      */
     void doSignatureVerification(Object rawObject, Class<?> entityClass);

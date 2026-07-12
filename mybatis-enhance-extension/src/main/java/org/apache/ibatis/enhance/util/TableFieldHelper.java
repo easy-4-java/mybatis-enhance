@@ -7,13 +7,7 @@ import org.apache.mybatis.enhance.annotation.crypto.TableSignatureField;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
@@ -110,7 +104,7 @@ public final class TableFieldHelper {
      * 完成 {@code readValue} 对应的框架处理。
      *
      * @param target 目标对象
-     * @param field 反射字段
+     * @param field  反射字段
      * @return 处理结果
      */
     public static Object readValue(Object target, Field field) {
@@ -130,8 +124,8 @@ public final class TableFieldHelper {
      * 将值写入 Map 或实体字段。
      *
      * @param target 目标 Map 或实体对象
-     * @param field 目标字段
-     * @param value 待处理值
+     * @param field  目标字段
+     * @param value  待处理值
      */
     @SuppressWarnings("unchecked")
     public static void writeValue(Object target, Field field, Object value) {

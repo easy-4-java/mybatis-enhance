@@ -26,7 +26,9 @@ package org.apache.ibatis.enhance.spi;
  */
 public final class MysqlDialect implements Dialect {
 
-    /** 单例（无状态）。 */
+    /**
+     * 单例（无状态）。
+     */
     public static final MysqlDialect INSTANCE = new MysqlDialect();
 
     private MysqlDialect() {
@@ -36,8 +38,8 @@ public final class MysqlDialect implements Dialect {
      * 构建 {@code buildPaginationSql} 定义的框架操作。
      *
      * @param originalSql 原始 SQL
-     * @param offset 调用参数 {@code offset}
-     * @param size 调用参数 {@code size}
+     * @param offset      调用参数 {@code offset}
+     * @param size        调用参数 {@code size}
      * @return 处理结果
      */
     @Override

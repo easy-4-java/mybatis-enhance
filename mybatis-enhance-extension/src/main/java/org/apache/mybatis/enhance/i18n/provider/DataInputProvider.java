@@ -17,11 +17,11 @@ package org.apache.mybatis.enhance.i18n.provider;
 
 public interface DataInputProvider<T> {
 
-	/**
-	 * 完成 {@code get} 对应的框架处理。
-	 *
-	 * @return 对应的属性值
-	 */
-	public T get();
+    /**
+     * 完成 {@code get} 对应的框架处理。
+     *
+     * @return 对应的属性值
+     */
+    public T get();
 
 }

@@ -6,11 +6,11 @@ import cn.hutool.crypto.Padding;
 import cn.hutool.crypto.digest.HMac;
 import cn.hutool.crypto.digest.HmacAlgorithm;
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
-import org.apache.mybatis.enhance.crypto.enums.SymmetricAlgorithmType;
-import org.apache.ibatis.enhance.util.SymmetricCryptoUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.enhance.util.SymmetricCryptoUtil;
+import org.apache.mybatis.enhance.crypto.enums.SymmetricAlgorithmType;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -24,8 +24,6 @@ import java.util.Objects;
 @Slf4j
 public class DefaultEncryptedFieldHandler implements EncryptedFieldHandler {
 
-    @Getter
-    private ObjectMapper objectMapper;
     private final SymmetricAlgorithmType algorithmType;
     private final HmacAlgorithm hmacAlgorithm;
     private final Mode mode;
@@ -33,16 +31,18 @@ public class DefaultEncryptedFieldHandler implements EncryptedFieldHandler {
     private final String key;
     private final String iv;
     private final boolean plainIsEncode;
+    @Getter
+    private ObjectMapper objectMapper;
 
     /**
      * 创建使用 Base64 密文且不配置初始化向量的处理器。
      *
-     * @param objectMapper 字段值序列化器
+     * @param objectMapper  字段值序列化器
      * @param algorithmType 对称加密算法
      * @param hmacAlgorithm 签名摘要算法
-     * @param mode 分组密码模式
-     * @param padding 填充方式
-     * @param key Base64 编码的密钥
+     * @param mode          分组密码模式
+     * @param padding       填充方式
+     * @param key           Base64 编码的密钥
      */
     public DefaultEncryptedFieldHandler(ObjectMapper objectMapper, SymmetricAlgorithmType algorithmType, HmacAlgorithm hmacAlgorithm, Mode mode, Padding padding, String key) {
         this(objectMapper, algorithmType, hmacAlgorithm, mode, padding, key, null, true);
@@ -51,13 +51,13 @@ public class DefaultEncryptedFieldHandler implements EncryptedFieldHandler {
     /**
      * 创建使用 Base64 密文和指定初始化向量的处理器。
      *
-     * @param objectMapper 字段值序列化器
+     * @param objectMapper  字段值序列化器
      * @param algorithmType 对称加密算法
      * @param hmacAlgorithm 签名摘要算法
-     * @param mode 分组密码模式
-     * @param padding 填充方式
-     * @param key Base64 编码的密钥
-     * @param iv Base64 编码的初始化向量
+     * @param mode          分组密码模式
+     * @param padding       填充方式
+     * @param key           Base64 编码的密钥
+     * @param iv            Base64 编码的初始化向量
      */
     public DefaultEncryptedFieldHandler(ObjectMapper objectMapper, SymmetricAlgorithmType algorithmType, HmacAlgorithm hmacAlgorithm, Mode mode, Padding padding, String key, String iv) {
         this(objectMapper, algorithmType, hmacAlgorithm, mode, padding, key, iv, true);
@@ -66,13 +66,13 @@ public class DefaultEncryptedFieldHandler implements EncryptedFieldHandler {
     /**
      * 创建完整配置的字段加密处理器。
      *
-     * @param objectMapper 字段值序列化器
+     * @param objectMapper  字段值序列化器
      * @param algorithmType 对称加密算法
      * @param hmacAlgorithm 签名摘要算法
-     * @param mode 分组密码模式
-     * @param padding 填充方式
-     * @param key Base64 编码的密钥
-     * @param iv Base64 编码的初始化向量，可为 {@code null}
+     * @param mode          分组密码模式
+     * @param padding       填充方式
+     * @param key           Base64 编码的密钥
+     * @param iv            Base64 编码的初始化向量，可为 {@code null}
      * @param plainIsEncode {@code true} 输出 Base64，{@code false} 输出十六进制
      */
     public DefaultEncryptedFieldHandler(ObjectMapper objectMapper, SymmetricAlgorithmType algorithmType, HmacAlgorithm hmacAlgorithm, Mode mode, Padding padding, String key, String iv, boolean plainIsEncode) {
@@ -100,7 +100,7 @@ public class DefaultEncryptedFieldHandler implements EncryptedFieldHandler {
             // 2、获取加密器
             SymmetricCrypto crypto = algorithmType.getSymmetricCrypto(mode, padding, key, iv);
             // 3、加密Value，如果 plainIsEncode =true 则对加密结果进行Base64
-            if(plainIsEncode){
+            if (plainIsEncode) {
                 valueAsString = crypto.encryptBase64(valueAsString);
             } else {
                 valueAsString = crypto.encryptHex(valueAsString);
@@ -114,7 +114,7 @@ public class DefaultEncryptedFieldHandler implements EncryptedFieldHandler {
     /**
      * 解密并反序列化字段值。
      *
-     * @param value 数据库密文
+     * @param value  数据库密文
      * @param rtType 目标 Java 类型
      * @return 解密后的字段值
      */
@@ -142,7 +142,7 @@ public class DefaultEncryptedFieldHandler implements EncryptedFieldHandler {
         try {
             HMac hMac = SymmetricCryptoUtil.getHmac(hmacAlgorithm, key);
             String hmacValue;
-            if(plainIsEncode){
+            if (plainIsEncode) {
                 hmacValue = hMac.digestBase64(getObjectMapper().writeValueAsString(value), StandardCharsets.UTF_8, Boolean.TRUE);
             } else {
                 hmacValue = new String(hMac.digest(getObjectMapper().writeValueAsString(value)), StandardCharsets.UTF_8);

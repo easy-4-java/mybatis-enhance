@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2018, hiwepy (https://github.com/hiwepy).
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -24,14 +24,14 @@ import java.util.*;
  */
 public enum ForeignCondition {
 
-	/***
+    /***
      * 大于
      */
-	GT(" %s.%s > %s ", "[数据字段]大于[数据项]"),
-	/***
+    GT(" %s.%s > %s ", "[数据字段]大于[数据项]"),
+    /***
      * 大于或等于
      */
-	GTE(" %s.%s >= %s ", "[数据字段]大于或等于[数据项]"),
+    GTE(" %s.%s >= %s ", "[数据字段]大于或等于[数据项]"),
     /***
      * 小于
      */
@@ -76,18 +76,18 @@ public enum ForeignCondition {
     /** 按位与结果等于零。 */
     BITAND_EQ(" bitand(%s, to_number(%s.%s)) = 0", "[数据字段]与[数据项]按位运行等于0：bitand(数据项, 数据字段) => 0");
 
-	/** SQL 条件格式模板。 */
-	private final String operator;
-	/** 面向配置界面的条件说明。 */
-	private final String placeholder;
+    /** SQL 条件格式模板。 */
+    private final String operator;
+    /** 面向配置界面的条件说明。 */
+    private final String placeholder;
 
-	/**
-	 * 创建关联表权限条件。
-	 *
-	 * @param operator SQL 条件格式模板
-	 * @param placeholder 条件说明
-	 */
-	ForeignCondition(String operator, String placeholder) {
+    /**
+     * 创建关联表权限条件。
+     *
+     * @param operator SQL 条件格式模板
+     * @param placeholder 条件说明
+     */
+    ForeignCondition(String operator, String placeholder) {
         this.operator = operator;
         this.placeholder = placeholder;
     }
@@ -99,56 +99,56 @@ public enum ForeignCondition {
      * @return 匹配的关联条件
      * @throws NoSuchElementException 不支持指定模板时抛出
      */
-    public static ForeignCondition fromString(String operator){
+    public static ForeignCondition fromString(String operator) {
         for (ForeignCondition condition : ForeignCondition.values()) {
-            if(condition.operator.equals(operator.toUpperCase()) ){
+            if (condition.operator.equals(operator.toUpperCase())) {
                 return condition;
             }
         }
         throw new NoSuchElementException("Filter operator " + operator + " is not supported!");
     }
 
-	/**
-	 * 转换为配置项键值对。
-	 *
-	 * @return 包含枚举名称和中文说明的映射
-	 */
-	public Map<String, String> toMap() {
-		Map<String, String> driverMap = new HashMap<String, String>();
-		driverMap.put("key", this.name());
-		driverMap.put("value", this.getPlaceholder());
-		return driverMap;
-	}
+    /**
+     * 获取全部关联条件的配置项列表。
+     *
+     * @return 关联条件配置列表
+     */
+    public static List<Map<String, String>> toList() {
+        List<Map<String, String>> mapList = new LinkedList<Map<String, String>>();
+        for (ForeignCondition condition : ForeignCondition.values()) {
+            mapList.add(condition.toMap());
+        }
+        return mapList;
+    }
 
-	/**
-	 * 获取全部关联条件的配置项列表。
-	 *
-	 * @return 关联条件配置列表
-	 */
-	public static List<Map<String, String>> toList() {
-		List<Map<String, String>> mapList = new LinkedList<Map<String, String>>();
-		for (ForeignCondition condition : ForeignCondition.values()) {
-			mapList.add(condition.toMap());
-		}
-		return mapList;
-	}
+    /**
+     * 转换为配置项键值对。
+     *
+     * @return 包含枚举名称和中文说明的映射
+     */
+    public Map<String, String> toMap() {
+        Map<String, String> driverMap = new HashMap<String, String>();
+        driverMap.put("key", this.name());
+        driverMap.put("value", this.getPlaceholder());
+        return driverMap;
+    }
 
-	/**
-	 * 获取 SQL 条件格式模板。
-	 *
-	 * @return SQL 模板
-	 */
-	public String getOperator() {
-		return operator;
-	}
+    /**
+     * 获取 SQL 条件格式模板。
+     *
+     * @return SQL 模板
+     */
+    public String getOperator() {
+        return operator;
+    }
 
-	/**
-	 * 获取条件说明。
-	 *
-	 * @return 中文说明
-	 */
-	public String getPlaceholder() {
-		return placeholder;
-	}
+    /**
+     * 获取条件说明。
+     *
+     * @return 中文说明
+     */
+    public String getPlaceholder() {
+        return placeholder;
+    }
 
 }

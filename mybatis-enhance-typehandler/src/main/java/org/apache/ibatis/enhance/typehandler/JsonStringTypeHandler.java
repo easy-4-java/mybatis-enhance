@@ -1,6 +1,5 @@
 package org.apache.ibatis.enhance.typehandler;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.lang.reflect.Array;

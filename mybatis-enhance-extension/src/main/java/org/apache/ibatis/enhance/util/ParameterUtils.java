@@ -3,14 +3,7 @@ package org.apache.ibatis.enhance.util;
 import org.apache.ibatis.type.SimpleTypeRegistry;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * MyBatis 参数标准化工具。
@@ -26,7 +19,7 @@ public final class ParameterUtils {
     /**
      * 判断针对单个参数的增强开关是否关闭。
      *
-     * @param globalSwitch 全局开关
+     * @param globalSwitch    全局开关
      * @param parameterObject MyBatis 参数对象
      * @return 全局关闭、参数为空或参数为简单类型时返回 true
      */

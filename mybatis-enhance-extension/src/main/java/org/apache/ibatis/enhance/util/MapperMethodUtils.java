@@ -21,7 +21,7 @@ public final class MapperMethodUtils {
      * 类型时返回 false，使元数据增强不会阻断正常 SQL 执行。</p>
      *
      * @param mappedStatement 当前映射语句
-     * @param annotationType 待查找的注解类型
+     * @param annotationType  待查找的注解类型
      * @return Mapper 类型或映射方法声明注解时返回 true
      */
     public static boolean hasAnnotation(MappedStatement mappedStatement,

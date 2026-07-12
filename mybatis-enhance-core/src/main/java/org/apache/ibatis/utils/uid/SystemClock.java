@@ -17,8 +17,9 @@ import java.util.concurrent.atomic.AtomicLong;
  * 1亿：4699,29,162.0344827586207%<p>
  * 1000万：480,12,40.0%<p>
  * 100万：50,10,5.0%<p>
+ *
  * @author lry
- * 
+ *
  */
 public class SystemClock {
 
@@ -31,12 +32,26 @@ public class SystemClock {
         scheduleClockUpdating();
     }
 
-    private static class InstanceHolder {
-        public static final SystemClock INSTANCE = new SystemClock(1);
-    }
-
     private static SystemClock instance() {
         return InstanceHolder.INSTANCE;
+    }
+
+    /**
+     * 完成 {@code now} 对应的框架处理。
+     *
+     * @return 处理结果
+     */
+    public static long now() {
+        return instance().currentTimeMillis();
+    }
+
+    /**
+     * 完成 {@code nowDate} 对应的框架处理。
+     *
+     * @return 处理结果
+     */
+    public static String nowDate() {
+        return new Timestamp(instance().currentTimeMillis()).toString();
     }
 
     private void scheduleClockUpdating() {
@@ -68,22 +83,8 @@ public class SystemClock {
         return now.get();
     }
 
-    /**
-     * 完成 {@code now} 对应的框架处理。
-     *
-     * @return 处理结果
-     */
-    public static long now() {
-        return instance().currentTimeMillis();
+    private static class InstanceHolder {
+        public static final SystemClock INSTANCE = new SystemClock(1);
     }
-    
-	/**
-	 * 完成 {@code nowDate} 对应的框架处理。
-	 *
-	 * @return 处理结果
-	 */
-	public static String nowDate() {
-		return new Timestamp(instance().currentTimeMillis()).toString();
-	}
 
 }

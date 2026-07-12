@@ -26,43 +26,43 @@ import java.util.Map;
 @SuppressWarnings("serial")
 public class DataI18nMapper implements Serializable {
 
-	protected String primaryName;
-	protected Map<String, String> mapper;
+    protected String primaryName;
+    protected Map<String, String> mapper;
 
-	/**
-	 * 获取 {@code primaryName}。
-	 *
-	 * @return 对应的属性值
-	 */
-	public String getPrimaryName() {
-		return primaryName;
-	}
+    /**
+     * 获取 {@code primaryName}。
+     *
+     * @return 对应的属性值
+     */
+    public String getPrimaryName() {
+        return primaryName;
+    }
 
-	/**
-	 * 设置 {@code primaryName}。
-	 *
-	 * @param primaryName 调用参数 {@code primaryName}
-	 */
-	public void setPrimaryName(String primaryName) {
-		this.primaryName = primaryName;
-	}
+    /**
+     * 设置 {@code primaryName}。
+     *
+     * @param primaryName 调用参数 {@code primaryName}
+     */
+    public void setPrimaryName(String primaryName) {
+        this.primaryName = primaryName;
+    }
 
-	/**
-	 * 获取 {@code mapper}。
-	 *
-	 * @return 对应的属性值
-	 */
-	public Map<String, String> getMapper() {
-		return mapper;
-	}
+    /**
+     * 获取 {@code mapper}。
+     *
+     * @return 对应的属性值
+     */
+    public Map<String, String> getMapper() {
+        return mapper;
+    }
 
-	/**
-	 * 设置 {@code mapper}。
-	 *
-	 * @param mapper 调用参数 {@code mapper}
-	 */
-	public void setMapper(Map<String, String> mapper) {
-		this.mapper = mapper;
-	}
+    /**
+     * 设置 {@code mapper}。
+     *
+     * @param mapper 调用参数 {@code mapper}
+     */
+    public void setMapper(Map<String, String> mapper) {
+        this.mapper = mapper;
+    }
 
 }

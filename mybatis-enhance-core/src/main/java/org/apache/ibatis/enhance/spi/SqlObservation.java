@@ -18,9 +18,9 @@ public final class SqlObservation {
     /**
      * 创建不可变 SQL 观测结果。
      *
-     * @param sql SQL 文本
+     * @param sql          SQL 文本
      * @param sortedParams 按参数名稳定排序后的参数文本
-     * @param elapsedMs SQL 准备或执行耗时，单位毫秒
+     * @param elapsedMs    SQL 准备或执行耗时，单位毫秒
      */
     public SqlObservation(String sql, List<String> sortedParams, long elapsedMs) {
         this.sql = sql;

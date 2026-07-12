@@ -55,7 +55,7 @@ public class DefaultDataEncryptionHandler implements DataEncryptionHandler {
     /**
      * 执行 {@code doRawObjectDecrypt} 定义的框架操作。
      *
-     * @param rawObject 调用参数 {@code rawObject}
+     * @param rawObject   调用参数 {@code rawObject}
      * @param entityClass 调用参数 {@code entityClass}
      */
     @Override

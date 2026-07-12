@@ -6,11 +6,7 @@ import org.apache.ibatis.type.MappedJdbcTypes;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
-import java.sql.Blob;
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Objects;
 
 /**
@@ -22,10 +18,10 @@ public class BlobStringTypeHandler extends BaseTypeHandler<String> {
     /**
      * 设置 {@code nonNullParameter}。
      *
-     * @param ps 预编译语句
-     * @param index 索引
+     * @param ps        预编译语句
+     * @param index     索引
      * @param parameter 方法参数
-     * @param jdbcType JDBC 类型
+     * @param jdbcType  JDBC 类型
      * @throws SQLException 底层操作失败时抛出
      */
     @Override
@@ -38,7 +34,7 @@ public class BlobStringTypeHandler extends BaseTypeHandler<String> {
     /**
      * 获取 {@code nullableResult}。
      *
-     * @param rs 结果集
+     * @param rs         结果集
      * @param columnName 列名
      * @return 对应的属性值
      * @throws SQLException 底层操作失败时抛出
@@ -51,7 +47,7 @@ public class BlobStringTypeHandler extends BaseTypeHandler<String> {
     /**
      * 获取 {@code nullableResult}。
      *
-     * @param rs 结果集
+     * @param rs          结果集
      * @param columnIndex 列索引
      * @return 对应的属性值
      * @throws SQLException 底层操作失败时抛出
@@ -64,7 +60,7 @@ public class BlobStringTypeHandler extends BaseTypeHandler<String> {
     /**
      * 获取 {@code nullableResult}。
      *
-     * @param cs 存储过程语句
+     * @param cs          存储过程语句
      * @param columnIndex 列索引
      * @return 对应的属性值
      * @throws SQLException 底层操作失败时抛出

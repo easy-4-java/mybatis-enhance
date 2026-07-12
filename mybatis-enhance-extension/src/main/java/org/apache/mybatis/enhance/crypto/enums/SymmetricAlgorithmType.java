@@ -4,8 +4,8 @@ import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;
 import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
-import org.apache.ibatis.enhance.util.SymmetricCryptoUtil;
 import lombok.Getter;
+import org.apache.ibatis.enhance.util.SymmetricCryptoUtil;
 
 /**
  * 框架支持的对称加密算法。
@@ -15,26 +15,46 @@ import lombok.Getter;
 @Getter
 public enum SymmetricAlgorithmType {
 
-    /** 高级加密标准。 */
+    /**
+     * 高级加密标准。
+     */
     AES(SymmetricAlgorithm.AES.name()),
-    /** ARCFOUR/RC4 流密码。 */
+    /**
+     * ARCFOUR/RC4 流密码。
+     */
     ARCFOUR(SymmetricAlgorithm.ARCFOUR.name()),
-    /** Blowfish 分组密码。 */
+    /**
+     * Blowfish 分组密码。
+     */
     Blowfish(SymmetricAlgorithm.Blowfish.name()),
-    /** 数据加密标准。 */
+    /**
+     * 数据加密标准。
+     */
     DES(SymmetricAlgorithm.DES.name()),
-    /** 三重 DES。 */
+    /**
+     * 三重 DES。
+     */
     DESede(SymmetricAlgorithm.DESede.name()),
-    /** RC2 分组密码。 */
+    /**
+     * RC2 分组密码。
+     */
     RC2(SymmetricAlgorithm.RC2.name()),
-    /** 基于 MD5 和 DES 的口令加密。 */
+    /**
+     * 基于 MD5 和 DES 的口令加密。
+     */
     PBEWithMD5AndDES(SymmetricAlgorithm.PBEWithMD5AndDES.name()),
-    /** 基于 SHA-1 和三重 DES 的口令加密。 */
+    /**
+     * 基于 SHA-1 和三重 DES 的口令加密。
+     */
     PBEWithSHA1AndDESede(SymmetricAlgorithm.PBEWithSHA1AndDESede.name()),
-    /** 基于 SHA-1 和 40 位 RC2 的口令加密。 */
+    /**
+     * 基于 SHA-1 和 40 位 RC2 的口令加密。
+     */
     PBEWithSHA1AndRC2_40(SymmetricAlgorithm.PBEWithSHA1AndRC2_40.name()),
 
-    /** 国密 SM4 分组密码。 */
+    /**
+     * 国密 SM4 分组密码。
+     */
     SM4("SM4");
 
     private final String name;
@@ -61,10 +81,10 @@ public enum SymmetricAlgorithmType {
     /**
      * 根据字符串模式和填充方式创建密码器。
      *
-     * @param mode 分组密码模式名称
+     * @param mode    分组密码模式名称
      * @param padding 填充方式名称
-     * @param key 密钥
-     * @param iv 偏移向量，加盐
+     * @param key     密钥
+     * @param iv      偏移向量，加盐
      * @return 对称密码器
      */
     public SymmetricCrypto getSymmetricCrypto(String mode, String padding, String key, String iv) {
@@ -74,10 +94,10 @@ public enum SymmetricAlgorithmType {
     /**
      * 根据强类型模式和填充方式创建密码器。
      *
-     * @param mode 分组密码模式
+     * @param mode    分组密码模式
      * @param padding 填充方式
-     * @param key 密钥
-     * @param iv 偏移向量，加盐
+     * @param key     密钥
+     * @param iv      偏移向量，加盐
      * @return 对称密码器
      */
     public SymmetricCrypto getSymmetricCrypto(Mode mode, Padding padding, String key, String iv) {

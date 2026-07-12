@@ -19,7 +19,7 @@ public interface DataEncryptionHandler {
     /**
      * 解密原始查询对象中声明加密注解的字段。
      *
-     * @param rawObject 待解密查询对象
+     * @param rawObject   待解密查询对象
      * @param entityClass 对象对应的实体类型
      */
     void doRawObjectDecrypt(Object rawObject, Class<?> entityClass);

@@ -3,12 +3,7 @@ package net.sf.jsqlparser.util;
 import net.sf.jsqlparser.schema.Table;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 数据权限表替换 Visitor 基类。

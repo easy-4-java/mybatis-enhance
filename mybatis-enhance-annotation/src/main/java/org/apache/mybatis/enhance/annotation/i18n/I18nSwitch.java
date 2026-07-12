@@ -13,11 +13,11 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 public @interface I18nSwitch {
 
-	/**
-	 * 获取需要切换的国际化字段配置。
-	 *
-	 * @return 国际化字段配置；空数组表示由处理器自动发现
-	 */
-	I18nColumn[] value() default {};
+    /**
+     * 获取需要切换的国际化字段配置。
+     *
+     * @return 国际化字段配置；空数组表示由处理器自动发现
+     */
+    I18nColumn[] value() default {};
 
 }

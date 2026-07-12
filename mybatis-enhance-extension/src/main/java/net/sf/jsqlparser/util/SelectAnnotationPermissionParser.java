@@ -22,7 +22,7 @@ public class SelectAnnotationPermissionParser extends AbstractPermissionTableVis
      * 创建实例并初始化运行所需的上下文。
      *
      * @param metaHandler 调用参数 {@code metaHandler}
-     * @param permission 调用参数 {@code permission}
+     * @param permission  调用参数 {@code permission}
      */
     public SelectAnnotationPermissionParser(MetaStatementHandler metaHandler,
                                             RequiresPermission permission) {

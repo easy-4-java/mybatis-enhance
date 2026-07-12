@@ -38,7 +38,7 @@ public class DefaultDataSignatureHandler implements DataSignatureHandler {
     /**
      * 创建使用指定签名读写策略的处理器。
      *
-     * @param encryptedFieldHandler HMAC 计算处理器
+     * @param encryptedFieldHandler      HMAC 计算处理器
      * @param signatureReadWriteProvider 签名结果读写策略
      */
     public DefaultDataSignatureHandler(EncryptedFieldHandler encryptedFieldHandler,
@@ -71,7 +71,7 @@ public class DefaultDataSignatureHandler implements DataSignatureHandler {
     /**
      * 验证查询结果中的实体签名。
      *
-     * @param rawObject 原始查询结果
+     * @param rawObject   原始查询结果
      * @param entityClass 实体类型
      * @throws IllegalStateException 签名缺失或与重新计算结果不一致时抛出
      */

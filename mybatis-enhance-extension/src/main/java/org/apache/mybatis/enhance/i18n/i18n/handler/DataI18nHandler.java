@@ -15,15 +15,15 @@
  */
 package org.apache.mybatis.enhance.i18n.i18n.handler;
 
-import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.binding.MetaResultSetHandler;
+import org.apache.ibatis.plugin.Invocation;
 
 import java.util.Locale;
 
 public interface DataI18nHandler {
 
-	Object wrap(Locale locale, Invocation invocation, MetaResultSetHandler metaResultSetHandler, Object result, Object orginParam) throws Exception ;
+    Object wrap(Locale locale, Invocation invocation, MetaResultSetHandler metaResultSetHandler, Object result, Object orginParam) throws Exception;
 
-	Object handle(Locale locale, Invocation invocation, MetaResultSetHandler metaResultSetHandler, Object orginData,Object i18nData) throws Exception ;
+    Object handle(Locale locale, Invocation invocation, MetaResultSetHandler metaResultSetHandler, Object orginData, Object i18nData) throws Exception;
 
 }

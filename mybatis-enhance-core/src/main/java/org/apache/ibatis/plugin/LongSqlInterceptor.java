@@ -48,7 +48,7 @@ public class LongSqlInterceptor implements Interceptor {
      * 创建实例并初始化运行所需的上下文。
      *
      * @param longSqlThreshold 调用参数 {@code longSqlThreshold}
-     * @param longSqlHandler 调用参数 {@code longSqlHandler}
+     * @param longSqlHandler   调用参数 {@code longSqlHandler}
      */
     public LongSqlInterceptor(int longSqlThreshold, LongSqlHandler longSqlHandler) {
         this.longSqlThreshold = longSqlThreshold;
