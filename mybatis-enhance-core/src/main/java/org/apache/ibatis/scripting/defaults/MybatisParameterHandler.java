@@ -36,20 +36,14 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-/*
+/**
+ * 自定义 MyBatis {@link ParameterHandler} 实现。
  *
- * @className	： MybatisParameterHandler
- * @description	：对SQL参数(?)设值
- * <pre>
- *	通过mappedStatement、参数对象page和BoundSql对象countBoundSql建立一个用于设定参数的ParameterHandler对象
- *	ParameterHandler parameterHandler = new DefaultParameterHandler(mappedStatement, parameterObject, boundSql);
- *	 通过parameterHandler给PreparedStatement对象设置参数
- *	parameterHandler.setParameters(pstmt);
- * </pre>
+ * <p>与原生 {@code DefaultParameterHandler} 行为兼容，主要用于分页或需要自定义参数注入
+ * 的拦截器场景，保持对外部配置参数解析的一致性。</p>
+ *
  * @see org.apache.ibatis.scripting.defaults.DefaultParameterHandler
- * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
- * @date		： 2017年9月12日 下午11:29:57
- * @version 	V1.0
+ * @author <a href="https://github.com/hiwepy">hiwepy</a>
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class MybatisParameterHandler implements ParameterHandler {

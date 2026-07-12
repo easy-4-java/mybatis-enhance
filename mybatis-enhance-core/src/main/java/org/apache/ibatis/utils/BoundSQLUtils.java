@@ -21,10 +21,12 @@ import org.apache.ibatis.reflection.MetaObject;
 import java.lang.reflect.Field;
 
 
-/*
- * @className	： BoundSqlUtils
- * @description	： BoundSql对象操作工具
- * @version 	V1.0
+/**
+ * {@link BoundSql} 对象操作工具。
+ *
+ * <p>主要解决物理分页场景下 {@code foreach} 参数失效的问题：原生 MyBatis 在构造新的
+ * {@code BoundSql}（如分页计数 SQL）时不会复制 {@code metaParameters}，导致循环参数
+ * 解析失败。本工具通过反射传递 {@code metaParameters} 解决该问题。</p>
  */
 public class BoundSQLUtils {
 

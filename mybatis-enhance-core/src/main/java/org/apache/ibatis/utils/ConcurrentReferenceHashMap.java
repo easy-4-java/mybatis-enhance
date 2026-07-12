@@ -24,28 +24,22 @@ import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
 
-/*
- * A {@link ConcurrentHashMap} that uses {@link ReferenceType#SOFT soft} or
- * {@linkplain ReferenceType#WEAK weak} references for both {@code keys} and {@code values}.
+/**
+ * 基于软引用或弱引用、支持高并发访问的 {@link ConcurrentMap} 实现。
  *
- * <p>This class can be used as an alternative to
- * {@code Collections.synchronizedMap(new WeakHashMap<K, Reference<V>>())} in order to
- * support better performance when accessed concurrently. This implementation follows the
- * same design constraints as {@link ConcurrentHashMap} with the exception that
- * {@code null} values and {@code null} keys are supported.
+ * <p>适用于作为 {@code Collections.synchronizedMap(new WeakHashMap<K, Reference<V>>())}
+ * 的替代，在并发场景下提供更好的性能。设计约束与 {@link java.util.concurrent.ConcurrentHashMap}
+ * 一致，但允许键和值为 {@code null}。</p>
  *
- * <p><b>NOTE:</b> The use of references means that there is no guarantee that items
- * placed into the map will be subsequently available. The garbage collector may discard
- * references at any time, so it may appear that an unknown thread is silently removing
- * entries.
+ * <p><b>注意：</b>由于使用引用类型，无法保证放入映射的项持续可用。GC 可能随时丢弃引用，
+ * 表现为未知线程静默删除条目。</p>
  *
- * <p>If not explicitly specified, this implementation will use
- * {@linkplain SoftReference soft entry references}.
+ * <p>默认使用 {@linkplain SoftReference 软引用}，可通过构造器切换为 {@link ReferenceType#WEAK}。</p>
  *
  * @author Phillip Webb
  * @since 3.2
- * @param <K> the key type
- * @param <V> the value type
+ * @param <K> 键类型
+ * @param <V> 值类型
  */
 public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> {
 

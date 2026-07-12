@@ -1,5 +1,11 @@
 package org.apache.mybatis.enhance.crypto.handler;
 
+/**
+ * 支持加密、签名、解密的字段处理器。
+ *
+ * <p>相比 {@link FieldCryptoHandler}，额外提供 HMAC 签名能力，适用于既要加密又要签名
+ * 的复合场景（如数据脱敏前的完整性保护）。</p>
+ */
 public interface EncryptedFieldHandler {
 
     /**

@@ -8,11 +8,15 @@ import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 
-/*
- * <p>
- * 分布式高效有序ID生产黑科技(sequence) <br>
- * 优化开源项目：http://git.oschina.net/yu120/sequence
- * </p>
+/**
+ * 基于 Snowflake 算法的分布式高效有序 ID 生成器。
+ *
+ * <p>优化自开源项目 <a href="http://git.oschina.net/yu120/sequence">sequence</a>。
+ * 结构：1 位符号位 + 41 位毫秒时间戳 + 5 位数据中心 + 5 位工作机器 + 12 毫秒内自增序列，
+ * 单节点峰值 4096/ms。</p>
+ *
+ * <p>默认构造基于本机 MAC 与 PID 计算数据中心与机器 ID；显式构造允许指定固定
+ * {@code workerId} 和 {@code datacenterId}。</p>
  */
 public class Sequence {
 

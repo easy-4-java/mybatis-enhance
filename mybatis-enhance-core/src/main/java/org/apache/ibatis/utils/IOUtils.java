@@ -9,13 +9,14 @@ import java.net.URLConnection;
 import java.nio.channels.Selector;
 import java.sql.Connection;
 
-/*
- * <p>
- * IOUtils Copy org.apache.commons.io.IOUtils
- * </p>
+/**
+ * 流、连接等可关闭对象的静默关闭工具。
+ *
+ * <p>等价于 Apache Commons IO 的 {@code IOUtils.closeQuietly}，但只保留项目实际用到的
+ * {@link Closeable}、{@link Socket}、{@link ServerSocket}、{@link Selector}、
+ * {@link Connection}、{@link URLConnection} 重载。</p>
  *
  * @author Caratacus
- * @Date 2016-11-23
  */
 public class IOUtils {
 
