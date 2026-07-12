@@ -11,6 +11,16 @@
 | `mybatis-enhance-extension` | 数据权限、国际化、加解密、签名、字段填充及 JSqlParser SQL AST 增强 | 否，依赖 annotation 与 core |
 | `mybatis-enhance-typehandler` | JSON、集合、日期、Blob、RSA 模板等通用 TypeHandler | 是，可用于 MyBatis-Plus 项目 |
 
+公共注解按能力域组织，避免所有协议堆积在同一个根包：
+
+```text
+org.apache.mybatis.enhance.annotation.crypto
+org.apache.mybatis.enhance.annotation.i18n
+org.apache.mybatis.enhance.annotation.permission
+```
+
+其中 crypto 与 i18n 注解可被 `mybatis-plus-enhance` 直接复用；MyBatis-Plus 不再维护重复定义。
+
 模块依赖方向如下：
 
 ```text

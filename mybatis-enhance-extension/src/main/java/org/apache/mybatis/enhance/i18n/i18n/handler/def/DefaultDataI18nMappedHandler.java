@@ -16,10 +16,10 @@
 package org.apache.mybatis.enhance.i18n.i18n.handler.def;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.mybatis.enhance.annotation.I18nColumn;
-import org.apache.mybatis.enhance.annotation.I18nLocale;
-import org.apache.mybatis.enhance.annotation.I18nMapper;
-import org.apache.mybatis.enhance.annotation.I18nPrimary;
+import org.apache.mybatis.enhance.annotation.i18n.I18nColumn;
+import org.apache.mybatis.enhance.annotation.i18n.I18nLocale;
+import org.apache.mybatis.enhance.annotation.i18n.I18nMapper;
+import org.apache.mybatis.enhance.annotation.i18n.I18nPrimary;
 import org.apache.mybatis.enhance.i18n.i18n.handler.DataI18nMappedHandler;
 import org.apache.mybatis.enhance.i18n.i18n.handler.DataI18nMapper;
 import org.slf4j.Logger;

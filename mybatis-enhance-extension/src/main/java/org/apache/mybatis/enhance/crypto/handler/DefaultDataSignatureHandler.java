@@ -2,7 +2,7 @@ package org.apache.mybatis.enhance.crypto.handler;
 
 import lombok.Getter;
 import org.apache.ibatis.enhance.util.TableFieldHelper;
-import org.apache.mybatis.enhance.crypto.annotation.TableSignature;
+import org.apache.mybatis.enhance.annotation.crypto.TableSignature;
 
 import java.lang.reflect.Field;
 import java.util.List;

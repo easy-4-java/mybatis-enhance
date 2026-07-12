@@ -13,20 +13,30 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.mybatis.enhance.annotation;
+package org.apache.mybatis.enhance.annotation.permission;
 
 import java.lang.annotation.*;
 
+/**
+ * 该注解用于方法，字段；指明字段
+ */
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
-public @interface I18nLocale {
+@Target({ElementType.FIELD})
+public @interface RequiresPermissionForeign {
 
-	public abstract LocaleEnum locale() default LocaleEnum.zh_CN;
-
-	public abstract String column();
-
-	public abstract String alias() default "";
+	/**
+	 * 受限表字段关联表之间的关联条件
+	 */
+	public abstract ForeignCondition condition();
+	/**
+	 *外关联表名称（实体表名称），在 condition 为 EXISTS、NOT_EXISTS 时有意义
+	 */
+	public abstract String table() default "";
+	/**
+	 *外关联表字段（实体表字段列名称），在 condition 为 EXISTS、NOT_EXISTS 时有意义
+	 */
+	public abstract String column() default "";
 
 }

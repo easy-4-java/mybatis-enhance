@@ -13,17 +13,20 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.mybatis.enhance.annotation;
+package org.apache.mybatis.enhance.annotation.i18n;
 
 import java.lang.annotation.*;
 
-/***
- * 该注解用于方法，字段；指明字段
- */
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
-public @interface NotRequiresPermission {
+@Target({ElementType.TYPE})
+public @interface I18nLocale {
+
+	public abstract LocaleEnum locale() default LocaleEnum.zh_CN;
+
+	public abstract String column();
+
+	public abstract String alias() default "";
 
 }

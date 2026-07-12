@@ -3,7 +3,7 @@ package org.apache.mybatis.enhance.dbperms.dto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.mybatis.enhance.annotation.Condition;
+import org.apache.mybatis.enhance.annotation.permission.Condition;
 
 @Getter
 @Setter

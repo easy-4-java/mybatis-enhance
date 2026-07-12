@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.mybatis.enhance.annotation;
+package org.apache.mybatis.enhance.annotation.permission;
 
 import java.lang.annotation.*;
 
@@ -23,11 +23,7 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD,ElementType.FIELD})
-public @interface I18nColumn {
-
-	public abstract String column() default "";
-
-	public abstract I18nLocale[] i18n();
+@Target({ElementType.METHOD})
+public @interface NotRequiresPermission {
 
 }

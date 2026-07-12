@@ -13,30 +13,21 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.mybatis.enhance.annotation;
+package org.apache.mybatis.enhance.annotation.i18n;
 
 import java.lang.annotation.*;
 
-/**
+/***
  * 该注解用于方法，字段；指明字段
  */
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
-public @interface RequiresSpecialPermission {
+@Target({ElementType.METHOD,ElementType.FIELD})
+public @interface I18nColumn {
 
-	/**
-	 *受限表名称（实体表名称）
-	 */
-	public abstract String table();
-	/**
-	 *受限表转换后的SQL(直接使用SQL进行替换，减少性能消耗)
-	 */
-	public abstract String sql() default "";
-	/**
-	 * 受限表字段限制条件：
-	 */
-	public abstract String perms();
+	public abstract String column() default "";
+
+	public abstract I18nLocale[] i18n();
 
 }

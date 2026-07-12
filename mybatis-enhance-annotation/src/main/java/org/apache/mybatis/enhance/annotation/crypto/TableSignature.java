@@ -1,4 +1,4 @@
-package org.apache.mybatis.enhance.crypto.annotation;
+package org.apache.mybatis.enhance.annotation.crypto;
 
 import java.lang.annotation.*;
 

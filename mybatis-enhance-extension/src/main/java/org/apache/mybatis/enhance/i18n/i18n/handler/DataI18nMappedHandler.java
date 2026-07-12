@@ -16,8 +16,8 @@
 package org.apache.mybatis.enhance.i18n.i18n.handler;
 
 
-import org.apache.mybatis.enhance.annotation.I18nMapper;
-import org.apache.mybatis.enhance.annotation.I18nPrimary;
+import org.apache.mybatis.enhance.annotation.i18n.I18nMapper;
+import org.apache.mybatis.enhance.annotation.i18n.I18nPrimary;
 
 import java.util.Locale;
 

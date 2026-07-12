@@ -16,8 +16,8 @@
 package org.apache.mybatis.enhance.dbperms.parser;
 
 import org.apache.ibatis.binding.MetaStatementHandler;
-import org.apache.mybatis.enhance.annotation.RequiresPermission;
-import org.apache.mybatis.enhance.annotation.RequiresSpecialPermission;
+import org.apache.mybatis.enhance.annotation.permission.RequiresPermission;
+import org.apache.mybatis.enhance.annotation.permission.RequiresSpecialPermission;
 
 import java.util.Optional;
 

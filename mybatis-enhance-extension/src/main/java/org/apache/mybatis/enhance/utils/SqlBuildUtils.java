@@ -16,7 +16,7 @@
 package org.apache.mybatis.enhance.utils;
 
 import org.apache.ibatis.utils.CollectionUtils;
-import org.apache.mybatis.enhance.annotation.Relational;
+import org.apache.mybatis.enhance.annotation.permission.Relational;
 
 import org.apache.mybatis.enhance.dbperms.dto.*;
 

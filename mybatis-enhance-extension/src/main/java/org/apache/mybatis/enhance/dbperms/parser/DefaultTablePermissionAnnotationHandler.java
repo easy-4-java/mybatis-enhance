@@ -18,10 +18,10 @@ package org.apache.mybatis.enhance.dbperms.parser;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.ibatis.binding.MetaStatementHandler;
 import org.apache.ibatis.utils.CollectionUtils;
-import org.apache.mybatis.enhance.annotation.RequiresPermission;
-import org.apache.mybatis.enhance.annotation.RequiresPermissionColumn;
-import org.apache.mybatis.enhance.annotation.RequiresPermissionForeign;
-import org.apache.mybatis.enhance.annotation.RequiresSpecialPermission;
+import org.apache.mybatis.enhance.annotation.permission.RequiresPermission;
+import org.apache.mybatis.enhance.annotation.permission.RequiresPermissionColumn;
+import org.apache.mybatis.enhance.annotation.permission.RequiresPermissionForeign;
+import org.apache.mybatis.enhance.annotation.permission.RequiresSpecialPermission;
 import org.apache.mybatis.enhance.utils.PatternFormatUtils;
 import org.apache.mybatis.enhance.utils.StringUtils;
 

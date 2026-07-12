@@ -26,10 +26,10 @@ import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.AbstractInterceptorAdapter;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
-import org.apache.mybatis.enhance.annotation.NotRequiresPermission;
-import org.apache.mybatis.enhance.annotation.RequiresPermission;
-import org.apache.mybatis.enhance.annotation.RequiresPermissions;
-import org.apache.mybatis.enhance.annotation.RequiresSpecialPermission;
+import org.apache.mybatis.enhance.annotation.permission.NotRequiresPermission;
+import org.apache.mybatis.enhance.annotation.permission.RequiresPermission;
+import org.apache.mybatis.enhance.annotation.permission.RequiresPermissions;
+import org.apache.mybatis.enhance.annotation.permission.RequiresSpecialPermission;
 
 import java.lang.reflect.Method;
 import java.util.Objects;

@@ -2,7 +2,7 @@ package net.sf.jsqlparser.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.binding.MetaStatementHandler;
-import org.apache.mybatis.enhance.annotation.RequiresPermission;
+import org.apache.mybatis.enhance.annotation.permission.RequiresPermission;
 import org.apache.mybatis.enhance.dbperms.parser.DefaultTablePermissionAnnotationHandler;
 import org.apache.mybatis.enhance.dbperms.parser.ITablePermissionAnnotationHandler;
 

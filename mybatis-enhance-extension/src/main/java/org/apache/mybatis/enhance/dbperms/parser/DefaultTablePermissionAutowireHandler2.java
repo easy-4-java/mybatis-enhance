@@ -17,7 +17,7 @@ package org.apache.mybatis.enhance.dbperms.parser;
 
 import org.apache.ibatis.binding.MetaStatementHandler;
 import org.apache.ibatis.utils.CollectionUtils;
-import org.apache.mybatis.enhance.annotation.Relational;
+import org.apache.mybatis.enhance.annotation.permission.Relational;
 
 import org.apache.mybatis.enhance.dbperms.dto.DataPermission;
 import org.apache.mybatis.enhance.dbperms.dto.DataPermissionColumn;

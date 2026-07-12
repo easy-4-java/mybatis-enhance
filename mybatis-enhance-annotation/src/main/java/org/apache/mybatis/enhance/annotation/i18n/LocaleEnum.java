@@ -1,4 +1,4 @@
-package org.apache.mybatis.enhance.annotation;
+package org.apache.mybatis.enhance.annotation.i18n;
 
 import java.util.Locale;
 

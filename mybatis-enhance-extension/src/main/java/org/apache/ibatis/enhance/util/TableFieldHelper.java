@@ -1,9 +1,9 @@
 package org.apache.ibatis.enhance.util;
 
-import org.apache.mybatis.enhance.crypto.annotation.EncryptedField;
-import org.apache.mybatis.enhance.crypto.annotation.EncryptedTable;
-import org.apache.mybatis.enhance.crypto.annotation.TableSignature;
-import org.apache.mybatis.enhance.crypto.annotation.TableSignatureField;
+import org.apache.mybatis.enhance.annotation.crypto.EncryptedField;
+import org.apache.mybatis.enhance.annotation.crypto.EncryptedTable;
+import org.apache.mybatis.enhance.annotation.crypto.TableSignature;
+import org.apache.mybatis.enhance.annotation.crypto.TableSignatureField;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

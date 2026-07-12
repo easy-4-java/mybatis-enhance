@@ -26,9 +26,9 @@ import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.binding.MetaStatementHandler;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
-import org.apache.mybatis.enhance.annotation.I18nColumn;
-import org.apache.mybatis.enhance.annotation.I18nLocale;
-import org.apache.mybatis.enhance.annotation.I18nSwitch;
+import org.apache.mybatis.enhance.annotation.i18n.I18nColumn;
+import org.apache.mybatis.enhance.annotation.i18n.I18nLocale;
+import org.apache.mybatis.enhance.annotation.i18n.I18nSwitch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Jackson JSON 类型处理器基类：varchar &lt;-&gt; T（JSON 字符串）。
  *
  * <p>子类通过实现 {@link #parse(String)} 决定反序列化目标类型
- * （可借助 {@link #objectMapper()} 和 {@link #serialize(Object)} / {@link #deserialize(String, Class)} 辅助方法），
+ * （可借助 {@link #objectMapper()}、{@link #convert(Object)} 和 {@link #deserialize(String, Class)} 辅助方法），
  * 序列化统一由 {@link #convert(Object)} 完成。
  *
  * <p>本基类为 {@code MyJacksonTypeHandler}、{@code ListTypeHandler}、

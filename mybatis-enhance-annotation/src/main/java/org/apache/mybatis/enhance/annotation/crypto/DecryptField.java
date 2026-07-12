@@ -1,14 +1,14 @@
-package org.apache.mybatis.enhance.crypto.annotation;
+package org.apache.mybatis.enhance.annotation.crypto;
 
 import java.lang.annotation.*;
 
 /**
- * 加密字段
+ * 解密字段
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.TYPE})
-public @interface EncryptField {
+public @interface DecryptField {
 
     /**
      * 生成密钥的算法类型,系统支持 sm1、sm4

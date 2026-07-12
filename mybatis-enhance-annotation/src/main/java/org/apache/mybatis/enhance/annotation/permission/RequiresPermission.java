@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.mybatis.enhance.annotation;
+package org.apache.mybatis.enhance.annotation.permission;
 
 import java.lang.annotation.*;
 
@@ -23,24 +23,20 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD})
-public @interface RequiresPermissionColumn {
+@Target({ElementType.METHOD})
+public @interface RequiresPermission {
 
 	/**
-	 * 受限表字段名称（实体表字段列名称）
+	 *受限表名称（实体表名称）
 	 */
-	public abstract String column();
+	public abstract String table();
 	/**
-	 * 受限表字段与限制条件之间的关联条件
+	 * 数据权限项数组
 	 */
-	public abstract Condition condition();
+	public abstract RequiresPermissionColumn[] value();
 	/**
-	 *外关联表名称（实体表名称），在 condition 为 EXISTS、NOT_EXISTS 时有意义
+	 * 数据权限项关系 and/or
 	 */
-	public abstract RequiresPermissionForeign foreign() default @RequiresPermissionForeign(condition = ForeignCondition.EQ);
-	/**
-	 * 受限表字段限制条件：
-	 */
-	public abstract String perms();
+	public abstract Relational relation();
 
 }
