@@ -15,6 +15,11 @@
  */
 package org.apache.mybatis.enhance.utils;
 
+/**
+ * {@code StringUtils} 工具类。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
 	/***

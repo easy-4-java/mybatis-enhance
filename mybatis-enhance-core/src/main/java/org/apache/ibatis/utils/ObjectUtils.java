@@ -3,6 +3,11 @@
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
+/**
+ * {@code ObjectUtils} 工具类。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 public abstract class ObjectUtils {
 
 	private static final int INITIAL_HASH = 7;

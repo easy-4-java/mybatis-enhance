@@ -14,6 +14,12 @@ public class SelectAutowirePermissionParser extends AbstractPermissionTableVisit
     private final ITablePermissionAutowireHandler tablePermissionHandler;
     private final MetaStatementHandler metaHandler;
 
+    /**
+     * 创建实例并初始化运行所需的上下文。
+     *
+     * @param tablePermissionHandler 调用参数 {@code tablePermissionHandler}
+     * @param metaHandler 调用参数 {@code metaHandler}
+     */
     public SelectAutowirePermissionParser(ITablePermissionAutowireHandler tablePermissionHandler,
                                           MetaStatementHandler metaHandler) {
         this.tablePermissionHandler = Objects.requireNonNull(
@@ -21,6 +27,12 @@ public class SelectAutowirePermissionParser extends AbstractPermissionTableVisit
         this.metaHandler = Objects.requireNonNull(metaHandler, "Meta handler must not be null");
     }
 
+    /**
+     * 完成 {@code replacement} 对应的框架处理。
+     *
+     * @param tableName 调用参数 {@code tableName}
+     * @return 处理结果
+     */
     @Override
     protected Optional<String> replacement(String tableName) {
         return tablePermissionHandler.process(metaHandler, tableName);

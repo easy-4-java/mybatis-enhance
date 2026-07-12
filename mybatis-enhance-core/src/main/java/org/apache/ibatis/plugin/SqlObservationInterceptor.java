@@ -35,6 +35,11 @@ public class SqlObservationInterceptor implements Interceptor {
 
     private final List<SqlObservationSink> sinks = new CopyOnWriteArrayList<>();
 
+    /**
+     * 创建观测拦截器，通过 {@link java.util.ServiceLoader} 发现接收器。
+     *
+     * <p>没有发现扩展接收器时自动注册 {@link SqlLoggingSink}。</p>
+     */
     public SqlObservationInterceptor() {
         for (SqlObservationSink sink : ServiceLoader.load(SqlObservationSink.class)) {
             addSink(sink);
@@ -44,17 +49,34 @@ public class SqlObservationInterceptor implements Interceptor {
         }
     }
 
+    /**
+     * 创建观测拦截器并注册指定接收器。
+     *
+     * @param sink 自定义观测接收器
+     */
     public SqlObservationInterceptor(SqlObservationSink sink) {
         this();
         addSink(sink);
     }
 
+    /**
+     * 注册观测接收器。
+     *
+     * @param sink 观测接收器；为 {@code null} 或已注册时忽略
+     */
     public void addSink(SqlObservationSink sink) {
         if (Objects.nonNull(sink) && !sinks.contains(sink)) {
             sinks.add(sink);
         }
     }
 
+    /**
+     * 采集 SQL、参数及耗时并发布观测结果。
+     *
+     * @param invocation MyBatis 插件调用上下文
+     * @return 原始 MyBatis 调用结果
+     * @throws Throwable 底层操作失败时抛出
+     */
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
@@ -85,6 +107,12 @@ public class SqlObservationInterceptor implements Interceptor {
         }
     }
 
+    /**
+     * 仅包装 {@link StatementHandler}，避免扩大插件代理范围。
+     *
+     * @param target 目标对象
+     * @return 包装后的语句处理器或原目标对象
+     */
     @Override
     public Object plugin(Object target) {
         return target instanceof StatementHandler ? Plugin.wrap(target, this) : target;

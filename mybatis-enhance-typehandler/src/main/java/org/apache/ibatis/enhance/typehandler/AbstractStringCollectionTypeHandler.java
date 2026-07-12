@@ -24,11 +24,23 @@ import java.util.List;
  */
 public abstract class AbstractStringCollectionTypeHandler<C extends Collection<String>> extends BaseTypeHandler<C> {
 
+    /**
+     * 转换 {@code convert} 定义的框架操作。
+     *
+     * @param obj 调用参数 {@code obj}
+     * @return 处理结果
+     */
     @Override
     protected String convert(C obj) {
         return JSONUtil.toJsonStr(obj);
     }
 
+    /**
+     * 解析 {@code parse} 定义的框架操作。
+     *
+     * @param result 调用参数 {@code result}
+     * @return 处理结果
+     */
     @Override
     protected C parse(String result) {
         // 兜底直接调用 parse(null/blank) 的场景（与旧版 ListString/SetString 行为对齐）；

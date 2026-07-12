@@ -3,7 +3,10 @@ package org.apache.mybatis.enhance.annotation.crypto;
 import java.lang.annotation.*;
 
 /**
- * 需要加解密的实体类用这个注解
+ * 标记包含透明加解密字段的实体类型。
+ *
+ * <p>该类型级开关用于避免对普通实体进行不必要的字段反射扫描。</p>
+ *
  * @author wandl
  */
 @Documented

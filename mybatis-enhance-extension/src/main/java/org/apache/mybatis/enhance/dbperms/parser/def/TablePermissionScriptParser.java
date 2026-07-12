@@ -25,6 +25,11 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * {@code TablePermissionScriptParser} 解析器。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 @Data
 @Accessors(chain = true)
 public class TablePermissionScriptParser implements ITablePermissionParser {
@@ -52,6 +57,13 @@ public class TablePermissionScriptParser implements ITablePermissionParser {
      */
     protected void internalInit() {};
 
+    /**
+     * 解析 {@code parser} 定义的框架操作。
+     *
+     * @param metaHandler 调用参数 {@code metaHandler}
+     * @param originalSQL 调用参数 {@code originalSQL}
+     * @return 处理结果
+     */
     public String parser(MetaStatementHandler metaHandler, String originalSQL) {
     	if (!this.doFilter(metaHandler, originalSQL)) {
     		 return originalSQL;

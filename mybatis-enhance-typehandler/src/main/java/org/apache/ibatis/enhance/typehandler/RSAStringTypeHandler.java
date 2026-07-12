@@ -17,6 +17,12 @@ import java.util.Objects;
  */
 public abstract class RSAStringTypeHandler extends BaseTypeHandler<String> {
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>在绑定 JDBC 参数前调用 {@link #encrypt(String)}，并将密码实现异常包装为
+     * {@link SQLException}。</p>
+     */
     @Override
     public void setNonNullParameter(PreparedStatement ps, int index, String parameter,
                                     JdbcType jdbcType) throws SQLException {
@@ -27,23 +33,44 @@ public abstract class RSAStringTypeHandler extends BaseTypeHandler<String> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getNullableResult(ResultSet rs, String columnName) throws SQLException {
         return decryptNullable(rs.getString(columnName));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         return decryptNullable(rs.getString(columnIndex));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         return decryptNullable(cs.getString(columnIndex));
     }
 
+    /**
+     * 使用应用提供的 RSA 密钥或密码服务加密明文。
+     *
+     * @param plainText 明文
+     * @return 可存入数据库的密文
+     */
     protected abstract String encrypt(String plainText);
 
+    /**
+     * 使用应用提供的 RSA 密钥或密码服务解密密文。
+     *
+     * @param cipherText 数据库密文
+     * @return 解密后的明文
+     */
     protected abstract String decrypt(String cipherText);
 
     private String decryptNullable(String cipherText) throws SQLException {

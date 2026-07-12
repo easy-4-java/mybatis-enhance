@@ -59,6 +59,13 @@ public class MybatisEnhanceInterceptor implements Interceptor {
         return Collections.unmodifiableList(interceptors);
     }
 
+    /**
+     * 拦截并处理 {@code intercept} 定义的框架操作。
+     *
+     * @param invocation MyBatis 插件调用上下文
+     * @return 处理结果
+     * @throws Throwable 底层操作失败时抛出
+     */
     @Override
     @SuppressWarnings("unchecked")
     public Object intercept(Invocation invocation) throws Throwable {
@@ -93,11 +100,22 @@ public class MybatisEnhanceInterceptor implements Interceptor {
         return results;
     }
 
+    /**
+     * 完成 {@code plugin} 对应的框架处理。
+     *
+     * @param target 目标对象
+     * @return 处理结果
+     */
     @Override
     public Object plugin(Object target) {
         return target instanceof Executor ? Plugin.wrap(target, this) : target;
     }
 
+    /**
+     * 设置 {@code properties}。
+     *
+     * @param properties 调用参数 {@code properties}
+     */
     @Override
     public void setProperties(Properties properties) {
         // 增强器通过构造器或 addInterceptor 显式配置，不解析弱类型 Properties。

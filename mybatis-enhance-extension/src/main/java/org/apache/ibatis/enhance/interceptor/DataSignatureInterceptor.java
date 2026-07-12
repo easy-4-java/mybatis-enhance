@@ -48,6 +48,13 @@ public class DataSignatureInterceptor implements EnhanceInterceptor {
         this.verifyEnabled = verifyEnabled;
     }
 
+    /**
+     * 执行前置处理 {@code beforeUpdate} 定义的框架操作。
+     *
+     * @param executor MyBatis 执行器
+     * @param mappedStatement 映射语句
+     * @param parameter 方法参数
+     */
     @Override
     public void beforeUpdate(Executor executor, MappedStatement mappedStatement, Object parameter) {
         if (!signEnabled || Objects.isNull(parameter)) {
@@ -60,6 +67,17 @@ public class DataSignatureInterceptor implements EnhanceInterceptor {
         }
     }
 
+    /**
+     * 执行后置处理 {@code afterQuery} 定义的框架操作。
+     *
+     * @param executor MyBatis 执行器
+     * @param mappedStatement 映射语句
+     * @param parameter 方法参数
+     * @param rowBounds 分页边界
+     * @param resultHandler 结果处理器
+     * @param boundSql 绑定 SQL
+     * @param results 调用参数 {@code results}
+     */
     @Override
     public void afterQuery(Executor executor, MappedStatement mappedStatement, Object parameter,
                            RowBounds rowBounds, ResultHandler<?> resultHandler, BoundSql boundSql,

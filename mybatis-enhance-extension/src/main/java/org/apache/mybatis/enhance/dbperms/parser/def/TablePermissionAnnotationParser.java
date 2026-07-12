@@ -31,6 +31,11 @@ import org.apache.mybatis.enhance.annotation.permission.RequiresPermission;
 import org.apache.mybatis.enhance.annotation.permission.RequiresSpecialPermission;
 import org.apache.mybatis.enhance.dbperms.parser.ITablePermissionParser;
 
+/**
+ * {@code TablePermissionAnnotationParser} 解析器。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 @Data
 @Accessors(chain = true)
 public class TablePermissionAnnotationParser implements ITablePermissionParser {
@@ -56,6 +61,14 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
      */
     protected void internalInit() {};
 
+    /**
+     * 解析 {@code parser} 定义的框架操作。
+     *
+     * @param metaHandler 调用参数 {@code metaHandler}
+     * @param sql SQL 文本
+     * @param permissions 调用参数 {@code permissions}
+     * @return 处理结果
+     */
     public String parser(MetaStatementHandler metaHandler, String sql, RequiresPermission[] permissions) {
     	if (!this.doFilter(metaHandler, sql)) {
    		 	return sql;
@@ -77,6 +90,14 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
         return parsedSQL;
     }
 
+    /**
+     * 解析 {@code parser} 定义的框架操作。
+     *
+     * @param metaHandler 调用参数 {@code metaHandler}
+     * @param sql SQL 文本
+     * @param permission 调用参数 {@code permission}
+     * @return 处理结果
+     */
     public String parser(MetaStatementHandler metaHandler, String sql, RequiresPermission permission) {
     	if (!this.doFilter(metaHandler, sql)) {
       		return sql;
@@ -98,6 +119,14 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
         return parsedSQL;
     }
 
+	/**
+	 * 解析 {@code parser} 定义的框架操作。
+	 *
+	 * @param metaHandler 调用参数 {@code metaHandler}
+	 * @param sql SQL 文本
+	 * @param permissions 调用参数 {@code permissions}
+	 * @return 处理结果
+	 */
 	public String parser(MetaStatementHandler metaHandler, String sql, RequiresSpecialPermission[] permissions) {
 		if (!this.doFilter(metaHandler, sql)) {
    		 	return sql;
@@ -119,6 +148,14 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
         return parsedSQL;
 	}
 
+	/**
+	 * 解析 {@code parser} 定义的框架操作。
+	 *
+	 * @param metaHandler 调用参数 {@code metaHandler}
+	 * @param sql SQL 文本
+	 * @param permission 调用参数 {@code permission}
+	 * @return 处理结果
+	 */
 	public String parser(MetaStatementHandler metaHandler, String sql, RequiresSpecialPermission permission) {
 		if (!this.doFilter(metaHandler, sql)) {
       		return sql;

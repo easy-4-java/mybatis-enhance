@@ -22,6 +22,11 @@ public final class SqlLoggingSink implements SqlObservationSink {
     private SqlLoggingSink() {
     }
 
+    /**
+     * 完成 {@code accept} 对应的框架处理。
+     *
+     * @param observation 调用参数 {@code observation}
+     */
     @Override
     public void accept(SqlObservation observation) {
         if (Objects.isNull(observation)) {

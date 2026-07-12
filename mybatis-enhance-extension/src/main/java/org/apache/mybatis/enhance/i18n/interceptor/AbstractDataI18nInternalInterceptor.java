@@ -40,9 +40,23 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+/**
+ * {@code AbstractDataI18nInternalInterceptor} MyBatis 拦截器。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 @Slf4j
 public abstract class AbstractDataI18nInternalInterceptor extends AbstractDataI18nInterceptor {
 
+	/**
+	 * 执行 {@code doResultSetIntercept} 定义的框架操作。
+	 *
+	 * @param invocation MyBatis 插件调用上下文
+	 * @param resultSetHandler 结果集处理器
+	 * @param metaResultSetHandler 调用参数 {@code metaResultSetHandler}
+	 * @return 处理结果
+	 * @throws Throwable 底层操作失败时抛出
+	 */
 	@Override
 	public Object doResultSetIntercept(Invocation invocation,ResultSetHandler resultSetHandler,MetaResultSetHandler metaResultSetHandler) throws Throwable{
 		// 获取处理结果

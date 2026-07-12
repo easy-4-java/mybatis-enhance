@@ -19,6 +19,15 @@ import java.util.Objects;
 @MappedJdbcTypes(JdbcType.BLOB)
 public class BlobStringTypeHandler extends BaseTypeHandler<String> {
 
+    /**
+     * 设置 {@code nonNullParameter}。
+     *
+     * @param ps 预编译语句
+     * @param index 索引
+     * @param parameter 方法参数
+     * @param jdbcType JDBC 类型
+     * @throws SQLException 底层操作失败时抛出
+     */
     @Override
     public void setNonNullParameter(PreparedStatement ps, int index, String parameter,
                                     JdbcType jdbcType) throws SQLException {
@@ -26,16 +35,40 @@ public class BlobStringTypeHandler extends BaseTypeHandler<String> {
         ps.setBinaryStream(index, new ByteArrayInputStream(bytes), bytes.length);
     }
 
+    /**
+     * 获取 {@code nullableResult}。
+     *
+     * @param rs 结果集
+     * @param columnName 列名
+     * @return 对应的属性值
+     * @throws SQLException 底层操作失败时抛出
+     */
     @Override
     public String getNullableResult(ResultSet rs, String columnName) throws SQLException {
         return readBlob(rs.getBlob(columnName));
     }
 
+    /**
+     * 获取 {@code nullableResult}。
+     *
+     * @param rs 结果集
+     * @param columnIndex 列索引
+     * @return 对应的属性值
+     * @throws SQLException 底层操作失败时抛出
+     */
     @Override
     public String getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         return readBlob(rs.getBlob(columnIndex));
     }
 
+    /**
+     * 获取 {@code nullableResult}。
+     *
+     * @param cs 存储过程语句
+     * @param columnIndex 列索引
+     * @return 对应的属性值
+     * @throws SQLException 底层操作失败时抛出
+     */
     @Override
     public String getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         return readBlob(cs.getBlob(columnIndex));

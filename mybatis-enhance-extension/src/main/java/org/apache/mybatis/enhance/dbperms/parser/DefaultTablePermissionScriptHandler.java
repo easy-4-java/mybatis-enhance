@@ -52,11 +52,23 @@ public class DefaultTablePermissionScriptHandler implements ITablePermissionScri
 
 	}
 
+	/**
+	 * 创建实例并初始化运行所需的上下文。
+	 *
+	 * @param permissionsProvider 调用参数 {@code permissionsProvider}
+	 */
 	public DefaultTablePermissionScriptHandler(
 			BiFunction<MetaStatementHandler, String, Optional<DataPermissionPayload>> permissionsProvider) {
 		this.permissionsProvider = permissionsProvider;
 	}
 
+	/**
+	 * 解析 {@code resolved} 定义的框架操作。
+	 *
+	 * @param metaHandler 调用参数 {@code metaHandler}
+	 * @param resolved 调用参数 {@code resolved}
+	 * @return 处理结果
+	 */
 	protected List<String> resolved(MetaStatementHandler metaHandler, DataPermissionPart resolved) {
 		// 查询数据权限
 		Optional<DataPermissionPayload> permissionPayload = getPermissionsProvider().apply(metaHandler, resolved.getTable());
@@ -89,6 +101,13 @@ public class DefaultTablePermissionScriptHandler implements ITablePermissionScri
 		return rtList;
 	}
 
+	/**
+	 * 完成 {@code dynamicPermissionedSQL} 对应的框架处理。
+	 *
+	 * @param metaHandler 调用参数 {@code metaHandler}
+	 * @param segmentSQL 调用参数 {@code segmentSQL}
+	 * @return 处理结果
+	 */
 	@Override
 	public String dynamicPermissionedSQL(MetaStatementHandler metaHandler, String segmentSQL) {
 
@@ -136,6 +155,11 @@ public class DefaultTablePermissionScriptHandler implements ITablePermissionScri
 		return segmentSQL.replace("[", "(").replace("]", ")");
 	}
 
+	/**
+	 * 获取 {@code permissionsProvider}。
+	 *
+	 * @return 对应的属性值
+	 */
 	public BiFunction<MetaStatementHandler, String, Optional<DataPermissionPayload>> getPermissionsProvider() {
 		return permissionsProvider;
 	}

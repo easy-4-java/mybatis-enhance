@@ -25,8 +25,20 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * {@code SqlBuildUtils} 工具类。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 public class SqlBuildUtils {
 
+	/**
+	 * 完成 {@code conditionParts} 对应的框架处理。
+	 *
+	 * @param alias 调用参数 {@code alias}
+	 * @param permissionsList 调用参数 {@code permissionsList}
+	 * @return 处理结果
+	 */
 	public static String conditionParts(String alias, List<DataPermission> permissionsList){
 		// 构建限制条件
 		Map<Relational, String> conditionPartMap = new LinkedHashMap<>();
@@ -102,6 +114,13 @@ public class SqlBuildUtils {
 		return null;
 	}
 
+	/**
+	 * 完成 {@code conditionSpecialParts} 对应的框架处理。
+	 *
+	 * @param alias 调用参数 {@code alias}
+	 * @param permissionsList 调用参数 {@code permissionsList}
+	 * @return 处理结果
+	 */
 	public static String conditionSpecialParts(String alias, List<DataSpecialPermission> permissionsList){
 
 		// 构建限制条件
@@ -178,6 +197,13 @@ public class SqlBuildUtils {
 		return null;
 	}
 
+	/**
+	 * 完成 {@code columnParts} 对应的框架处理。
+	 *
+	 * @param alias 调用参数 {@code alias}
+	 * @param permission 调用参数 {@code permission}
+	 * @return 处理结果
+	 */
 	public static List<String> columnParts(String alias, DataPermission permission){
 		// 构建数据限制条件SQL
 		List<String> columnParts = new ArrayList<String>();

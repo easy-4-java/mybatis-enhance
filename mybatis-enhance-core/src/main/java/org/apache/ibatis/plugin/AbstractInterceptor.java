@@ -31,6 +31,11 @@ import org.apache.ibatis.utils.MybatisUtils;
 import java.util.HashMap;
 import java.util.Properties;
 
+/**
+ * {@code AbstractInterceptor} MyBatis 拦截器。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 public abstract class AbstractInterceptor implements Interceptor {
 
 	/* Context参数 */
@@ -179,14 +184,32 @@ public abstract class AbstractInterceptor implements Interceptor {
 		}
 	}
 
+	/**
+	 * 设置 {@code interceptProperties}。
+	 *
+	 * @param properties 调用参数 {@code properties}
+	 */
 	public abstract void setInterceptProperties(Properties properties);
 
+	/**
+	 * 设置 {@code properties}。
+	 *
+	 * @param properties 调用参数 {@code properties}
+	 */
 	@Override
 	public void setProperties(Properties properties) {
 		//调用抽象接口，执行子类的代码
 		this.setInterceptProperties(properties);
 	}
 
+	/**
+	 * 构建 {@code buildSqlSource} 定义的框架操作。
+	 *
+	 * @param configuration MyBatis 配置
+	 * @param originalSql 原始 SQL
+	 * @param parameterType 调用参数 {@code parameterType}
+	 * @return 处理结果
+	 */
 	public SqlSource buildSqlSource(Configuration configuration, String originalSql, Class<?> parameterType) {
         SqlSourceBuilder builder = new SqlSourceBuilder(configuration);
         return  builder.parse(originalSql, parameterType, null);

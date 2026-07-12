@@ -25,6 +25,12 @@ public abstract class AbstractCommaArrayTypeHandler<E> extends BaseTypeHandler<E
      */
     protected static final String SEPARATOR = ",";
 
+    /**
+     * 转换 {@code convert} 定义的框架操作。
+     *
+     * @param obj 调用参数 {@code obj}
+     * @return 处理结果
+     */
     @Override
     protected String convert(E[] obj) {
         if (obj == null || obj.length == 0) {
@@ -40,6 +46,12 @@ public abstract class AbstractCommaArrayTypeHandler<E> extends BaseTypeHandler<E
         return sb.toString();
     }
 
+    /**
+     * 解析 {@code parse} 定义的框架操作。
+     *
+     * @param result 调用参数 {@code result}
+     * @return 处理结果
+     */
     @Override
     protected E[] parse(String result) {
         if (result == null || result.isEmpty()) {

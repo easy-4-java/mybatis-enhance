@@ -32,11 +32,25 @@ public final class MysqlDialect implements Dialect {
     private MysqlDialect() {
     }
 
+    /**
+     * 构建 {@code buildPaginationSql} 定义的框架操作。
+     *
+     * @param originalSql 原始 SQL
+     * @param offset 调用参数 {@code offset}
+     * @param size 调用参数 {@code size}
+     * @return 处理结果
+     */
     @Override
     public String buildPaginationSql(String originalSql, long offset, long size) {
         return originalSql + " LIMIT " + offset + ", " + size;
     }
 
+    /**
+     * 构建 {@code buildCountSql} 定义的框架操作。
+     *
+     * @param originalSql 原始 SQL
+     * @return 处理结果
+     */
     @Override
     public String buildCountSql(String originalSql) {
         return "SELECT COUNT(1) FROM (" + originalSql + ") TOTAL";

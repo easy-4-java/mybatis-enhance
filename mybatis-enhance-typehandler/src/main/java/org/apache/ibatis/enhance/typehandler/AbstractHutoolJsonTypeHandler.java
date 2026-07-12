@@ -18,6 +18,12 @@ import cn.hutool.json.JSONUtil;
  */
 public abstract class AbstractHutoolJsonTypeHandler<T> extends BaseTypeHandler<T> {
 
+    /**
+     * 转换 {@code convert} 定义的框架操作。
+     *
+     * @param obj 调用参数 {@code obj}
+     * @return 处理结果
+     */
     @Override
     protected String convert(T obj) {
         return JSONUtil.toJsonStr(obj);

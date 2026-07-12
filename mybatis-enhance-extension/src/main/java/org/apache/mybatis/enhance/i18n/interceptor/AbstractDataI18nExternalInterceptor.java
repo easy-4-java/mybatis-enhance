@@ -35,11 +35,30 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * {@code AbstractDataI18nExternalInterceptor} MyBatis 拦截器。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 @Slf4j
 public abstract class AbstractDataI18nExternalInterceptor extends AbstractDataI18nInterceptor {
 
+	/**
+	 * 获取 {@code sqlSession}。
+	 *
+	 * @return 对应的属性值
+	 */
 	public abstract SqlSession getSqlSession();
 
+	/**
+	 * 执行 {@code doResultSetIntercept} 定义的框架操作。
+	 *
+	 * @param invocation MyBatis 插件调用上下文
+	 * @param resultSetHandler 结果集处理器
+	 * @param metaResultSetHandler 调用参数 {@code metaResultSetHandler}
+	 * @return 处理结果
+	 * @throws Throwable 底层操作失败时抛出
+	 */
 	@Override
 	public Object doResultSetIntercept(Invocation invocation,ResultSetHandler resultSetHandler,MetaResultSetHandler metaResultSetHandler) throws Throwable{
 		// 获取处理结果

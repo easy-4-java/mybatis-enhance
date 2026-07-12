@@ -35,6 +35,11 @@ public class IDWorker {
 	 */
 	private static Sequence worker = new Sequence();
 
+	/**
+	 * 获取 {@code id}。
+	 *
+	 * @return 对应的属性值
+	 */
 	public static long getId() {
 		return worker.nextId();
 	}

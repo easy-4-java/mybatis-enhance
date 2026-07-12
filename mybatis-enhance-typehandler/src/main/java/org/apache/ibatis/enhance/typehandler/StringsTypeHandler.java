@@ -11,16 +11,34 @@ import java.util.List;
  */
 public class StringsTypeHandler extends AbstractCommaArrayTypeHandler<String> {
 
+    /**
+     * 解析 {@code parseElement} 定义的框架操作。
+     *
+     * @param element 调用参数 {@code element}
+     * @return 处理结果
+     */
     @Override
     protected String parseElement(String element) {
         return element;
     }
 
+    /**
+     * 转换 {@code toArray} 定义的框架操作。
+     *
+     * @param list 调用参数 {@code list}
+     * @return 处理结果
+     */
     @Override
     protected String[] toArray(List<String> list) {
         return list.toArray(new String[0]);
     }
 
+    /**
+     * 创建 {@code newArray} 定义的框架操作。
+     *
+     * @param length 调用参数 {@code length}
+     * @return 处理结果
+     */
     @Override
     protected String[] newArray(int length) {
         return new String[length];

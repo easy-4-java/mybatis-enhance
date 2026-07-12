@@ -18,7 +18,10 @@ package org.apache.mybatis.enhance.annotation.permission;
 import java.lang.annotation.*;
 
 /**
- * 该注解用于方法，字段；指明字段
+ * 定义一个受限表的数据权限规则。
+ *
+ * <p>该注解通常嵌套在 {@link RequiresPermissions} 中，由权限解析器组合字段条件并生成
+ * 追加到原 SQL 的权限表达式。</p>
  */
 @Documented
 @Inherited
@@ -27,16 +30,22 @@ import java.lang.annotation.*;
 public @interface RequiresPermission {
 
 	/**
-	 *受限表名称（实体表名称）
+	 * 获取受限表名称。
+	 *
+	 * @return 数据库表名
 	 */
-	public abstract String table();
+	String table();
 	/**
-	 * 数据权限项数组
+	 * 获取字段级权限条件。
+	 *
+	 * @return 权限条件数组
 	 */
-	public abstract RequiresPermissionColumn[] value();
+	RequiresPermissionColumn[] value();
 	/**
-	 * 数据权限项关系 and/or
+	 * 获取字段条件之间的逻辑关系。
+	 *
+	 * @return 逻辑关系
 	 */
-	public abstract Relational relation();
+	Relational relation();
 
 }

@@ -17,8 +17,10 @@ package org.apache.mybatis.enhance.annotation.permission;
 
 import java.lang.annotation.*;
 
-/***
- * 该注解用于方法，字段；指明字段
+/**
+ * 在 Mapper 方法上显式关闭数据权限 SQL 改写。
+ *
+ * <p>用于公共查询、系统维护任务或已由上层完成权限约束的语句。</p>
  */
 @Documented
 @Inherited

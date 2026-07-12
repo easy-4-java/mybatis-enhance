@@ -17,8 +17,11 @@ package org.apache.mybatis.enhance.annotation.i18n;
 
 import java.lang.annotation.*;
 
-/***
- * 该注解用于方法，字段；指明字段
+/**
+ * 声明需要按语言环境映射的结果字段。
+ *
+ * <p>可用于实体字段或 Mapper 方法。运行时处理器根据 {@link #i18n()} 中的语言列配置，
+ * 将当前语言对应的数据库列映射到目标属性。</p>
  */
 @Documented
 @Inherited
@@ -26,8 +29,18 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD,ElementType.FIELD})
 public @interface I18nColumn {
 
-	public abstract String column() default "";
+	/**
+	 * 获取目标属性或基础列名称。
+	 *
+	 * @return 目标列名称；空字符串表示由处理器根据上下文推断
+	 */
+	String column() default "";
 
-	public abstract I18nLocale[] i18n();
+	/**
+	 * 获取各语言环境对应的物理列配置。
+	 *
+	 * @return 语言列配置，至少应包含一个元素
+	 */
+	I18nLocale[] i18n();
 
 }

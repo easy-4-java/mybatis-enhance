@@ -11,16 +11,34 @@ import java.util.List;
  */
 public class LongsTypeHandler extends AbstractCommaArrayTypeHandler<Long> {
 
+    /**
+     * 解析 {@code parseElement} 定义的框架操作。
+     *
+     * @param element 调用参数 {@code element}
+     * @return 处理结果
+     */
     @Override
     protected Long parseElement(String element) {
         return Long.valueOf(element);
     }
 
+    /**
+     * 转换 {@code toArray} 定义的框架操作。
+     *
+     * @param list 调用参数 {@code list}
+     * @return 处理结果
+     */
     @Override
     protected Long[] toArray(List<Long> list) {
         return list.toArray(new Long[0]);
     }
 
+    /**
+     * 创建 {@code newArray} 定义的框架操作。
+     *
+     * @param length 调用参数 {@code length}
+     * @return 处理结果
+     */
     @Override
     protected Long[] newArray(int length) {
         return new Long[length];

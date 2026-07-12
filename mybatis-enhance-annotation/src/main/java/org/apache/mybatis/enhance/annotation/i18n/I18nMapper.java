@@ -17,12 +17,22 @@ package org.apache.mybatis.enhance.annotation.i18n;
 
 import java.lang.annotation.*;
 
+/**
+ * 声明 Mapper 方法返回结果的国际化列映射。
+ *
+ * <p>适用于通过注解显式描述多个国际化字段的查询方法。</p>
+ */
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 public @interface I18nMapper {
 
-	public abstract I18nColumn[] value() default {};
+	/**
+	 * 获取方法级国际化字段配置。
+	 *
+	 * @return 国际化字段配置；空数组表示由实体元数据推断
+	 */
+	I18nColumn[] value() default {};
 
 }

@@ -23,6 +23,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Locale;
 
+/**
+ * {@code AbstractDataI18nHandler} 处理器。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 @SuppressWarnings("unchecked")
 public abstract class AbstractDataI18nHandler implements DataI18nHandler {
 
@@ -54,6 +59,17 @@ public abstract class AbstractDataI18nHandler implements DataI18nHandler {
 		return new Object[]{source};
 	}
 
+	/**
+	 * 处理 {@code handle} 定义的框架操作。
+	 *
+	 * @param locale 语言环境
+	 * @param invocation MyBatis 插件调用上下文
+	 * @param metaResultSetHandler 调用参数 {@code metaResultSetHandler}
+	 * @param orginData 调用参数 {@code orginData}
+	 * @param i18nData 调用参数 {@code i18nData}
+	 * @return 处理结果
+	 * @throws Exception 底层操作失败时抛出
+	 */
 	@Override
 	public Object handle(Locale locale,Invocation invocation,MetaResultSetHandler metaResultSetHandler, Object orginData, Object i18nData) throws Exception  {
 		Collection<Object> orginList  = null;
@@ -81,6 +97,17 @@ public abstract class AbstractDataI18nHandler implements DataI18nHandler {
 		return doHandle(locale, invocation, metaResultSetHandler, orginList , i18nList );
 	}
 
+	/**
+	 * 执行 {@code doHandle} 定义的框架操作。
+	 *
+	 * @param locale 语言环境
+	 * @param invocation MyBatis 插件调用上下文
+	 * @param metaResultSetHandler 调用参数 {@code metaResultSetHandler}
+	 * @param orginList 调用参数 {@code orginList}
+	 * @param i18nList 调用参数 {@code i18nList}
+	 * @return 处理结果
+	 * @throws Exception 底层操作失败时抛出
+	 */
 	public abstract Object doHandle(Locale locale,Invocation invocation,MetaResultSetHandler metaResultSetHandler,Collection<Object> orginList,Collection<Object> i18nList) throws Exception ;
 
 }

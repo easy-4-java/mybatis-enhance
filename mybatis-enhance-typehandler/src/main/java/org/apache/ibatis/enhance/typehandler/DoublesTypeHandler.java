@@ -11,16 +11,34 @@ import java.util.List;
  */
 public class DoublesTypeHandler extends AbstractCommaArrayTypeHandler<Double> {
 
+    /**
+     * 解析 {@code parseElement} 定义的框架操作。
+     *
+     * @param element 调用参数 {@code element}
+     * @return 处理结果
+     */
     @Override
     protected Double parseElement(String element) {
         return Double.valueOf(element);
     }
 
+    /**
+     * 转换 {@code toArray} 定义的框架操作。
+     *
+     * @param list 调用参数 {@code list}
+     * @return 处理结果
+     */
     @Override
     protected Double[] toArray(List<Double> list) {
         return list.toArray(new Double[0]);
     }
 
+    /**
+     * 创建 {@code newArray} 定义的框架操作。
+     *
+     * @param length 调用参数 {@code length}
+     * @return 处理结果
+     */
     @Override
     protected Double[] newArray(int length) {
         return new Double[length];

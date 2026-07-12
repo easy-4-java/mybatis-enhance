@@ -42,11 +42,22 @@ public abstract class ListTypeHandler<T> extends AbstractJacksonJsonTypeHandler<
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+    /**
+     * 完成 {@code objectMapper} 对应的框架处理。
+     *
+     * @return 处理结果
+     */
     @Override
     protected ObjectMapper objectMapper() {
         return OBJECT_MAPPER;
     }
 
+    /**
+     * 转换 {@code convert} 定义的框架操作。
+     *
+     * @param obj 调用参数 {@code obj}
+     * @return 处理结果
+     */
     @Override
     protected String convert(List<T> obj) {
         // 保留历史行为：空列表写入 null，避免数据库存储 "[]"
@@ -56,6 +67,12 @@ public abstract class ListTypeHandler<T> extends AbstractJacksonJsonTypeHandler<
         return super.convert(obj);
     }
 
+    /**
+     * 解析 {@code parse} 定义的框架操作。
+     *
+     * @param json 调用参数 {@code json}
+     * @return 处理结果
+     */
     @Override
     protected List<T> parse(String json) {
         try {

@@ -35,9 +35,23 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
+/**
+ * {@code AbstractDataI18nColumnInterceptor} MyBatis 拦截器。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 @Slf4j
 public abstract class AbstractDataI18nColumnInterceptor extends AbstractDataI18nInterceptor {
 
+	/**
+	 * 执行 {@code doStatementIntercept} 定义的框架操作。
+	 *
+	 * @param invocation MyBatis 插件调用上下文
+	 * @param statementHandler 语句处理器
+	 * @param metaStatementHandler 调用参数 {@code metaStatementHandler}
+	 * @return 处理结果
+	 * @throws Throwable 底层操作失败时抛出
+	 */
 	@Override
 	public Object doStatementIntercept(Invocation invocation,StatementHandler statementHandler,MetaStatementHandler metaStatementHandler) throws Throwable {
 
@@ -90,6 +104,12 @@ public abstract class AbstractDataI18nColumnInterceptor extends AbstractDataI18n
 		return invocation.proceed();
 	}
 
+	/**
+	 * 完成 {@code plugin} 对应的框架处理。
+	 *
+	 * @param target 目标对象
+	 * @return 处理结果
+	 */
 	@Override
 	public Object plugin(Object target) {
 		if (target instanceof StatementHandler) {

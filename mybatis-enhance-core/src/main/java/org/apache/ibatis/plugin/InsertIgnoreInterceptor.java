@@ -81,6 +81,13 @@ public class InsertIgnoreInterceptor implements Interceptor {
         return Objects.equals(THREAD_LOCAL.get(), Boolean.TRUE);
     }
 
+    /**
+     * 拦截并处理 {@code intercept} 定义的框架操作。
+     *
+     * @param invocation MyBatis 插件调用上下文
+     * @return 处理结果
+     * @throws Throwable 底层操作失败时抛出
+     */
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         if (!isEnabled()) {
@@ -100,6 +107,12 @@ public class InsertIgnoreInterceptor implements Interceptor {
         return invocation.proceed();
     }
 
+    /**
+     * 完成 {@code plugin} 对应的框架处理。
+     *
+     * @param target 目标对象
+     * @return 处理结果
+     */
     @Override
     public Object plugin(Object target) {
         if (target instanceof StatementHandler) {

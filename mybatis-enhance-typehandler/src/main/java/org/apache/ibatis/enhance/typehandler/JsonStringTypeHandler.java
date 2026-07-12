@@ -33,6 +33,11 @@ public abstract class JsonStringTypeHandler<T> extends AbstractJacksonJsonTypeHa
     private Class<?> componentType;
     private Object[] componentArray;
 
+    /**
+     * 创建处理器并解析子类声明的目标类型。
+     *
+     * <p>目标类型为数组时同时缓存组件类型和空数组模板，用于 Jackson 集合结果转换。</p>
+     */
     public JsonStringTypeHandler() {
         Class<T> tClass = type();
         // 判断具体的类型是否为数组
@@ -43,11 +48,23 @@ public abstract class JsonStringTypeHandler<T> extends AbstractJacksonJsonTypeHa
         }
     }
 
+    /**
+     * 获取该类型处理器共享的 Jackson 映射器。
+     *
+     * @return Jackson 映射器
+     */
     @Override
     protected ObjectMapper objectMapper() {
         return OBJECT_MAPPER;
     }
 
+    /**
+     * 将 JSON 解析为单个 POJO 或 POJO 数组。
+     *
+     * @param json JSON 文本
+     * @return 目标 POJO 或数组
+     * @throws RuntimeException JSON 解析失败时抛出
+     */
     @Override
     @SuppressWarnings("unchecked")
     protected T parse(String json) {

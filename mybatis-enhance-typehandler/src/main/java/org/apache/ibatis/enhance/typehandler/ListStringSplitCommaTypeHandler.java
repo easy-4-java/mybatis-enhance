@@ -19,11 +19,28 @@ import java.util.List;
  */
 public class ListStringSplitCommaTypeHandler extends BaseTypeHandler<List<String>> {
 
+    /**
+     * 设置 {@code nonNullParameter}。
+     *
+     * @param ps 预编译语句
+     * @param i 调用参数 {@code i}
+     * @param parameter 方法参数
+     * @param jdbcType JDBC 类型
+     * @throws SQLException 底层操作失败时抛出
+     */
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, List<String> parameter, JdbcType jdbcType) throws SQLException {
         ps.setString(i, StrUtil.join(",", parameter));
     }
 
+    /**
+     * 获取 {@code nullableResult}。
+     *
+     * @param rs 结果集
+     * @param columnName 列名
+     * @return 对应的属性值
+     * @throws SQLException 底层操作失败时抛出
+     */
     @Override
     public List<String> getNullableResult(ResultSet rs, String columnName) throws SQLException {
         String string = rs.getString(columnName);
@@ -33,6 +50,14 @@ public class ListStringSplitCommaTypeHandler extends BaseTypeHandler<List<String
         return Arrays.asList(string.split(","));
     }
 
+    /**
+     * 获取 {@code nullableResult}。
+     *
+     * @param rs 结果集
+     * @param columnIndex 列索引
+     * @return 对应的属性值
+     * @throws SQLException 底层操作失败时抛出
+     */
     @Override
     public List<String> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         String string = rs.getString(columnIndex);
@@ -42,6 +67,14 @@ public class ListStringSplitCommaTypeHandler extends BaseTypeHandler<List<String
         return Arrays.asList(string.split(","));
     }
 
+    /**
+     * 获取 {@code nullableResult}。
+     *
+     * @param cs 存储过程语句
+     * @param columnIndex 列索引
+     * @return 对应的属性值
+     * @throws SQLException 底层操作失败时抛出
+     */
     @Override
     public List<String> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         String string = cs.getString(columnIndex);

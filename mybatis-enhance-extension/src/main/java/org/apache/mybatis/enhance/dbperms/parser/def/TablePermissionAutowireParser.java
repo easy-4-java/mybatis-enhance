@@ -27,6 +27,11 @@ import org.apache.ibatis.binding.MetaStatementHandler;
 import org.apache.mybatis.enhance.dbperms.parser.ITablePermissionAutowireHandler;
 import org.apache.mybatis.enhance.dbperms.parser.ITablePermissionParser;
 
+/**
+ * {@code TablePermissionAutowireParser} 解析器。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 @Data
 @Accessors(chain = true)
 public class TablePermissionAutowireParser implements ITablePermissionParser {
@@ -54,6 +59,13 @@ public class TablePermissionAutowireParser implements ITablePermissionParser {
      */
     protected void internalInit() {};
 
+    /**
+     * 解析 {@code parser} 定义的框架操作。
+     *
+     * @param metaHandler 调用参数 {@code metaHandler}
+     * @param sql SQL 文本
+     * @return 处理结果
+     */
     public String parser(MetaStatementHandler metaHandler, String sql) {
     	if (!this.doFilter(metaHandler, sql)) {
     		 return sql;

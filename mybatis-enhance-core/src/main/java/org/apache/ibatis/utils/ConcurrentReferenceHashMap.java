@@ -172,14 +172,30 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	}
 
 
+	/**
+	 * 获取 {@code loadFactor}。
+	 *
+	 * @return 对应的属性值
+	 */
 	protected final float getLoadFactor() {
 		return this.loadFactor;
 	}
 
+	/**
+	 * 获取 {@code segmentsSize}。
+	 *
+	 * @return 对应的属性值
+	 */
 	protected final int getSegmentsSize() {
 		return this.segments.length;
 	}
 
+	/**
+	 * 获取 {@code segment}。
+	 *
+	 * @param index 索引
+	 * @return 对应的属性值
+	 */
 	protected final Segment getSegment(int index) {
 		return this.segments[index];
 	}
@@ -212,6 +228,12 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	}
 
 
+	/**
+	 * 完成 {@code get} 对应的框架处理。
+	 *
+	 * @param key 键
+	 * @return 对应的属性值
+	 */
 	public V get(Object key) {
 		Reference<K, V> reference = getReference(key, Restructure.WHEN_NECESSARY);
 		Entry<K, V> entry = (reference != null ? reference.get() : null);
@@ -219,6 +241,12 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	}
 
 
+	/**
+	 * 判断是否包含 {@code containsKey} 定义的框架操作。
+	 *
+	 * @param key 键
+	 * @return 条件成立时返回 {@code true}，否则返回 {@code false}
+	 */
 	public boolean containsKey(Object key) {
 		Reference<K, V> reference = getReference(key, Restructure.WHEN_NECESSARY);
 		Entry<K, V> entry = (reference != null ? reference.get() : null);
@@ -238,10 +266,24 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	}
 
 
+	/**
+	 * 写入 {@code put} 定义的框架操作。
+	 *
+	 * @param key 键
+	 * @param value 待处理值
+	 * @return 处理结果
+	 */
 	public V put(K key, V value) {
 		return put(key, value, true);
 	}
 
+	/**
+	 * 写入 {@code putIfAbsent} 定义的框架操作。
+	 *
+	 * @param key 键
+	 * @param value 待处理值
+	 * @return 处理结果
+	 */
 	public V putIfAbsent(K key, V value) {
 		return put(key, value, false);
 	}
@@ -249,6 +291,14 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	private V put(final K key, final V value, final boolean overwriteExisting) {
 		return doTask(key, new Task<V>(TaskOption.RESTRUCTURE_BEFORE, TaskOption.RESIZE) {
 
+			/**
+			 * 执行 {@code execute} 定义的框架操作。
+			 *
+			 * @param reference 调用参数 {@code reference}
+			 * @param entry 调用参数 {@code entry}
+			 * @param entries 调用参数 {@code entries}
+			 * @return 处理结果
+			 */
 			protected V execute(Reference<K, V> reference, Entry<K, V> entry, Entries entries) {
 				if (entry != null) {
 					V previousValue = entry.getValue();
@@ -264,9 +314,22 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	}
 
 
+	/**
+	 * 移除 {@code remove} 定义的框架操作。
+	 *
+	 * @param key 键
+	 * @return 处理结果
+	 */
 	public V remove(Object key) {
 		return doTask(key, new Task<V>(TaskOption.RESTRUCTURE_AFTER, TaskOption.SKIP_IF_EMPTY) {
 
+			/**
+			 * 执行 {@code execute} 定义的框架操作。
+			 *
+			 * @param reference 调用参数 {@code reference}
+			 * @param entry 调用参数 {@code entry}
+			 * @return 处理结果
+			 */
 			protected V execute(Reference<K, V> reference, Entry<K, V> entry) {
 				if (entry != null) {
 					reference.release();
@@ -278,9 +341,23 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	}
 
 
+	/**
+	 * 移除 {@code remove} 定义的框架操作。
+	 *
+	 * @param key 键
+	 * @param value 待处理值
+	 * @return 处理结果
+	 */
 	public boolean remove(Object key, final Object value) {
 		return doTask(key, new Task<Boolean>(TaskOption.RESTRUCTURE_AFTER, TaskOption.SKIP_IF_EMPTY) {
 
+			/**
+			 * 执行 {@code execute} 定义的框架操作。
+			 *
+			 * @param reference 调用参数 {@code reference}
+			 * @param entry 调用参数 {@code entry}
+			 * @return 处理结果
+			 */
 			protected Boolean execute(Reference<K, V> reference, Entry<K, V> entry) {
 				if (entry != null && ObjectUtils.nullSafeEquals(entry.getValue(), value)) {
 					reference.release();
@@ -292,9 +369,24 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	}
 
 
+	/**
+	 * 完成 {@code replace} 对应的框架处理。
+	 *
+	 * @param key 键
+	 * @param oldValue 调用参数 {@code oldValue}
+	 * @param newValue 调用参数 {@code newValue}
+	 * @return 处理结果
+	 */
 	public boolean replace(K key, final V oldValue, final V newValue) {
 		return doTask(key, new Task<Boolean>(TaskOption.RESTRUCTURE_BEFORE, TaskOption.SKIP_IF_EMPTY) {
 
+			/**
+			 * 执行 {@code execute} 定义的框架操作。
+			 *
+			 * @param reference 调用参数 {@code reference}
+			 * @param entry 调用参数 {@code entry}
+			 * @return 处理结果
+			 */
 			protected Boolean execute(Reference<K, V> reference, Entry<K, V> entry) {
 				if (entry != null && ObjectUtils.nullSafeEquals(entry.getValue(), oldValue)) {
 					entry.setValue(newValue);
@@ -306,9 +398,23 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	}
 
 
+	/**
+	 * 完成 {@code replace} 对应的框架处理。
+	 *
+	 * @param key 键
+	 * @param value 待处理值
+	 * @return 处理结果
+	 */
 	public V replace(K key, final V value) {
 		return doTask(key, new Task<V>(TaskOption.RESTRUCTURE_BEFORE, TaskOption.SKIP_IF_EMPTY) {
 
+			/**
+			 * 执行 {@code execute} 定义的框架操作。
+			 *
+			 * @param reference 调用参数 {@code reference}
+			 * @param entry 调用参数 {@code entry}
+			 * @return 处理结果
+			 */
 			protected V execute(Reference<K, V> reference, Entry<K, V> entry) {
 				if (entry != null) {
 					V previousValue = entry.getValue();
@@ -321,6 +427,10 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	}
 
 
+	/**
+	 * 清空 {@code clear} 定义的框架操作。
+	 *
+	 */
 	public void clear() {
 		for (Segment segment : this.segments) {
 			segment.clear();
@@ -341,6 +451,11 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 
 
 
+	/**
+	 * 获取当前元素数量。
+	 *
+	 * @return 元素数量
+	 */
 	public int size() {
 		int size = 0;
 		for (Segment segment : this.segments) {
@@ -350,6 +465,11 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	}
 
 
+	/**
+	 * 完成 {@code entrySet} 对应的框架处理。
+	 *
+	 * @return 处理结果
+	 */
 	public Set<Map.Entry<K, V>> entrySet() {
 		if (this.entrySet == null) {
 			this.entrySet = new EntrySet();
@@ -384,15 +504,15 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	}
 
 
-	/*
-	 * Various reference types supported by this map.
+	/**
+	 * Map 条目使用的引用强度。
 	 */
 	public static enum ReferenceType {
 
-		/* Use {@link SoftReference}s */
+		/** 使用 {@link SoftReference}，仅在内存压力下优先回收。 */
 		SOFT,
 
-		/* Use {@link WeakReference}s */
+		/** 使用 {@link WeakReference}，没有强引用后即可回收。 */
 		WEAK
 	}
 
@@ -426,12 +546,25 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 		 */
 		private int resizeThreshold;
 
+		/**
+		 * 完成 {@code Segment} 对应的框架处理。
+		 *
+		 * @param initialCapacity 调用参数 {@code initialCapacity}
+		 */
 		public Segment(int initialCapacity) {
 			this.referenceManager = createReferenceManager();
 			this.initialSize = 1 << calculateShift(initialCapacity, MAXIMUM_SEGMENT_SIZE);
 			setReferences(createReferenceArray(this.initialSize));
 		}
 
+		/**
+		 * 获取 {@code reference}。
+		 *
+		 * @param key 键
+		 * @param hash 哈希值
+		 * @param restructure 调用参数 {@code restructure}
+		 * @return 对应的属性值
+		 */
 		public Reference<K, V> getReference(Object key, int hash, Restructure restructure) {
 			if (restructure == Restructure.WHEN_NECESSARY) {
 				restructureIfNecessary(false);
@@ -470,6 +603,11 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 				Entry<K, V> entry = (reference != null ? reference.get() : null);
 				Entries entries = new Entries() {
 
+					/**
+					 * 添加 {@code add} 定义的框架操作。
+					 *
+					 * @param value 待处理值
+					 */
 					public void add(V value) {
 						@SuppressWarnings("unchecked")
 						Entry<K, V> newEntry = new Entry<K, V>((K) key, value);
@@ -663,22 +801,44 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 
 		private volatile V value;
 
+		/**
+		 * 完成 {@code Entry} 对应的框架处理。
+		 *
+		 * @param key 键
+		 * @param value 待处理值
+		 */
 		public Entry(K key, V value) {
 			this.key = key;
 			this.value = value;
 		}
 
 
+		/**
+		 * 获取 {@code key}。
+		 *
+		 * @return 对应的属性值
+		 */
 		public K getKey() {
 			return this.key;
 		}
 
 
+		/**
+		 * 获取 {@code value}。
+		 *
+		 * @return 对应的属性值
+		 */
 		public V getValue() {
 			return this.value;
 		}
 
 
+		/**
+		 * 设置 {@code value}。
+		 *
+		 * @param value 待处理值
+		 * @return 当前对象
+		 */
 		public V setValue(V value) {
 			V previous = this.value;
 			this.value = value;
@@ -686,10 +846,21 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 		}
 
 
+		/**
+		 * 转换 {@code toString} 定义的框架操作。
+		 *
+		 * @return 处理结果
+		 */
 		public String toString() {
 			return (this.key + "=" + this.value);
 		}
 
+		/**
+		 * 比较当前对象与指定对象是否相等。
+		 *
+		 * @param other 调用参数 {@code other}
+		 * @return 处理结果
+		 */
 		public final boolean equals(Object other) {
 			if (this == other) {
 				return true;
@@ -703,6 +874,11 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 		}
 
 
+		/**
+		 * 计算当前对象的哈希值。
+		 *
+		 * @return 条件成立时返回 {@code true}，否则返回 {@code false}
+		 */
 		public final int hashCode() {
 			return (ObjectUtils.nullSafeHashCode(this.key) ^ ObjectUtils.nullSafeHashCode(this.value));
 		}
@@ -716,10 +892,22 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 
 		private final EnumSet<TaskOption> options;
 
+		/**
+		 * 完成 {@code Task} 对应的框架处理。
+		 *
+		 * @param options 调用参数 {@code options}
+		 * @return 处理结果
+		 */
 		public Task(TaskOption... options) {
 			this.options = (options.length == 0 ? EnumSet.noneOf(TaskOption.class) : EnumSet.of(options[0], options));
 		}
 
+		/**
+		 * 完成 {@code hasOption} 对应的框架处理。
+		 *
+		 * @param option 调用参数 {@code option}
+		 * @return 条件成立时返回 {@code true}，否则返回 {@code false}
+		 */
 		public boolean hasOption(TaskOption option) {
 			return this.options.contains(option);
 		}
@@ -749,12 +937,19 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	}
 
 
-	/*
-	 * Various options supported by a {@code Task}.
+	/**
+	 * 分段任务执行选项。
 	 */
 	private static enum TaskOption {
 
-		RESTRUCTURE_BEFORE, RESTRUCTURE_AFTER, SKIP_IF_EMPTY, RESIZE
+		/** 执行任务前清理失效引用。 */
+		RESTRUCTURE_BEFORE,
+		/** 执行任务后清理失效引用。 */
+		RESTRUCTURE_AFTER,
+		/** 分段为空时跳过任务。 */
+		SKIP_IF_EMPTY,
+		/** 达到阈值时允许扩容。 */
+		RESIZE
 	}
 
 
@@ -777,11 +972,22 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	private class EntrySet extends AbstractSet<Map.Entry<K, V>> {
 
 
+		/**
+		 * 完成 {@code iterator} 对应的框架处理。
+		 *
+		 * @return 处理结果
+		 */
 		public Iterator<Map.Entry<K, V>> iterator() {
 			return new EntryIterator();
 		}
 
 
+		/**
+		 * 判断是否包含 {@code contains} 定义的框架操作。
+		 *
+		 * @param o 调用参数 {@code o}
+		 * @return 条件成立时返回 {@code true}，否则返回 {@code false}
+		 */
 		public boolean contains(Object o) {
 			if (o != null && o instanceof Map.Entry<?, ?>) {
 				Map.Entry<?, ?> entry = (Map.Entry<?, ?>) o;
@@ -795,6 +1001,12 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 		}
 
 
+		/**
+		 * 移除 {@code remove} 定义的框架操作。
+		 *
+		 * @param o 调用参数 {@code o}
+		 * @return 处理结果
+		 */
 		public boolean remove(Object o) {
 			if (o instanceof Map.Entry<?, ?>) {
 				Map.Entry<?, ?> entry = (Map.Entry<?, ?>) o;
@@ -804,11 +1016,20 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 		}
 
 
+		/**
+		 * 获取当前元素数量。
+		 *
+		 * @return 元素数量
+		 */
 		public int size() {
 			return ConcurrentReferenceHashMap.this.size();
 		}
 
 
+		/**
+		 * 清空 {@code clear} 定义的框架操作。
+		 *
+		 */
 		public void clear() {
 			ConcurrentReferenceHashMap.this.clear();
 		}
@@ -832,17 +1053,32 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 
 		private Entry<K, V> last;
 
+		/**
+		 * 完成 {@code EntryIterator} 对应的框架处理。
+		 *
+		 * @return 处理结果
+		 */
 		public EntryIterator() {
 			moveToNextSegment();
 		}
 
 
+		/**
+		 * 完成 {@code hasNext} 对应的框架处理。
+		 *
+		 * @return 条件成立时返回 {@code true}，否则返回 {@code false}
+		 */
 		public boolean hasNext() {
 			getNextIfNecessary();
 			return (this.next != null);
 		}
 
 
+		/**
+		 * 完成 {@code next} 对应的框架处理。
+		 *
+		 * @return 处理结果
+		 */
 		public Entry<K, V> next() {
 			getNextIfNecessary();
 			if (this.next == null) {
@@ -889,6 +1125,10 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 		}
 
 
+		/**
+		 * 移除 {@code remove} 定义的框架操作。
+		 *
+		 */
 		public void remove() {
 			Assert.state(this.last != null);
 			ConcurrentReferenceHashMap.this.remove(this.last.getKey());
@@ -896,12 +1136,15 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	}
 
 
-	/*
-	 * The types of restructuring that can be performed.
+	/**
+	 * 引用表重构策略。
 	 */
 	protected static enum Restructure {
 
-		WHEN_NECESSARY, NEVER
+		/** 发现回收引用或容量压力时执行重构。 */
+		WHEN_NECESSARY,
+		/** 禁止重构。 */
+		NEVER
 	}
 
 
@@ -950,6 +1193,15 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 
 		private final Reference<K, V> nextReference;
 
+		/**
+		 * 完成 {@code SoftEntryReference} 对应的框架处理。
+		 *
+		 * @param entry 调用参数 {@code entry}
+		 * @param hash 哈希值
+		 * @param next 调用参数 {@code next}
+		 * @param queue 调用参数 {@code queue}
+		 * @return 处理结果
+		 */
 		public SoftEntryReference(Entry<K, V> entry, int hash, Reference<K, V> next, ReferenceQueue<Entry<K, V>> queue) {
 			super(entry, queue);
 			this.hash = hash;
@@ -957,16 +1209,30 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 		}
 
 
+		/**
+		 * 获取 {@code hash}。
+		 *
+		 * @return 对应的属性值
+		 */
 		public int getHash() {
 			return this.hash;
 		}
 
 
+		/**
+		 * 获取 {@code next}。
+		 *
+		 * @return 对应的属性值
+		 */
 		public Reference<K, V> getNext() {
 			return this.nextReference;
 		}
 
 
+		/**
+		 * 释放 {@code release} 定义的框架操作。
+		 *
+		 */
 		public void release() {
 			enqueue();
 			clear();
@@ -983,6 +1249,15 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 
 		private final Reference<K, V> nextReference;
 
+		/**
+		 * 完成 {@code WeakEntryReference} 对应的框架处理。
+		 *
+		 * @param entry 调用参数 {@code entry}
+		 * @param hash 哈希值
+		 * @param next 调用参数 {@code next}
+		 * @param queue 调用参数 {@code queue}
+		 * @return 处理结果
+		 */
 		public WeakEntryReference(Entry<K, V> entry, int hash, Reference<K, V> next, ReferenceQueue<Entry<K, V>> queue) {
 			super(entry, queue);
 			this.hash = hash;
@@ -990,16 +1265,30 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 		}
 
 
+		/**
+		 * 获取 {@code hash}。
+		 *
+		 * @return 对应的属性值
+		 */
 		public int getHash() {
 			return this.hash;
 		}
 
 
+		/**
+		 * 获取 {@code next}。
+		 *
+		 * @return 对应的属性值
+		 */
 		public Reference<K, V> getNext() {
 			return this.nextReference;
 		}
 
 
+		/**
+		 * 释放 {@code release} 定义的框架操作。
+		 *
+		 */
 		public void release() {
 			enqueue();
 			clear();

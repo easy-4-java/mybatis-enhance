@@ -19,6 +19,12 @@ import org.apache.ibatis.type.MappedTypes;
 @MappedJdbcTypes({JdbcType.VARCHAR})
 public class JsonTypeHandler extends AbstractHutoolJsonTypeHandler<JSONObject> {
 
+    /**
+     * 解析 {@code parse} 定义的框架操作。
+     *
+     * @param result 调用参数 {@code result}
+     * @return 处理结果
+     */
     @Override
     protected JSONObject parse(String result) {
         return JSONUtil.parseObj(result).toBean(JSONObject.class);

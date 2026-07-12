@@ -20,6 +20,12 @@ import java.util.Set;
 @MappedJdbcTypes({JdbcType.VARCHAR})
 public class SetStringTypeHandler extends AbstractStringCollectionTypeHandler<Set<String>> {
 
+    /**
+     * 包装 {@code wrapCollection} 定义的框架操作。
+     *
+     * @param list 调用参数 {@code list}
+     * @return 处理结果
+     */
     @Override
     protected Set<String> wrapCollection(List<String> list) {
         return new HashSet<>(list);

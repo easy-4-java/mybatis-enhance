@@ -33,6 +33,11 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+/**
+ * {@code DefaultDataI18nMappedHandler} 处理器。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 @SuppressWarnings("unchecked")
 public class DefaultDataI18nMappedHandler implements DataI18nMappedHandler {
 
@@ -58,6 +63,12 @@ public class DefaultDataI18nMappedHandler implements DataI18nMappedHandler {
 		}
 	}
 
+	/**
+	 * 获取 {@code cachedFields}。
+	 *
+	 * @param clazz 目标类型
+	 * @return 对应的属性值
+	 */
 	protected Field[] getCachedFields(Class<?> clazz) {
 		Field[] ret = COMPLIED_FIELDS.get(clazz);
 		if (ret != null) {
@@ -77,6 +88,14 @@ public class DefaultDataI18nMappedHandler implements DataI18nMappedHandler {
 		return ret;
 	}
 
+	/**
+	 * 获取 {@code primaryName}。
+	 *
+	 * @param i18nPrimary 调用参数 {@code i18nPrimary}
+	 * @param source 调用参数 {@code source}
+	 * @return 对应的属性值
+	 * @throws Exception 底层操作失败时抛出
+	 */
 	@Override
 	public String getPrimaryName(I18nPrimary i18nPrimary, Object source) throws Exception{
 		Class<?> clazz = source.getClass();
@@ -111,6 +130,17 @@ public class DefaultDataI18nMappedHandler implements DataI18nMappedHandler {
 	}
 
 
+	/**
+	 * 处理 {@code handle} 定义的框架操作。
+	 *
+	 * @param locale 语言环境
+	 * @param i18nMapper 调用参数 {@code i18nMapper}
+	 * @param primaryName 调用参数 {@code primaryName}
+	 * @param orginObject 调用参数 {@code orginObject}
+	 * @param i18nObject 调用参数 {@code i18nObject}
+	 * @return 处理结果
+	 * @throws Exception 底层操作失败时抛出
+	 */
 	@Override
 	public DataI18nMapper handle(Locale locale, I18nMapper i18nMapper, String primaryName , Object orginObject, Object i18nObject) throws Exception {
 		DataI18nMapper ret = COMPLIED_I18N_MAPPER.get(orginObject.getClass());

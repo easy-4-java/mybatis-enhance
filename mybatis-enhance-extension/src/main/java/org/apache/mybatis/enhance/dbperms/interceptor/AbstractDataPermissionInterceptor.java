@@ -35,9 +35,23 @@ import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.Properties;
 
+/**
+ * 数据权限 SQL 改写拦截器基类。
+ *
+ * <p>仅拦截带权限注解的 SELECT 语句，并尊重 {@link NotRequiresPermission} 显式跳过语义。
+ * 子类负责选择具体权限解析器并写回 {@code BoundSql}。</p>
+ */
 @Slf4j
 public abstract class AbstractDataPermissionInterceptor extends AbstractInterceptorAdapter {
 
+	/**
+	 * 判断当前 Mapper 类型或方法是否声明数据权限规则。
+	 *
+	 * @param invocation MyBatis 插件调用上下文
+	 * @param statementHandler 语句处理器
+	 * @param metaStatementHandler 语句元数据视图
+	 * @return SELECT 且需要权限控制时返回 {@code true}
+	 */
 	@Override
 	protected boolean isRequireIntercept(Invocation invocation, StatementHandler statementHandler, MetaStatementHandler metaStatementHandler) {
 		// 通过反射获取到当前MappedStatement
@@ -71,6 +85,12 @@ public abstract class AbstractDataPermissionInterceptor extends AbstractIntercep
 		return false;
 	}
 
+	/**
+	 * 根据缓存键判断同一调用链中的语句是否已处理。
+	 *
+	 * @param cacheKey MyBatis 缓存键
+	 * @return 尚未处理时返回 {@code true}
+	 */
 	protected boolean isIntercepted(CacheKey cacheKey) {
 		//获取当前线程绑定的上下文对象
 		String uniqueKey = DigestUtil.md5Hex(cacheKey.toString().getBytes());
@@ -81,16 +101,33 @@ public abstract class AbstractDataPermissionInterceptor extends AbstractIntercep
 		return false;
 	}
 
+	/**
+	 * 清理当前线程的拦截去重上下文。
+	 *
+	 * @param invocation MyBatis 插件调用上下文
+	 * @throws Throwable 底层操作失败时抛出
+	 */
 	@Override
 	public void doDestroyIntercept(Invocation invocation) throws Throwable {
 		extraContext.clear();
 	}
 
+	/**
+	 * 使用 MyBatis 插件代理包装目标对象。
+	 *
+	 * @param target 目标对象
+	 * @return 插件代理
+	 */
 	@Override
 	public Object plugin(Object target) {
 		return Plugin.wrap(target, this);
 	}
 
+	/**
+	 * 接收插件配置；基类当前没有通用配置项。
+	 *
+	 * @param properties MyBatis 插件属性
+	 */
 	@Override
 	public void setInterceptProperties(Properties properties) {
 

@@ -8,6 +8,11 @@ import org.apache.mybatis.enhance.annotation.permission.Relational;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * {@code DataPermission} 数据权限模型。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 @Getter
 @Setter
 @ToString

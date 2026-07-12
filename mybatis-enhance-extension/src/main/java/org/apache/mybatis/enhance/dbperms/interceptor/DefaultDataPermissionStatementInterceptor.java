@@ -42,6 +42,12 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 基于 {@link StatementHandler#prepare(Connection, Integer)} 的默认数据权限拦截器。
+ *
+ * <p>处理顺序为：SQL 内嵌权限脚本、自动权限注入、结构化注解权限、特殊 SQL 权限。
+ * 每次改写后将新 SQL 写回同一个 {@link BoundSql}，不替换 MyBatis 参数映射。</p>
+ */
 @Intercepts({
 	@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})
 })
@@ -53,12 +59,25 @@ public class DefaultDataPermissionStatementInterceptor extends AbstractDataPermi
 	protected final TablePermissionAnnotationParser annotationPermissionParser;
 	protected TablePermissionScriptParser scriptPermissionParser;
 
+	/**
+	 * 创建不支持内嵌权限脚本的拦截器。
+	 *
+	 * @param autowirePermissionParser 自动权限解析器
+	 * @param annotationPermissionParser 注解权限解析器
+	 */
 	public DefaultDataPermissionStatementInterceptor(TablePermissionAutowireParser autowirePermissionParser,
 			TablePermissionAnnotationParser annotationPermissionParser) {
 		this.autowirePermissionParser = autowirePermissionParser;
 		this.annotationPermissionParser = annotationPermissionParser;
 	}
 
+	/**
+	 * 创建完整权限解析链。
+	 *
+	 * @param autowirePermissionParser 自动权限解析器
+	 * @param annotationPermissionParser 注解权限解析器
+	 * @param scriptPermissionParser 内嵌脚本权限解析器
+	 */
 	public DefaultDataPermissionStatementInterceptor(TablePermissionAutowireParser autowirePermissionParser,
 			TablePermissionAnnotationParser annotationPermissionParser,
 			TablePermissionScriptParser scriptPermissionParser) {
@@ -67,6 +86,15 @@ public class DefaultDataPermissionStatementInterceptor extends AbstractDataPermi
 		this.scriptPermissionParser = scriptPermissionParser;
 	}
 
+	/**
+	 * 按权限配置重写准备执行的 SELECT SQL。
+	 *
+	 * @param invocation MyBatis 插件调用上下文
+	 * @param statementHandler 语句处理器
+	 * @param metaStatementHandler 语句元数据视图
+	 * @return 原始 MyBatis 调用结果
+	 * @throws Throwable 底层操作失败时抛出
+	 */
 	@Override
 	public Object doStatementIntercept(Invocation invocation, StatementHandler statementHandler,MetaStatementHandler metaStatementHandler) throws Throwable {
 
@@ -180,6 +208,12 @@ public class DefaultDataPermissionStatementInterceptor extends AbstractDataPermi
 		return invocation.proceed();
 	}
 
+	/**
+	 * 完成 {@code plugin} 对应的框架处理。
+	 *
+	 * @param target 目标对象
+	 * @return 处理结果
+	 */
 	@Override
 	public Object plugin(Object target) {
 		if (target instanceof StatementHandler) {

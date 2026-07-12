@@ -19,6 +19,12 @@ public class SelectAnnotationPermissionsParser extends AbstractPermissionTableVi
     private final RequiresPermission[] permissions;
     private final ITablePermissionAnnotationHandler tablePermissionHandler;
 
+    /**
+     * 创建实例并初始化运行所需的上下文。
+     *
+     * @param metaHandler 调用参数 {@code metaHandler}
+     * @param permissions 调用参数 {@code permissions}
+     */
     public SelectAnnotationPermissionsParser(MetaStatementHandler metaHandler,
                                              RequiresPermission[] permissions) {
         this.metaHandler = Objects.requireNonNull(metaHandler, "Meta handler must not be null");
@@ -26,6 +32,12 @@ public class SelectAnnotationPermissionsParser extends AbstractPermissionTableVi
         this.tablePermissionHandler = new DefaultTablePermissionAnnotationHandler();
     }
 
+    /**
+     * 完成 {@code replacement} 对应的框架处理。
+     *
+     * @param tableName 调用参数 {@code tableName}
+     * @return 处理结果
+     */
     @Override
     protected Optional<String> replacement(String tableName) {
         return Arrays.stream(permissions)

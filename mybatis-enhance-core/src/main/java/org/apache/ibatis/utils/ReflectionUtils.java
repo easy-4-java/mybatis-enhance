@@ -307,6 +307,13 @@ public abstract class ReflectionUtils {
 		return invokeMethod( getterMethodName, target, new Class[] {}, new Object[] {});
 	}
 
+	/**
+	 * 调用 {@code invokeGetterMethod} 定义的框架操作。
+	 *
+	 * @param target 目标对象
+	 * @param propertyName 调用参数 {@code propertyName}
+	 * @return 处理结果
+	 */
 	public static Object invokeGetterMethod( Object target,String propertyName) {
 		return invokeGetterMethod(propertyName,target);
 	}
@@ -603,6 +610,13 @@ public abstract class ReflectionUtils {
 	public static Field[] getAllDeclaredFields(Class<?> leafClass){
 		final List<Field> fields = new ArrayList<Field>(32);
 		doWithFields(leafClass,new FieldCallback(){
+			/**
+			 * 执行 {@code doWith} 定义的框架操作。
+			 *
+			 * @param field 反射字段
+			 * @throws IllegalArgumentException 底层操作失败时抛出
+			 * @throws IllegalAccessException 底层操作失败时抛出
+			 */
 			@Override
 			public void doWith(Field field) throws IllegalArgumentException,IllegalAccessException {
 				fields.add(field);
@@ -666,6 +680,13 @@ public abstract class ReflectionUtils {
 					"] must be same or subclass as source class [" + src.getClass().getName() + "]");
 		}
 		doWithFields(src.getClass(), new FieldCallback() {
+			/**
+			 * 执行 {@code doWith} 定义的框架操作。
+			 *
+			 * @param field 反射字段
+			 * @throws IllegalArgumentException 底层操作失败时抛出
+			 * @throws IllegalAccessException 底层操作失败时抛出
+			 */
 			@Override
 			public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
 				makeAccessible(field);
@@ -764,6 +785,12 @@ public abstract class ReflectionUtils {
 		}
 	};
 
+	/**
+	 * 完成 {@code checkFieldValueNotNull} 对应的框架处理。
+	 *
+	 * @param entity 调用参数 {@code entity}
+	 * @return 处理结果
+	 */
 	public static boolean checkFieldValueNotNull(Object entity) {
 		// TODO Auto-generated method stub
 		return false;

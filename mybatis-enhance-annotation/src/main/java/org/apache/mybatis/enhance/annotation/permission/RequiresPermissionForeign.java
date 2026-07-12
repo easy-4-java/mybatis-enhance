@@ -18,7 +18,10 @@ package org.apache.mybatis.enhance.annotation.permission;
 import java.lang.annotation.*;
 
 /**
- * 该注解用于方法，字段；指明字段
+ * 定义数据权限条件使用的关联表。
+ *
+ * <p>该注解作为 {@link RequiresPermissionColumn} 的嵌套配置，描述受限主表与权限关联表
+ * 之间的字段比较关系。</p>
  */
 @Documented
 @Inherited
@@ -27,16 +30,22 @@ import java.lang.annotation.*;
 public @interface RequiresPermissionForeign {
 
 	/**
-	 * 受限表字段关联表之间的关联条件
+	 * 获取主表字段与关联表字段之间的比较条件。
+	 *
+	 * @return 关联字段条件
 	 */
-	public abstract ForeignCondition condition();
+	ForeignCondition condition();
 	/**
-	 *外关联表名称（实体表名称），在 condition 为 EXISTS、NOT_EXISTS 时有意义
+	 * 获取关联表名称。
+	 *
+	 * @return 关联表名；空字符串表示未配置
 	 */
-	public abstract String table() default "";
+	String table() default "";
 	/**
-	 *外关联表字段（实体表字段列名称），在 condition 为 EXISTS、NOT_EXISTS 时有意义
+	 * 获取关联表字段名称。
+	 *
+	 * @return 关联列名；空字符串表示未配置
 	 */
-	public abstract String column() default "";
+	String column() default "";
 
 }

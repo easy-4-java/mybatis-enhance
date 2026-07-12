@@ -32,16 +32,40 @@ public class BigDecimalTypeHandler extends org.apache.ibatis.type.BigDecimalType
         return new BigDecimal(value.stripTrailingZeros().toPlainString());
     }
 
+    /**
+     * 获取 {@code nullableResult}。
+     *
+     * @param rs 结果集
+     * @param columnIndex 列索引
+     * @return 对应的属性值
+     * @throws SQLException 底层操作失败时抛出
+     */
     @Override
     public BigDecimal getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         return clearZero(super.getNullableResult(rs, columnIndex));
     }
 
+    /**
+     * 获取 {@code nullableResult}。
+     *
+     * @param rs 结果集
+     * @param columnName 列名
+     * @return 对应的属性值
+     * @throws SQLException 底层操作失败时抛出
+     */
     @Override
     public BigDecimal getNullableResult(ResultSet rs, String columnName) throws SQLException {
         return clearZero(super.getNullableResult(rs, columnName));
     }
 
+    /**
+     * 获取 {@code nullableResult}。
+     *
+     * @param cs 存储过程语句
+     * @param columnIndex 列索引
+     * @return 对应的属性值
+     * @throws SQLException 底层操作失败时抛出
+     */
     @Override
     public BigDecimal getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         return clearZero(super.getNullableResult(cs, columnIndex));

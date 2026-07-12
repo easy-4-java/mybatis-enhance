@@ -41,6 +41,12 @@ public class SystemClock {
 
     private void scheduleClockUpdating() {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
+            /**
+             * 创建 {@code newThread} 定义的框架操作。
+             *
+             * @param runnable 调用参数 {@code runnable}
+             * @return 处理结果
+             */
             public Thread newThread(Runnable runnable) {
                 Thread thread = new Thread(runnable, "System Clock");
                 thread.setDaemon(true);
@@ -48,6 +54,10 @@ public class SystemClock {
             }
         });
         scheduler.scheduleAtFixedRate(new Runnable() {
+            /**
+             * 完成 {@code run} 对应的框架处理。
+             *
+             */
             public void run() {
                 now.set(System.currentTimeMillis());
             }
@@ -58,10 +68,20 @@ public class SystemClock {
         return now.get();
     }
 
+    /**
+     * 完成 {@code now} 对应的框架处理。
+     *
+     * @return 处理结果
+     */
     public static long now() {
         return instance().currentTimeMillis();
     }
     
+	/**
+	 * 完成 {@code nowDate} 对应的框架处理。
+	 *
+	 * @return 处理结果
+	 */
 	public static String nowDate() {
 		return new Timestamp(instance().currentTimeMillis()).toString();
 	}

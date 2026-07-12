@@ -27,18 +27,48 @@ public class MetaObjectUtils{
 	private static class NullObject {
 	}
 
+	/**
+	 * 完成 {@code forObject} 对应的框架处理。
+	 *
+	 * @param object 目标对象
+	 * @return 处理结果
+	 */
 	public static MetaObject forObject(Object object) {
 		return MetaObject.forObject(object, DEFAULT_OBJECT_FACTORY,	DEFAULT_OBJECT_WRAPPER_FACTORY, new DefaultReflectorFactory());
 	}
 
+	/**
+	 * 完成 {@code forObject} 对应的框架处理。
+	 *
+	 * @param object 目标对象
+	 * @param objectFactory 对象工厂
+	 * @return 处理结果
+	 */
 	public static MetaObject forObject(Object object,ObjectFactory objectFactory) {
 		return MetaObject.forObject(object, objectFactory,DEFAULT_OBJECT_WRAPPER_FACTORY, new DefaultReflectorFactory());
 	}
 
+	/**
+	 * 完成 {@code forObject} 对应的框架处理。
+	 *
+	 * @param object 目标对象
+	 * @param objectFactory 对象工厂
+	 * @param objectWrapperFactory 调用参数 {@code objectWrapperFactory}
+	 * @return 处理结果
+	 */
 	public static MetaObject forObject(Object object,ObjectFactory objectFactory,ObjectWrapperFactory objectWrapperFactory) {
 		return MetaObject.forObject(object, objectFactory,objectWrapperFactory, new DefaultReflectorFactory());
 	}
 
+	/**
+	 * 完成 {@code forObject} 对应的框架处理。
+	 *
+	 * @param object 目标对象
+	 * @param objectFactory 对象工厂
+	 * @param objectWrapperFactory 调用参数 {@code objectWrapperFactory}
+	 * @param reflectorFactory 反射器工厂
+	 * @return 处理结果
+	 */
 	public static MetaObject forObject(Object object,ObjectFactory objectFactory,ObjectWrapperFactory objectWrapperFactory,	ReflectorFactory reflectorFactory) {
 		return MetaObject.forObject(object, objectFactory,objectWrapperFactory, reflectorFactory);
 	}

@@ -85,6 +85,12 @@ public class Sequence {
 				| (workerId << workerIdShift) | sequence;
 	}
 
+	/**
+	 * 完成 {@code tilNextMillis} 对应的框架处理。
+	 *
+	 * @param lastTimestamp 调用参数 {@code lastTimestamp}
+	 * @return 处理结果
+	 */
 	protected long tilNextMillis(long lastTimestamp) {
 		long timestamp = timeGen();
 		while (timestamp <= lastTimestamp) {
@@ -93,6 +99,11 @@ public class Sequence {
 		return timestamp;
 	}
 
+	/**
+	 * 完成 {@code timeGen} 对应的框架处理。
+	 *
+	 * @return 处理结果
+	 */
 	protected long timeGen() {
 		return SystemClock.now();
 	}

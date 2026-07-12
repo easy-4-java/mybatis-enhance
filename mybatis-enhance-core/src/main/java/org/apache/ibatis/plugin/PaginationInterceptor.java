@@ -67,18 +67,39 @@ public class PaginationInterceptor implements Interceptor {
 
     private final Dialect dialect;
 
+    /**
+     * 创建实例并初始化运行所需的上下文。
+     *
+     */
     public PaginationInterceptor() {
         this(MysqlDialect.INSTANCE);
     }
 
+    /**
+     * 创建实例并初始化运行所需的上下文。
+     *
+     * @param dialect 调用参数 {@code dialect}
+     */
     public PaginationInterceptor(Dialect dialect) {
         this.dialect = Objects.requireNonNull(dialect, "dialect must not be null");
     }
 
+    /**
+     * 获取 {@code dialect}。
+     *
+     * @return 对应的属性值
+     */
     public Dialect getDialect() {
         return dialect;
     }
 
+    /**
+     * 拦截并处理 {@code intercept} 定义的框架操作。
+     *
+     * @param invocation MyBatis 插件调用上下文
+     * @return 处理结果
+     * @throws Throwable 底层操作失败时抛出
+     */
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         StatementHandler sh = (StatementHandler) invocation.getTarget();
@@ -119,6 +140,12 @@ public class PaginationInterceptor implements Interceptor {
         return invocation.proceed();
     }
 
+    /**
+     * 完成 {@code plugin} 对应的框架处理。
+     *
+     * @param target 目标对象
+     * @return 处理结果
+     */
     @Override
     public Object plugin(Object target) {
         if (target instanceof StatementHandler) {
@@ -127,6 +154,11 @@ public class PaginationInterceptor implements Interceptor {
         return target;
     }
 
+    /**
+     * 设置 {@code properties}。
+     *
+     * @param properties 调用参数 {@code properties}
+     */
     @Override
     public void setProperties(java.util.Properties properties) {
         // 预留：通过 mybatis-config.xml 的 <plugin><property>...</property></plugin> 注入方言类名

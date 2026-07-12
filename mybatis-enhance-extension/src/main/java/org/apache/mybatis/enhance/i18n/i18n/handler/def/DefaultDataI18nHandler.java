@@ -35,12 +35,24 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * {@code DefaultDataI18nHandler} 处理器。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 public class DefaultDataI18nHandler extends AbstractDataI18nHandler {
 
 	protected static Logger LOG = LoggerFactory.getLogger(DefaultDataI18nHandler.class);
 
 	protected DataI18nMappedHandler i18nMapperHandler = new DefaultDataI18nMappedHandler();
 
+	/**
+	 * 获取 {@code i18nObject}。
+	 *
+	 * @param i18nList 调用参数 {@code i18nList}
+	 * @return 对应的属性值
+	 * @throws Exception 底层操作失败时抛出
+	 */
 	@SuppressWarnings("rawtypes")
 	protected Object getI18nObject(String primaryName, Object orginObject, Collection<Object> i18nList) throws Exception{
 		String primaryKey = null,primaryValue = null;
@@ -66,6 +78,14 @@ public class DefaultDataI18nHandler extends AbstractDataI18nHandler {
 		return null;
 	}
 
+	/**
+	 * 按字段映射将国际化对象的值写回原始结果对象。
+	 *
+	 * @param mapper 国际化字段映射
+	 * @param orginObject 原始查询结果对象
+	 * @param i18nObject 匹配语言环境的国际化对象
+	 * @throws Exception 读取或写入 Bean 属性失败时抛出
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void doMapper(DataI18nMapper mapper, Object orginObject, Object i18nObject) throws Exception{
 		Map<String, String> mapperMap = mapper.getMapper();
@@ -92,6 +112,17 @@ public class DefaultDataI18nHandler extends AbstractDataI18nHandler {
 		}
 	}
 
+	/**
+	 * 包装 {@code wrap} 定义的框架操作。
+	 *
+	 * @param locale 语言环境
+	 * @param invocation MyBatis 插件调用上下文
+	 * @param metaResultSetHandler 调用参数 {@code metaResultSetHandler}
+	 * @param result 调用参数 {@code result}
+	 * @param orginParam 调用参数 {@code orginParam}
+	 * @return 处理结果
+	 * @throws Exception 底层操作失败时抛出
+	 */
 	@Override
 	public Object wrap(Locale locale, Invocation invocation,
 			MetaResultSetHandler metaResultSetHandler, Object result,
@@ -99,6 +130,17 @@ public class DefaultDataI18nHandler extends AbstractDataI18nHandler {
 		return MybatisUtils.wrapCollection(orginParam);
 	}
 
+	/**
+	 * 执行 {@code doHandle} 定义的框架操作。
+	 *
+	 * @param locale 语言环境
+	 * @param invocation MyBatis 插件调用上下文
+	 * @param metaResultSetHandler 调用参数 {@code metaResultSetHandler}
+	 * @param orginList 调用参数 {@code orginList}
+	 * @param i18nList 调用参数 {@code i18nList}
+	 * @return 处理结果
+	 * @throws Exception 底层操作失败时抛出
+	 */
 	@Override
 	public Object doHandle(Locale locale,Invocation invocation, MetaResultSetHandler metaResultSetHandler, Collection<Object> orginList, Collection<Object> i18nList) throws Exception  {
 		// 基于注解的国际化字段映射关系

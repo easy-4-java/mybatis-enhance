@@ -31,15 +31,33 @@ public final class TableFieldHelper {
     private TableFieldHelper() {
     }
 
+    /**
+     * 判断是否满足 {@code encryptedTable} 条件。
+     *
+     * @param entityType 调用参数 {@code entityType}
+     * @return 条件成立时返回 {@code true}，否则返回 {@code false}
+     */
     public static boolean isEncryptedTable(Class<?> entityType) {
         return Objects.nonNull(entityType) && entityType.isAnnotationPresent(EncryptedTable.class);
     }
 
+    /**
+     * 获取 {@code fields}。
+     *
+     * @param entityType 调用参数 {@code entityType}
+     * @return 对应的属性值
+     */
     public static List<Field> getFields(Class<?> entityType) {
         Objects.requireNonNull(entityType, "Entity type must not be null");
         return FIELD_CACHE.computeIfAbsent(entityType, TableFieldHelper::scanFields);
     }
 
+    /**
+     * 获取 {@code encryptedFields}。
+     *
+     * @param entityType 调用参数 {@code entityType}
+     * @return 对应的属性值
+     */
     public static List<Field> getEncryptedFields(Class<?> entityType) {
         if (!isEncryptedTable(entityType)) {
             return Collections.emptyList();
@@ -49,6 +67,12 @@ public final class TableFieldHelper {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 获取 {@code sortedSignatureFields}。
+     *
+     * @param entityType 调用参数 {@code entityType}
+     * @return 对应的属性值
+     */
     public static List<Field> getSortedSignatureFields(Class<?> entityType) {
         TableSignature signature = entityType.getAnnotation(TableSignature.class);
         if (Objects.isNull(signature)) {
@@ -67,6 +91,12 @@ public final class TableFieldHelper {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 获取 {@code signatureStoreField}。
+     *
+     * @param entityType 调用参数 {@code entityType}
+     * @return 对应的属性值
+     */
     public static Optional<Field> getSignatureStoreField(Class<?> entityType) {
         return getFields(entityType).stream()
                 .filter(field -> {
@@ -76,6 +106,13 @@ public final class TableFieldHelper {
                 .findFirst();
     }
 
+    /**
+     * 完成 {@code readValue} 对应的框架处理。
+     *
+     * @param target 目标对象
+     * @param field 反射字段
+     * @return 处理结果
+     */
     public static Object readValue(Object target, Field field) {
         Objects.requireNonNull(target, "Target must not be null");
         Objects.requireNonNull(field, "Field must not be null");
@@ -89,6 +126,13 @@ public final class TableFieldHelper {
         }
     }
 
+    /**
+     * 将值写入 Map 或实体字段。
+     *
+     * @param target 目标 Map 或实体对象
+     * @param field 目标字段
+     * @param value 待处理值
+     */
     @SuppressWarnings("unchecked")
     public static void writeValue(Object target, Field field, Object value) {
         Objects.requireNonNull(target, "Target must not be null");

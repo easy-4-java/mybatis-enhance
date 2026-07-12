@@ -34,6 +34,12 @@ public final class DefaultAggregateRecognizer implements AggregateRecognizer {
     private DefaultAggregateRecognizer() {
     }
 
+    /**
+     * 判断是否满足 {@code aggregate} 条件。
+     *
+     * @param candidate 调用参数 {@code candidate}
+     * @return 条件成立时返回 {@code true}，否则返回 {@code false}
+     */
     @Override
     public boolean isAggregate(Object candidate) {
         return false;

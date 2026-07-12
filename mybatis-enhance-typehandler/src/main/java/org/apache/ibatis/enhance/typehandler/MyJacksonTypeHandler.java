@@ -40,16 +40,32 @@ public class MyJacksonTypeHandler extends AbstractJacksonJsonTypeHandler<Object>
 
     private final Class<?> type;
 
+    /**
+     * 创建实例并初始化运行所需的上下文。
+     *
+     * @param type 目标类型
+     */
     public MyJacksonTypeHandler(Class<?> type) {
         Objects.requireNonNull(type, "Type argument cannot be null");
         this.type = type;
     }
 
+    /**
+     * 完成 {@code objectMapper} 对应的框架处理。
+     *
+     * @return 处理结果
+     */
     @Override
     protected ObjectMapper objectMapper() {
         return OBJECT_MAPPER;
     }
 
+    /**
+     * 解析 {@code parse} 定义的框架操作。
+     *
+     * @param json 调用参数 {@code json}
+     * @return 处理结果
+     */
     @Override
     protected Object parse(String json) {
         return deserialize(json, type);

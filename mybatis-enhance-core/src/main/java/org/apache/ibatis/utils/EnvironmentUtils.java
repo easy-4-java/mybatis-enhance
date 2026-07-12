@@ -20,13 +20,30 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
 
+/**
+ * {@code EnvironmentUtils} 工具类。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 public class EnvironmentUtils {
 
+	/**
+	 * 获取 {@code transactionFactoryFromEnvironment}。
+	 *
+	 * @param configuration MyBatis 配置
+	 * @return 对应的属性值
+	 */
 	public static TransactionFactory getTransactionFactoryFromEnvironment(Configuration configuration) {
 		final Environment environment = configuration.getEnvironment();
 		return getTransactionFactoryFromEnvironment(environment);
 	}
 
+	/**
+	 * 获取 {@code transactionFactoryFromEnvironment}。
+	 *
+	 * @param environment MyBatis 运行环境
+	 * @return 对应的属性值
+	 */
 	public static TransactionFactory getTransactionFactoryFromEnvironment(Environment environment) {
 		if (environment == null || environment.getTransactionFactory() == null) {
 			return new ManagedTransactionFactory();

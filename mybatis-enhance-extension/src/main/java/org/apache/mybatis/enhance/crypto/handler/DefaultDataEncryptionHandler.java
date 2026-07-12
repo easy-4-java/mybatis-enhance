@@ -19,11 +19,22 @@ public class DefaultDataEncryptionHandler implements DataEncryptionHandler {
     @Getter
     private final EncryptedFieldHandler encryptedFieldHandler;
 
+    /**
+     * 创建实例并初始化运行所需的上下文。
+     *
+     * @param encryptedFieldHandler 调用参数 {@code encryptedFieldHandler}
+     */
     public DefaultDataEncryptionHandler(EncryptedFieldHandler encryptedFieldHandler) {
         this.encryptedFieldHandler = Objects.requireNonNull(
                 encryptedFieldHandler, "Encrypted field handler must not be null");
     }
 
+    /**
+     * 执行 {@code doEntityEncrypt} 定义的框架操作。
+     *
+     * @param entity 调用参数 {@code entity}
+     * @return 处理结果
+     */
     @Override
     public boolean doEntityEncrypt(Object entity) {
         if (Objects.isNull(entity) || SimpleTypeRegistry.isSimpleType(entity.getClass())) {
@@ -41,6 +52,12 @@ public class DefaultDataEncryptionHandler implements DataEncryptionHandler {
         return changed;
     }
 
+    /**
+     * 执行 {@code doRawObjectDecrypt} 定义的框架操作。
+     *
+     * @param rawObject 调用参数 {@code rawObject}
+     * @param entityClass 调用参数 {@code entityClass}
+     */
     @Override
     public void doRawObjectDecrypt(Object rawObject, Class<?> entityClass) {
         if (Objects.isNull(rawObject) || Objects.isNull(entityClass)

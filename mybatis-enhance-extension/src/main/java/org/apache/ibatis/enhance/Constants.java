@@ -1,9 +1,16 @@
 package org.apache.ibatis.enhance;
 
+/**
+ * {@code Constants} 框架组件。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 public final class Constants {
 
     /**
+     * SQL 注入器相关常量命名空间。
      *
+     * <p>当前未定义常量，保留该类型用于稳定扩展包结构。</p>
      */
     public static class Injector {
 

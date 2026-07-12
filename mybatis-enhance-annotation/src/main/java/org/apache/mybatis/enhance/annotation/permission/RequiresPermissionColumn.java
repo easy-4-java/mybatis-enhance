@@ -18,7 +18,9 @@ package org.apache.mybatis.enhance.annotation.permission;
 import java.lang.annotation.*;
 
 /**
- * 该注解用于方法，字段；指明字段
+ * 定义受限表中的字段级权限条件。
+ *
+ * <p>{@link #perms()} 提供权限数据占位符，{@link #condition()} 决定如何将该值与目标列比较。</p>
  */
 @Documented
 @Inherited
@@ -27,20 +29,30 @@ import java.lang.annotation.*;
 public @interface RequiresPermissionColumn {
 
 	/**
-	 * 受限表字段名称（实体表字段列名称）
+	 * 获取受限表字段名称。
+	 *
+	 * @return 数据库列名
 	 */
-	public abstract String column();
+	String column();
 	/**
-	 * 受限表字段与限制条件之间的关联条件
+	 * 获取目标字段与权限值之间的比较条件。
+	 *
+	 * @return 主表字段条件
 	 */
-	public abstract Condition condition();
+	Condition condition();
 	/**
-	 *外关联表名称（实体表名称），在 condition 为 EXISTS、NOT_EXISTS 时有意义
+	 * 获取关联表配置。
+	 *
+	 * <p>仅在 {@link Condition#EXISTS} 或 {@link Condition#NOT_EXISTS} 等关联条件中使用。</p>
+	 *
+	 * @return 关联表配置
 	 */
-	public abstract RequiresPermissionForeign foreign() default @RequiresPermissionForeign(condition = ForeignCondition.EQ);
+	RequiresPermissionForeign foreign() default @RequiresPermissionForeign(condition = ForeignCondition.EQ);
 	/**
-	 * 受限表字段限制条件：
+	 * 获取权限数据表达式或权限项名称。
+	 *
+	 * @return 权限数据表达式
 	 */
-	public abstract String perms();
+	String perms();
 
 }

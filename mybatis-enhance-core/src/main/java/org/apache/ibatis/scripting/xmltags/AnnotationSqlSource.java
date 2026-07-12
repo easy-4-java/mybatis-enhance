@@ -22,16 +22,33 @@ import org.apache.ibatis.session.Configuration;
 
 import java.util.Map;
 
+/**
+ * {@code AnnotationSqlSource} 框架组件。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 public class AnnotationSqlSource implements SqlSource {
 
 	private Configuration configuration;
 	private SqlNode rootSqlNode;
 
+	/**
+	 * 创建实例并初始化运行所需的上下文。
+	 *
+	 * @param configuration MyBatis 配置
+	 * @param rootSqlNode 调用参数 {@code rootSqlNode}
+	 */
 	public AnnotationSqlSource(Configuration configuration, SqlNode rootSqlNode) {
 		this.configuration = configuration;
 		this.rootSqlNode = rootSqlNode;
 	}
 
+	/**
+	 * 获取 {@code boundSql}。
+	 *
+	 * @param parameterObject 参数对象
+	 * @return 对应的属性值
+	 */
 	@Override
 	public BoundSql getBoundSql(Object parameterObject) {
 		DynamicContext context = new DynamicContext(configuration,parameterObject);

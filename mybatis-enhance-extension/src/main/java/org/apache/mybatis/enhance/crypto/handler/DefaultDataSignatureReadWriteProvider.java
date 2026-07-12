@@ -10,12 +10,27 @@ import java.util.Optional;
  */
 public class DefaultDataSignatureReadWriteProvider implements DataSignatureReadWriteProvider {
 
+    /**
+     * 完成 {@code readSignature} 对应的框架处理。
+     *
+     * @param rawObject 调用参数 {@code rawObject}
+     * @param entityClass 调用参数 {@code entityClass}
+     * @return 处理结果
+     */
     @Override
     public Optional<Object> readSignature(Object rawObject, Class<?> entityClass) {
         Optional<Field> storeField = TableFieldHelper.getSignatureStoreField(entityClass);
         return storeField.map(field -> TableFieldHelper.readValue(rawObject, field));
     }
 
+    /**
+     * 完成 {@code writeSignature} 对应的框架处理。
+     *
+     * @param rawObject 调用参数 {@code rawObject}
+     * @param entityClass 调用参数 {@code entityClass}
+     * @param signValue 调用参数 {@code signValue}
+     * @return 处理结果
+     */
     @Override
     public boolean writeSignature(Object rawObject, Class<?> entityClass, String signValue) {
         Optional<Field> storeField = TableFieldHelper.getSignatureStoreField(entityClass);

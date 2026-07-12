@@ -44,12 +44,24 @@ public class DefaultTablePermissionAutowireHandler2 implements ITablePermissionA
 	private String alias = "t0";
 
 
+	/**
+	 * 创建实例并初始化运行所需的上下文。
+	 *
+	 * @param permissionsProvider 调用参数 {@code permissionsProvider}
+	 */
 	public DefaultTablePermissionAutowireHandler2(
 			BiFunction<MetaStatementHandler, String, Optional<DataPermissionPayload>> permissionsProvider) {
 		this.permissionsProvider = permissionsProvider;
 	}
 
 
+	/**
+	 * 完成 {@code dynamicPermissionedSQL} 对应的框架处理。
+	 *
+	 * @param metaHandler 调用参数 {@code metaHandler}
+	 * @param tableName 调用参数 {@code tableName}
+	 * @return 处理结果
+	 */
 	@Override
 	public String dynamicPermissionedSQL(MetaStatementHandler metaHandler, String tableName) {
 		// 查询数据权限
@@ -174,6 +186,11 @@ public class DefaultTablePermissionAutowireHandler2 implements ITablePermissionA
 	}
 
 
+	/**
+	 * 获取 {@code permissionsProvider}。
+	 *
+	 * @return 对应的属性值
+	 */
 	public BiFunction<MetaStatementHandler, String, Optional<DataPermissionPayload>> getPermissionsProvider() {
 		return permissionsProvider;
 	}

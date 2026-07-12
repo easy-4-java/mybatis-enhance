@@ -35,6 +35,12 @@ public abstract class AbstractJacksonJsonTypeHandler<T> extends BaseTypeHandler<
         return DEFAULT_MAPPER;
     }
 
+    /**
+     * 转换 {@code convert} 定义的框架操作。
+     *
+     * @param obj 调用参数 {@code obj}
+     * @return 处理结果
+     */
     @Override
     protected String convert(T obj) {
         try {

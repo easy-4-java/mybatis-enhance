@@ -61,6 +61,13 @@ public class MybatisParameterHandler implements ParameterHandler {
 	protected BoundSql boundSql;
 	protected Configuration configuration;
 
+	/**
+	 * 创建实例并初始化运行所需的上下文。
+	 *
+	 * @param mappedStatement 映射语句
+	 * @param parameterObject 参数对象
+	 * @param boundSql 绑定 SQL
+	 */
 	public MybatisParameterHandler(MappedStatement mappedStatement,Object parameterObject, BoundSql boundSql) {
 		this.mappedStatement = mappedStatement;
 		this.configuration = mappedStatement.getConfiguration();
@@ -69,10 +76,21 @@ public class MybatisParameterHandler implements ParameterHandler {
 		this.boundSql = boundSql;
 	}
 
+	/**
+	 * 获取 {@code parameterObject}。
+	 *
+	 * @return 对应的属性值
+	 */
 	public Object getParameterObject() {
 		return parameterObject;
 	}
 
+	/**
+	 * 设置 {@code parameters}。
+	 *
+	 * @param ps 预编译语句
+	 * @throws SQLException 底层操作失败时抛出
+	 */
 	public void setParameters(PreparedStatement ps) throws SQLException {
 		ErrorContext.instance().activity("setting parameters").object(mappedStatement.getParameterMap().getId());
 		List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();

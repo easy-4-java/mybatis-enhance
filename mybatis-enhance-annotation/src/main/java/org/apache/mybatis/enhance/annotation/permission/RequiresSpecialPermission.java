@@ -18,7 +18,10 @@ package org.apache.mybatis.enhance.annotation.permission;
 import java.lang.annotation.*;
 
 /**
- * 该注解用于方法，字段；指明字段
+ * 定义直接以 SQL 表达的数据权限规则。
+ *
+ * <p>适用于无法通过字段条件模型表达的复杂权限场景。调用方必须确保 SQL 模板来源可信，
+ * 避免将未校验的用户输入直接拼入权限 SQL。</p>
  */
 @Documented
 @Inherited
@@ -27,16 +30,22 @@ import java.lang.annotation.*;
 public @interface RequiresSpecialPermission {
 
 	/**
-	 *受限表名称（实体表名称）
+	 * 获取受限表名称。
+	 *
+	 * @return 数据库表名
 	 */
-	public abstract String table();
+	String table();
 	/**
-	 *受限表转换后的SQL(直接使用SQL进行替换，减少性能消耗)
+	 * 获取预构建的权限 SQL。
+	 *
+	 * @return 权限 SQL；空字符串表示由权限项生成
 	 */
-	public abstract String sql() default "";
+	String sql() default "";
 	/**
-	 * 受限表字段限制条件：
+	 * 获取权限数据表达式或权限项名称。
+	 *
+	 * @return 权限数据表达式
 	 */
-	public abstract String perms();
+	String perms();
 
 }

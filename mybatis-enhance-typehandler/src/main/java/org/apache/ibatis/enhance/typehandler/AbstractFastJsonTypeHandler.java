@@ -17,6 +17,12 @@ import com.alibaba.fastjson2.JSON;
  */
 public abstract class AbstractFastJsonTypeHandler<T> extends BaseTypeHandler<T> {
 
+    /**
+     * 转换 {@code convert} 定义的框架操作。
+     *
+     * @param obj 调用参数 {@code obj}
+     * @return 处理结果
+     */
     @Override
     protected String convert(T obj) {
         return JSON.toJSONString(obj);

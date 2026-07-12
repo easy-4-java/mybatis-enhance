@@ -14,6 +14,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+/**
+ * MyBatis 内部对象的可变元数据视图。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 public class MetaParameterHandler {
 
 	protected MetaObject metaObject;
@@ -26,6 +31,19 @@ public class MetaParameterHandler {
 	protected Object parameterObject;
 	protected BoundSql boundSql;
 
+	/**
+	 * 创建实例并初始化运行所需的上下文。
+	 *
+	 * @param metaObject MyBatis 元对象
+	 * @param configuration MyBatis 配置
+	 * @param typeHandlerRegistry 类型处理器注册表
+	 * @param mappedStatement 映射语句
+	 * @param mapperProxy Mapper 代理工厂
+	 * @param mapperMethod Mapper 方法调用器
+	 * @param method Mapper 方法
+	 * @param parameterObject 参数对象
+	 * @param boundSql 绑定 SQL
+	 */
 	protected MetaParameterHandler(MetaObject metaObject, Configuration configuration,
 			TypeHandlerRegistry typeHandlerRegistry,
 			MappedStatement mappedStatement,
@@ -42,6 +60,12 @@ public class MetaParameterHandler {
 		this.boundSql = boundSql;
 	}
 
+	/**
+	 * 完成 {@code metaObject} 对应的框架处理。
+	 *
+	 * @param parameterHandler 参数处理器
+	 * @return 处理结果
+	 */
 	public static MetaParameterHandler metaObject(ParameterHandler parameterHandler) {
 		MetaObject metaObject = SystemMetaObject.forObject(parameterHandler);
 		TypeHandlerRegistry typeHandlerRegistry = (TypeHandlerRegistry) metaObject.getValue("typeHandlerRegistry");
@@ -70,70 +94,155 @@ public class MetaParameterHandler {
 	    		mapperProxy, mapperProxyEntry.getValue(), mapperProxyEntry.getKey(), parameterObject, boundSql);
 	}
 
+	/**
+	 * 获取 {@code metaObject}。
+	 *
+	 * @return 对应的属性值
+	 */
 	public MetaObject getMetaObject() {
 		return metaObject;
 	}
 
+	/**
+	 * 设置 {@code metaObject}。
+	 *
+	 * @param metaObject MyBatis 元对象
+	 */
 	public void setMetaObject(MetaObject metaObject) {
 		this.metaObject = metaObject;
 	}
 
+	/**
+	 * 获取 {@code configuration}。
+	 *
+	 * @return 对应的属性值
+	 */
 	public Configuration getConfiguration() {
 		return configuration;
 	}
 
+	/**
+	 * 设置 {@code configuration}。
+	 *
+	 * @param configuration MyBatis 配置
+	 */
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
 	}
 
+	/**
+	 * 获取 {@code typeHandlerRegistry}。
+	 *
+	 * @return 对应的属性值
+	 */
 	public TypeHandlerRegistry getTypeHandlerRegistry() {
 		return typeHandlerRegistry;
 	}
 
+	/**
+	 * 设置 {@code typeHandlerRegistry}。
+	 *
+	 * @param typeHandlerRegistry 类型处理器注册表
+	 */
 	public void setTypeHandlerRegistry(TypeHandlerRegistry typeHandlerRegistry) {
 		this.typeHandlerRegistry = typeHandlerRegistry;
 	}
 
+	/**
+	 * 获取 {@code mappedStatement}。
+	 *
+	 * @return 对应的属性值
+	 */
 	public MappedStatement getMappedStatement() {
 		return mappedStatement;
 	}
 
+	/**
+	 * 设置 {@code mappedStatement}。
+	 *
+	 * @param mappedStatement 映射语句
+	 */
 	public void setMappedStatement(MappedStatement mappedStatement) {
 		this.mappedStatement = mappedStatement;
 	}
 
+	/**
+	 * 设置 {@code mapperProxy}。
+	 *
+	 * @param mapperProxy Mapper 代理工厂
+	 */
 	public void setMapperProxy(MapperProxyFactory<?> mapperProxy) {
 		this.mapperProxy = mapperProxy;
 	}
 
+	/**
+	 * 获取 {@code mapperMethod}。
+	 *
+	 * @return 对应的属性值
+	 */
 	public MapperProxy.MapperMethodInvoker getMapperMethod() {
 		return mapperMethod;
 	}
 
+	/**
+	 * 设置 {@code mapperMethod}。
+	 *
+	 * @param mapperMethod Mapper 方法调用器
+	 */
 	public void setMapperMethod(MapperProxy.MapperMethodInvoker mapperMethod) {
 		this.mapperMethod = mapperMethod;
 	}
 
+	/**
+	 * 获取 {@code method}。
+	 *
+	 * @return 对应的属性值
+	 */
 	public Method getMethod() {
 		return method;
 	}
 
+	/**
+	 * 设置 {@code method}。
+	 *
+	 * @param method Mapper 方法
+	 */
 	public void setMethod(Method method) {
 		this.method = method;
 	}
 
+	/**
+	 * 获取 {@code parameterObject}。
+	 *
+	 * @return 对应的属性值
+	 */
 	public Object getParameterObject() {
 		return parameterObject;
 	}
 
+	/**
+	 * 设置 {@code parameterObject}。
+	 *
+	 * @param parameterObject 参数对象
+	 */
 	public void setParameterObject(Object parameterObject) {
 		this.parameterObject = parameterObject;
 	}
 
+	/**
+	 * 获取 {@code boundSql}。
+	 *
+	 * @return 对应的属性值
+	 */
 	public BoundSql getBoundSql() {
 		return boundSql;
 	}
 
+	/**
+	 * 设置 {@code boundSql}。
+	 *
+	 * @param boundSql 绑定 SQL
+	 */
 	public void setBoundSql(BoundSql boundSql) {
 		this.boundSql = boundSql;
 	}

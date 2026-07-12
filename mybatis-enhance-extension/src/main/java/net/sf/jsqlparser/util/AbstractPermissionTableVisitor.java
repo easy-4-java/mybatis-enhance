@@ -21,6 +21,11 @@ abstract class AbstractPermissionTableVisitor extends TablesNamesFinder {
     private final Set<String> processedTables = new HashSet<>();
     private final Map<String, String> replacements = new HashMap<>();
 
+    /**
+     * 完成 {@code visit} 对应的框架处理。
+     *
+     * @param table 调用参数 {@code table}
+     */
     @Override
     public void visit(Table table) {
         String tableName = StringUtils.lowerCase(extractTableName(table));
@@ -36,6 +41,12 @@ abstract class AbstractPermissionTableVisitor extends TablesNamesFinder {
         }
     }
 
+    /**
+     * 完成 {@code replacement} 对应的框架处理。
+     *
+     * @param tableName 调用参数 {@code tableName}
+     * @return 处理结果
+     */
     protected abstract Optional<String> replacement(String tableName);
 
     /**

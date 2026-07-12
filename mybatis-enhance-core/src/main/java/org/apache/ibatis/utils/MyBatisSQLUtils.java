@@ -14,8 +14,20 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
 import java.text.DateFormat;
 import java.util.*;
 
+/**
+ * {@code MyBatisSQLUtils} 工具类。
+ *
+ * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
+ */
 public class MyBatisSQLUtils {
 
+	/**
+	 * 获取 {@code parameterValue}。
+	 *
+	 * @param obj 调用参数 {@code obj}
+	 * @param isReplace 调用参数 {@code isReplace}
+	 * @return 对应的属性值
+	 */
 	public static String getParameterValue(Object obj,boolean isReplace) {
 		if(Objects.isNull(obj)){
         	return "";
@@ -33,6 +45,12 @@ public class MyBatisSQLUtils {
         return isReplace?value.replace("'", ""):value;
     }
 
+	/**
+	 * 获取 {@code parameterValue}。
+	 *
+	 * @param obj 调用参数 {@code obj}
+	 * @return 对应的属性值
+	 */
 	public static String getParameterValue(Object obj) {
 		return MyBatisSQLUtils.getParameterValue(obj,false);
 	}
@@ -144,6 +162,15 @@ public class MyBatisSQLUtils {
 		return getMyBatisSQL(statementID, parameterObject,isReplace ,sqlSessionFactoryArray);
 	}
 
+	/**
+	 * 获取 {@code myBatisSQL}。
+	 *
+	 * @param statementID 映射语句标识
+	 * @param parameterObject 参数对象
+	 * @param isReplace 调用参数 {@code isReplace}
+	 * @param sqlSessionFactorys 调用参数 {@code sqlSessionFactorys}
+	 * @return 对应的属性值
+	 */
 	public static MyBatisSQL getMyBatisSQL(String statementID,Object parameterObject,boolean isReplace,SqlSessionFactory... sqlSessionFactorys) {
 
 		MyBatisSQL ibatisSql = new MyBatisSQL();

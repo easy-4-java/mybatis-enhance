@@ -40,6 +40,13 @@ public class DefaultTablePermissionAnnotationHandler implements ITablePermission
 
 	private String alias = "t0";
 
+	/**
+	 * 完成 {@code dynamicPermissionedSQL} 对应的框架处理。
+	 *
+	 * @param metaHandler 调用参数 {@code metaHandler}
+	 * @param permission 调用参数 {@code permission}
+	 * @return 处理结果
+	 */
 	@Override
 	public String dynamicPermissionedSQL(MetaStatementHandler metaHandler, RequiresSpecialPermission permission) {
 		// 防空判断
@@ -52,6 +59,13 @@ public class DefaultTablePermissionAnnotationHandler implements ITablePermission
 		return null;
 	}
 
+	/**
+	 * 完成 {@code dynamicPermissionedSQL} 对应的框架处理。
+	 *
+	 * @param metaHandler 调用参数 {@code metaHandler}
+	 * @param permission 调用参数 {@code permission}
+	 * @return 处理结果
+	 */
 	@Override
 	public String dynamicPermissionedSQL(MetaStatementHandler metaHandler, RequiresPermission permission) {
 		// 防空判断

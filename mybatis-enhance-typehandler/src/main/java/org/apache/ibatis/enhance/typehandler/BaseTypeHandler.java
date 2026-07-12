@@ -69,6 +69,11 @@ public abstract class BaseTypeHandler<T> extends org.apache.ibatis.type.BaseType
      */
     protected abstract T parse(String result);
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>通过 {@link #convert(Object)} 将非空值转换为字符串后写入 JDBC 参数。</p>
+     */
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException {
         if (Objects.isNull(parameter)) {
@@ -77,18 +82,29 @@ public abstract class BaseTypeHandler<T> extends org.apache.ibatis.type.BaseType
         ps.setString(i, this.convert(parameter));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>数据库值为空或空白时返回 {@code null}，否则交由 {@link #parse(String)} 解析。</p>
+     */
     @Override
     public T getNullableResult(ResultSet rs, String columnName) throws SQLException {
         String str = rs.getString(columnName);
         return StringUtils.isBlank(str) ? null : this.parse(str);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         String str = rs.getString(columnIndex);
         return StringUtils.isBlank(str) ? null : this.parse(str);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         String str = cs.getString(columnIndex);
