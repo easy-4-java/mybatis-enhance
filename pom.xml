@@ -425,6 +425,8 @@
         <slf4j.version>2.0.18</slf4j.version>
         <lombok.version>1.18.46</lombok.version>
         <mybatis.version>3.5.17</mybatis.version>
+        <!-- Spring 5.3.x 是最后支持 JDK 8 的版本线，仅 mybatis-enhance-spring 模块使用。 -->
+        <spring-framework.version>5.3.39</spring-framework.version>
     </properties>
 
     <dependencyManagement>
@@ -505,20 +507,32 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
-            <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis</artifactId>
-                <version>${mybatis.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+                <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+                <dependency>
+                    <groupId>org.mybatis</groupId>
+                    <artifactId>mybatis</artifactId>
+                    <version>${mybatis.version}</version>
+                </dependency>
+                <!-- Spring 只允许由 mybatis-enhance-spring 模块直接声明，其他模块 enforcer 禁止。 -->
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-tx</artifactId>
+                    <version>${spring-framework.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context</artifactId>
+                    <version>${spring-framework.version}</version>
+                </dependency>
+            </dependencies>
+        </dependencyManagement>
 
     <modules>
         <module>mybatis-enhance-annotation</module>
         <module>mybatis-enhance-core</module>
         <module>mybatis-enhance-extension</module>
         <module>mybatis-enhance-typehandler</module>
+        <module>mybatis-enhance-spring</module>
     </modules>
 
     <dependencies>

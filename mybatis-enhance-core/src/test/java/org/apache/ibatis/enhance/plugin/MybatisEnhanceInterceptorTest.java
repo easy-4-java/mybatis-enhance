@@ -17,6 +17,7 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class MybatisEnhanceInterceptorTest {
 
@@ -36,6 +37,8 @@ public class MybatisEnhanceInterceptorTest {
         Assert.assertEquals("second-before-update", events.get(1));
         Assert.assertEquals("first-after-update", events.get(2));
         Assert.assertEquals("second-after-update", events.get(3));
+        Assert.assertEquals("first-after-execution", events.get(4));
+        Assert.assertEquals("second-after-execution", events.get(5));
     }
 
     @Test
@@ -52,6 +55,73 @@ public class MybatisEnhanceInterceptorTest {
         Assert.assertEquals(Collections.singletonList("row"), result);
         Assert.assertEquals("query-before-query", events.get(0));
         Assert.assertEquals("query-after-query", events.get(1));
+        Assert.assertEquals("query-after-execution", events.get(2));
+    }
+
+    @Test
+    public void shouldPassBoundSqlToAfterUpdate() throws Throwable {
+        List<String> events = new ArrayList<>();
+        MybatisEnhanceInterceptor interceptor = new MybatisEnhanceInterceptor();
+        interceptor.addInterceptor(new EnhanceInterceptor() {
+            @Override
+            public void afterUpdate(Executor executor, MappedStatement mappedStatement, Object parameter,
+                                    BoundSql boundSql, int affectedRows) {
+                events.add(Objects.nonNull(boundSql) ? "boundSql-present" : "boundSql-null");
+            }
+        });
+
+        Method update = Executor.class.getMethod("update", MappedStatement.class, Object.class);
+        interceptor.intercept(new Invocation(executor(), update,
+                new Object[]{statement(SqlCommandType.UPDATE), new Object()}));
+
+        Assert.assertEquals("boundSql-present", events.get(0));
+    }
+
+    @Test
+    public void shouldIsolateAfterExecutionException() throws Throwable {
+        MybatisEnhanceInterceptor interceptor = new MybatisEnhanceInterceptor();
+        interceptor.addInterceptor(new EnhanceInterceptor() {
+            @Override
+            public void afterExecution(Executor executor, MappedStatement mappedStatement, Object parameter,
+                                       BoundSql boundSql, Object result, Throwable failure, long elapsedNanos) {
+                throw new RuntimeException("旁路异常应被隔离");
+            }
+        });
+
+        Method update = Executor.class.getMethod("update", MappedStatement.class, Object.class);
+        // afterExecution 抛出的异常不应影响主流程结果
+        Object result = interceptor.intercept(new Invocation(executor(), update,
+                new Object[]{statement(SqlCommandType.UPDATE), new Object()}));
+        Assert.assertEquals(1, result);
+    }
+
+    @Test
+    public void shouldNotifyAfterExecutionWithFailureOnProceedException() throws Throwable {
+        List<String> events = new ArrayList<>();
+        MybatisEnhanceInterceptor interceptor = new MybatisEnhanceInterceptor();
+        interceptor.addInterceptor(tracker("observer", events));
+
+        Executor failingExecutor = (Executor) Proxy.newProxyInstance(getClass().getClassLoader(),
+                new Class<?>[]{Executor.class}, (proxy, method, args) -> {
+                    if ("update".equals(method.getName())) {
+                        throw new RuntimeException("数据库连接失败");
+                    }
+                    return null;
+                });
+
+        Method update = Executor.class.getMethod("update", MappedStatement.class, Object.class);
+        try {
+            interceptor.intercept(new Invocation(failingExecutor, update,
+                    new Object[]{statement(SqlCommandType.UPDATE), new Object()}));
+            Assert.fail("应抛出主流程异常");
+        } catch (Throwable expected) {
+            // Invocation.proceed 抛出的是 InvocationTargetException，解包验证根因
+            Throwable root = expected.getCause() != null ? expected.getCause() : expected;
+            Assert.assertEquals("数据库连接失败", root.getMessage());
+        }
+        // 失败路径仍应通知 afterExecution，但不应执行 after-update（结果增强跳过）
+        Assert.assertTrue(events.contains("observer-after-execution"));
+        Assert.assertFalse(events.contains("observer-after-update"));
     }
 
     private EnhanceInterceptor tracker(String name, List<String> events) {
@@ -76,8 +146,14 @@ public class MybatisEnhanceInterceptorTest {
 
             @Override
             public void afterUpdate(Executor executor, MappedStatement mappedStatement, Object parameter,
-                                    int affectedRows) {
+                                    BoundSql boundSql, int affectedRows) {
                 events.add(name + "-after-update");
+            }
+
+            @Override
+            public void afterExecution(Executor executor, MappedStatement mappedStatement, Object parameter,
+                                       BoundSql boundSql, Object result, Throwable failure, long elapsedNanos) {
+                events.add(name + "-after-execution");
             }
         };
     }
