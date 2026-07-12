@@ -6,9 +6,9 @@
 
 | 模块 | 职责 | 可独立使用 |
 | --- | --- | --- |
-| `mybatis-enhance-annotation` | 数据权限、国际化、加解密、签名和脱敏等纯 Java 注解 | 是，零运行时依赖 |
+| `mybatis-enhance-annotation` | 数据权限、国际化、加解密和签名等纯 Java 注解 | 是，零运行时依赖 |
 | `mybatis-enhance-core` | 原生 MyBatis 拦截器链、SPI、通用插件与基础工具 | 是 |
-| `mybatis-enhance-extension` | 数据权限、国际化、加解密、签名、脱敏、字段填充及 JSqlParser SQL AST 增强 | 否，依赖 annotation 与 core |
+| `mybatis-enhance-extension` | 数据权限、国际化、加解密、签名、字段填充及 JSqlParser SQL AST 增强 | 否，依赖 annotation 与 core |
 | `mybatis-enhance-typehandler` | JSON、集合、日期、Blob、RSA 模板等通用 TypeHandler | 是，可用于 MyBatis-Plus 项目 |
 
 模块依赖方向如下：
@@ -90,6 +90,15 @@ configuration.addInterceptor(enhanceInterceptor);
 ## TypeHandler 复用边界
 
 `mybatis-enhance-typehandler` 只有 MyBatis 与序列化工具依赖，不包含 Spring 和 MyBatis-Plus API。因此它既可用于原生 MyBatis，也可作为基础能力被 MyBatis-Plus 项目直接依赖。模块内置 Maven Enforcer 规则，防止后续误引入框架集成依赖。
+
+## 脱敏能力边界
+
+数据脱敏属于接口输出或序列化边界，不应在 MyBatis 写入参数、查询结果或缓存对象上原地修改。因此本项目不提供脱敏注解和脱敏拦截器：
+
+- 持久化层负责可逆加解密、完整性签名和数据权限；
+- 表现层负责按调用场景生成脱敏视图；
+- ddd4j 项目统一使用 `ddd4j-extension-jackson` 的 `@Sensitive`、`SensitiveStrategy` 和 `SensitiveJsonSerializer`；
+- 非 Jackson 项目应在其 DTO 映射或序列化适配器中实现同等输出策略。
 
 ## 构建与验证
 

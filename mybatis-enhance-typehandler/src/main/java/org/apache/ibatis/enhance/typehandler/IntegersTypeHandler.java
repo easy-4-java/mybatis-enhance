@@ -1,36 +1,28 @@
 package org.apache.ibatis.enhance.typehandler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 类型转换：varchar &lt;-&gt; Integer[]，使用英文逗号 {@code ,} 分割。
  *
+ * <p>基于 {@link AbstractCommaArrayTypeHandler}，序列化与反序列化的样板由基类统一处理。
+ *
  * @author <a href="https://github.com/partme-ai">PartMe.AI</a>
  */
-public class IntegersTypeHandler extends BaseTypeHandler<Integer[]> {
+public class IntegersTypeHandler extends AbstractCommaArrayTypeHandler<Integer> {
 
     @Override
-    protected String convert(Integer[] obj) {
-        if (obj.length == 0) {
-            return null;
-        }
-        StringBuilder sb = new StringBuilder();
-        for (Integer l : obj) {
-            sb.append(l).append(",");
-        }
-        sb.append("<END>");
-        return sb.toString().replace(",<END>", "");
+    protected Integer parseElement(String element) {
+        return Integer.valueOf(element);
     }
 
     @Override
-    protected Integer[] parse(String result) {
-        String[] split = result.split(",");
-        List<Integer> integers = new ArrayList<>();
-        for (String s : split) {
-            integers.add(Integer.valueOf(s));
-        }
-        return integers.toArray(new Integer[]{});
+    protected Integer[] toArray(List<Integer> list) {
+        return list.toArray(new Integer[0]);
     }
 
+    @Override
+    protected Integer[] newArray(int length) {
+        return new Integer[length];
+    }
 }

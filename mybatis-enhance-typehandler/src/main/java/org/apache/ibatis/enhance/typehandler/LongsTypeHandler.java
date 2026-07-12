@@ -1,35 +1,28 @@
 package org.apache.ibatis.enhance.typehandler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 类型转换：varchar &lt;-&gt; Long[]，使用英文逗号 {@code ,} 分割。
  *
+ * <p>基于 {@link AbstractCommaArrayTypeHandler}，序列化与反序列化的样板由基类统一处理。
+ *
  * @author <a href="https://github.com/partme-ai">PartMe.AI</a>
  */
-public class LongsTypeHandler extends BaseTypeHandler<Long[]> {
+public class LongsTypeHandler extends AbstractCommaArrayTypeHandler<Long> {
+
     @Override
-    protected String convert(Long[] obj) {
-        if (obj.length == 0) {
-            return null;
-        }
-        StringBuilder sb = new StringBuilder();
-        for (Long l : obj) {
-            sb.append(l).append(",");
-        }
-        sb.append("<END>");
-        return sb.toString().replace(",<END>", "");
+    protected Long parseElement(String element) {
+        return Long.valueOf(element);
     }
 
     @Override
-    protected Long[] parse(String result) {
-        String[] split = result.split(",");
-        List<Long> longs = new ArrayList<>();
-        for (String s : split) {
-            longs.add(Long.valueOf(s));
-        }
-        return longs.toArray(new Long[]{});
+    protected Long[] toArray(List<Long> list) {
+        return list.toArray(new Long[0]);
     }
 
+    @Override
+    protected Long[] newArray(int length) {
+        return new Long[length];
+    }
 }

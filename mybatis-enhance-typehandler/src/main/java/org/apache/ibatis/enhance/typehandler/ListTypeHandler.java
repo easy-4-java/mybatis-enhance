@@ -3,14 +3,11 @@ package org.apache.ibatis.enhance.typehandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;
 
-import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +16,9 @@ import java.util.List;
  * string -&gt; 转 {@code List} 集合。
  *
  * <p>一般用于 JSON 转集合对象，只能转 List。
+ *
+ * <p>基于 {@link AbstractJacksonJsonTypeHandler}，JDBC 样板由基类统一处理；空列表写入 null
+ * 的历史行为通过 {@link #setNonNullParameter} 单独保留。
  *
  * <p>使用方式：
  * <pre>
@@ -38,41 +38,30 @@ import java.util.List;
  */
 @MappedJdbcTypes(JdbcType.VARBINARY)
 @MappedTypes({List.class})
-public abstract class ListTypeHandler<T> extends BaseTypeHandler<List<T>> {
+public abstract class ListTypeHandler<T> extends AbstractJacksonJsonTypeHandler<List<T>> {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, List<T> parameter, JdbcType jdbcType) throws SQLException {
-        try {
-            ps.setString(i, parameter.isEmpty() ? null : OBJECT_MAPPER.writeValueAsString(parameter));
-        } catch (JsonProcessingException exception) {
-            throw new SQLException("Failed to serialize list parameter", exception);
+    protected ObjectMapper objectMapper() {
+        return OBJECT_MAPPER;
+    }
+
+    @Override
+    protected String convert(List<T> obj) {
+        // 保留历史行为：空列表写入 null，避免数据库存储 "[]"
+        if (obj == null || obj.isEmpty()) {
+            return null;
         }
+        return super.convert(obj);
     }
 
     @Override
-    public List<T> getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        return this.toList(rs.getString(columnName));
-    }
-
-    @Override
-    public List<T> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        return this.toList(rs.getString(columnIndex));
-    }
-
-    @Override
-    public List<T> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        return this.toList(cs.getString(columnIndex));
-    }
-
-    private List<T> toList(String content) throws SQLException {
+    protected List<T> parse(String json) {
         try {
-            return StringUtils.isBlank(content)
-                    ? new ArrayList<>()
-                    : OBJECT_MAPPER.readValue(content, this.elementType());
-        } catch (JsonProcessingException exception) {
-            throw new SQLException("Failed to deserialize list column", exception);
+            return OBJECT_MAPPER.readValue(json, this.elementType());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to deserialize list column", e);
         }
     }
 

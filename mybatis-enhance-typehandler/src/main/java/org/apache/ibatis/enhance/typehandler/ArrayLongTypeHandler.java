@@ -21,7 +21,7 @@ import java.sql.SQLException;
 @MappedJdbcTypes({JdbcType.VARCHAR})
 public class ArrayLongTypeHandler extends BaseTypeHandler<Long[]> {
 
-    private static Long[] l = new Long[]{};
+    private static final Long[] l = new Long[]{};
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i,

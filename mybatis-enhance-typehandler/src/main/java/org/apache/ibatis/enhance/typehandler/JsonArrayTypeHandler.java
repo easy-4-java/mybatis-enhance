@@ -1,61 +1,27 @@
 package org.apache.ibatis.enhance.typehandler;
 
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
-import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;
 
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 /**
- * 存储到数据库, 将JSON对象转换成字符串;
- * 从数据库获取数据, 将字符串转为JSON对象.
+ * 存储到数据库, 将JSON数组转换成字符串;
+ * 从数据库获取数据, 将字符串转为JSON数组.
+ *
+ * <p>基于 {@link AbstractHutoolJsonTypeHandler}，覆盖最常见的「varchar ↔ Hutool JSON 数组」场景，
+ * 可直接在 Mapper 中通过 typeHandler 属性引用。JDBC 样板和序列化由基类统一处理，
+ * 空字符串判断由 {@link BaseTypeHandler} 的 {@code isBlank} 统一兜底。
  *
  * @author <a href="https://github.com/partme-ai">PartMe.AI</a>
  */
 @MappedTypes({JSONArray.class})
 @MappedJdbcTypes({JdbcType.VARCHAR})
-public class JsonArrayTypeHandler extends BaseTypeHandler<JSONArray> {
+public class JsonArrayTypeHandler extends AbstractHutoolJsonTypeHandler<JSONArray> {
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, JSONArray parameter,
-                                    JdbcType jdbcType) throws SQLException {
-        ps.setString(i, JSONUtil.toJsonStr(parameter));
+    protected JSONArray parse(String result) {
+        return JSONUtil.parseArray(result);
     }
-
-    @Override
-    public JSONArray getNullableResult(ResultSet rs, String columnName)
-            throws SQLException {
-        if (StrUtil.isNotBlank(rs.getString(columnName))) {
-            return JSONUtil.parseArray(rs.getString(columnName));
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public JSONArray getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        if (StrUtil.isNotBlank(rs.getString(columnIndex))) {
-            return JSONUtil.parseArray(rs.getString(columnIndex));
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public JSONArray getNullableResult(CallableStatement cs, int columnIndex)
-            throws SQLException {
-        if (StrUtil.isNotBlank(cs.getString(columnIndex))) {
-            return JSONUtil.parseArray(cs.getString(columnIndex));
-        } else {
-            return null;
-        }
-    }
-
 }

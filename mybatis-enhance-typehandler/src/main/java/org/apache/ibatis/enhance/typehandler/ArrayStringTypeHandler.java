@@ -21,7 +21,7 @@ import java.sql.SQLException;
 @MappedJdbcTypes({JdbcType.VARCHAR})
 public class ArrayStringTypeHandler extends BaseTypeHandler<String[]> {
 
-    private static String[] l = new String[]{};
+    private static final String[] l = new String[]{};
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i,

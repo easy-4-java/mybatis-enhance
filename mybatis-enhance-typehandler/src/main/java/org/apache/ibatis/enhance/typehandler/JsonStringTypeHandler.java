@@ -1,6 +1,5 @@
 package org.apache.ibatis.enhance.typehandler;
 
-import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -15,6 +14,9 @@ import java.util.Objects;
  * 注意 T 不能是 {@code List} 集合或 {@code Map} 类型，但可以是数组类型
  * （以实现对对象数组的互转）。
  *
+ * <p>基于 {@link AbstractJacksonJsonTypeHandler}，JDBC 样板由基类统一处理；本类保留
+ * 反射推断泛型类型与对象数组的反序列化逻辑。
+ *
  * <p>与 {@link ListTypeHandler} 的区别：
  * <ul>
  *   <li>{@link ListTypeHandler} 专门处理 {@code List<T>}，子类需提供 {@code TypeReference}</li>
@@ -24,7 +26,7 @@ import java.util.Objects;
  * @param <T> 自定义 POJO（一般以 VO 命名）
  * @author <a href="https://github.com/partme-ai">PartMe.AI</a>
  */
-public abstract class JsonStringTypeHandler<T> extends BaseTypeHandler<T> {
+public abstract class JsonStringTypeHandler<T> extends AbstractJacksonJsonTypeHandler<T> {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -42,12 +44,12 @@ public abstract class JsonStringTypeHandler<T> extends BaseTypeHandler<T> {
     }
 
     @Override
-    protected String convert(T obj) {
-        // 转换为 Json 字符串
-        return JSONUtil.toJsonStr(obj);
+    protected ObjectMapper objectMapper() {
+        return OBJECT_MAPPER;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected T parse(String json) {
         try {
             if (Objects.nonNull(this.componentType)) {
@@ -65,5 +67,4 @@ public abstract class JsonStringTypeHandler<T> extends BaseTypeHandler<T> {
             throw new RuntimeException(e);
         }
     }
-
 }

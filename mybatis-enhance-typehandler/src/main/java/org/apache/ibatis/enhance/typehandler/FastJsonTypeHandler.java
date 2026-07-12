@@ -2,47 +2,25 @@ package org.apache.ibatis.enhance.typehandler;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;
-
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * 存储到数据库, 将JSON对象转换成字符串;
  * 从数据库获取数据, 将字符串转为JSON对象.
  *
+ * <p>基于 {@link AbstractFastJsonTypeHandler}，覆盖最常见的「varchar ↔ FastJSON2 对象」场景，
+ * 可直接在 Mapper 中通过 typeHandler 属性引用。JDBC 样板和序列化由基类统一处理。
+ *
  * @author <a href="https://github.com/partme-ai">PartMe.AI</a>
  */
 @MappedTypes({JSONObject.class})
 @MappedJdbcTypes({JdbcType.VARCHAR})
-public class FastJsonTypeHandler extends BaseTypeHandler<com.alibaba.fastjson2.JSONObject> {
+public class FastJsonTypeHandler extends AbstractFastJsonTypeHandler<JSONObject> {
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, JSONObject parameter,
-                                    JdbcType jdbcType) throws SQLException {
-        ps.setString(i, JSON.toJSONString(parameter));
+    protected JSONObject parse(String result) {
+        return JSON.parseObject(result);
     }
-
-    @Override
-    public JSONObject getNullableResult(ResultSet rs, String columnName)
-            throws SQLException {
-        return JSON.parseObject(rs.getString(columnName));
-    }
-
-    @Override
-    public JSONObject getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        return JSON.parseObject(rs.getString(columnIndex));
-    }
-
-    @Override
-    public JSONObject getNullableResult(CallableStatement cs, int columnIndex)
-            throws SQLException {
-        return JSON.parseObject(cs.getString(columnIndex));
-    }
-
 }

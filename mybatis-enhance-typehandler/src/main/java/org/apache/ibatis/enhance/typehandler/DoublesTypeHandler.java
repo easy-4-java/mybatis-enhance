@@ -1,35 +1,28 @@
 package org.apache.ibatis.enhance.typehandler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 类型转换：varchar &lt;-&gt; Double[]，使用英文逗号 {@code ,} 分割。
  *
+ * <p>基于 {@link AbstractCommaArrayTypeHandler}，序列化与反序列化的样板由基类统一处理。
+ *
  * @author <a href="https://github.com/partme-ai">PartMe.AI</a>
  */
-public class DoublesTypeHandler extends BaseTypeHandler<Double[]> {
+public class DoublesTypeHandler extends AbstractCommaArrayTypeHandler<Double> {
+
     @Override
-    protected String convert(Double[] obj) {
-        if (obj.length == 0) {
-            return null;
-        }
-        StringBuilder sb = new StringBuilder();
-        for (Double d : obj) {
-            sb.append(d).append(",");
-        }
-        sb.append("<END>");
-        return sb.toString().replace(",<END>", "");
+    protected Double parseElement(String element) {
+        return Double.valueOf(element);
     }
 
     @Override
-    protected Double[] parse(String result) {
-        String[] split = result.split(",");
-        List<Double> doubles = new ArrayList<>();
-        for (String s : split) {
-            doubles.add(Double.valueOf(s));
-        }
-        return doubles.toArray(new Double[]{});
+    protected Double[] toArray(List<Double> list) {
+        return list.toArray(new Double[0]);
     }
 
+    @Override
+    protected Double[] newArray(int length) {
+        return new Double[length];
+    }
 }

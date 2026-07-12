@@ -13,7 +13,7 @@ import java.util.List;
  * 原生 MyBatis 增强生命周期契约。
  *
  * <p>该接口只依赖 MyBatis，不依赖 MyBatis-Plus。Extension 可以按注册顺序组合
- * 加密、签名、脱敏、国际化和领域对象回填等能力。</p>
+ * 加密、签名、国际化和领域对象回填等能力。</p>
  *
  * @author <a href="https://github.com/hiwepy">wandl</a>
  * @since 1.0.x
