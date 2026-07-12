@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ServiceLoader;
 
 /**
@@ -115,13 +116,14 @@ public class ModelsFillsInnerInterceptor implements EnhanceInnerInterceptor {
      * </ul>
      */
     private Fillable findFillable(Object parameter) {
-        if (parameter == null) {
+        if (Objects.isNull(parameter)) {
             return null;
         }
         if (parameter instanceof Fillable) {
             return (Fillable) parameter;
         }
-        if (parameter instanceof Map<?, ?> map) {
+        if (parameter instanceof Map<?, ?>) {
+            Map<?, ?> map = (Map<?, ?>) parameter;
             for (Object value : map.values()) {
                 if (value instanceof Fillable) {
                     return (Fillable) value;
