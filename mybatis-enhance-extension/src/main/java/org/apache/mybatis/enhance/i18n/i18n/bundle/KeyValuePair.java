@@ -15,10 +15,12 @@
  */
 package org.apache.mybatis.enhance.i18n.i18n.bundle;
 
+import java.util.Objects;
+
 /***
  * <p>A simple string key/string value pair.</p>
  *
- * <p>This is useful as an argument type for options whose values take on the form <kbd>key=value</kbd>, such as JVM
+ * <p>This is useful as an argument type for options whose values take on the form {@code key=value}, such as JVM
  * command line system properties.</p>
  *
  * @author <a href="mailto:pholser@alumni.rice.edu">Paul Holser</a>
@@ -35,16 +37,18 @@ public final class KeyValuePair {
     }
 
     /***
-     * Parses a string assumed to be of the form <kbd>key=value</kbd> into its parts.
+     * Parses a string assumed to be of the form {@code key=value} into its parts.
      *
      * @param asString key-value string
      * @return a key-value pair
      * @throws NullPointerException if {@code stringRepresentation} is {@code null}
      */
     public static KeyValuePair valueOf( String asString ) {
+        Objects.requireNonNull(asString, "Key-value string must not be null");
         int equalsIndex = asString.indexOf( '=' );
-        if ( equalsIndex == -1 )
+        if ( equalsIndex == -1 ) {
             return new KeyValuePair( asString, EMPTY );
+        }
 
         String aKey = asString.substring( 0, equalsIndex );
         String aValue = equalsIndex == asString.length() - 1 ? EMPTY : asString.substring( equalsIndex + 1 );
@@ -54,8 +58,9 @@ public final class KeyValuePair {
 
     @Override
     public boolean equals( Object that ) {
-        if ( !( that instanceof KeyValuePair ) )
+        if ( !( that instanceof KeyValuePair ) ) {
             return false;
+        }
 
         KeyValuePair other = (KeyValuePair) that;
         return key.equals( other.key ) && value.equals( other.value );

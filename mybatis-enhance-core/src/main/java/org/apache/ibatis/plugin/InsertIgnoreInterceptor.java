@@ -74,6 +74,8 @@ public class InsertIgnoreInterceptor implements Interceptor {
 
     /**
      * 查询当前线程是否启用了 INSERT IGNORE。
+     *
+     * @return 当前线程已启用时返回 true
      */
     public static boolean isEnabled() {
         return Objects.equals(THREAD_LOCAL.get(), Boolean.TRUE);

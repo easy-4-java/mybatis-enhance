@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
@@ -28,7 +28,6 @@ import java.util.TimeZone;
  *
  * @author <a href="https://github.com/partme-ai">PartMe.AI</a>
  */
-@Slf4j
 @MappedTypes({List.class})
 @MappedJdbcTypes(JdbcType.VARCHAR)
 public class MyJacksonTypeHandler extends BaseTypeHandler<Object> {
@@ -40,10 +39,7 @@ public class MyJacksonTypeHandler extends BaseTypeHandler<Object> {
         OBJECT_MAPPER.setDefaultPropertyInclusion(JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.NON_NULL));
         OBJECT_MAPPER.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
         OBJECT_MAPPER.setDateFormat(DateUtil.newSimpleFormat("yyyy-MM-dd HH:mm:ss"));
-        try {
-            OBJECT_MAPPER.registerModule(new JavaTimeModule());
-        } catch (Exception ignored) {
-        }
+        OBJECT_MAPPER.registerModule(new JavaTimeModule());
     }
 
     private final Class<?> type;
@@ -61,34 +57,34 @@ public class MyJacksonTypeHandler extends BaseTypeHandler<Object> {
     @Override
     public Object getNullableResult(ResultSet rs, String columnName) throws SQLException {
         String str = rs.getString(columnName);
-        return (str == null || str.isEmpty()) ? null : parse(str);
+        return StringUtils.isBlank(str) ? null : parse(str);
     }
 
     @Override
     public Object getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         String str = rs.getString(columnIndex);
-        return (str == null || str.isEmpty()) ? null : parse(str);
+        return StringUtils.isBlank(str) ? null : parse(str);
     }
 
     @Override
     public Object getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         String str = cs.getString(columnIndex);
-        return (str == null || str.isEmpty()) ? null : parse(str);
+        return StringUtils.isBlank(str) ? null : parse(str);
     }
 
-    private Object parse(String json) {
+    private Object parse(String json) throws SQLException {
         try {
             return OBJECT_MAPPER.readValue(json, type);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException exception) {
+            throw new SQLException("Jackson JSON deserialization failed for " + type.getName(), exception);
         }
     }
 
-    private String toJson(Object obj) {
+    private String toJson(Object obj) throws SQLException {
         try {
             return OBJECT_MAPPER.writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+        } catch (JsonProcessingException exception) {
+            throw new SQLException("Jackson JSON serialization failed for " + type.getName(), exception);
         }
     }
 }

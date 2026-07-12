@@ -5,9 +5,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.hiwepy</groupId>
 	<artifactId>mybatis-enhance</artifactId>
-	<version>1.0.x.20260630-SNAPSHOT</version>
+	<version>${revision}</version>
 	<name>${project.groupId}:${project.artifactId}</name>
-	<url>https://github.com/hiwepy/${project.artifactId}</url>
+		<url>https://github.com/hiwepy/${project.artifactId}</url>
 	<packaging>pom</packaging>
 
 	<licenses>
@@ -20,7 +20,7 @@
 	<scm>
 		<connection>scm:git:https:github.com/hiwepy/${project.artifactId}.git</connection>
 		<developerConnection>scm:git:https:github.com/hiwepy/${project.artifactId}.git</developerConnection>
-		<url>https:github.com/hiwepy/${project.artifactId}</url>
+		<url>https://github.com/hiwepy/${project.artifactId}</url>
 		<tag>${project.artifactId}</tag>
 	</scm>
 
@@ -62,6 +62,13 @@
 						<target>${java.version}</target>
 						<encoding>${project.build.sourceEncoding}</encoding>
 						<maxmem>512M</maxmem>
+						<annotationProcessorPaths>
+							<path>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok</artifactId>
+								<version>${lombok.version}</version>
+							</path>
+						</annotationProcessorPaths>
 					</configuration>
 				</plugin>
 				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-deploy-plugin -->
@@ -69,6 +76,28 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
 					<version>${maven-deploy-plugin.version}</version>
+				</plugin>
+				<!-- Flatten：解析 ${revision}，生成可直接发布和消费的 POM。 -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>flatten-maven-plugin</artifactId>
+					<version>${maven-flatten-plugin.version}</version>
+					<configuration>
+						<flattenMode>resolveCiFriendliesOnly</flattenMode>
+						<updatePomFile>true</updatePomFile>
+					</configuration>
+					<executions>
+						<execution>
+							<id>flatten</id>
+							<phase>process-resources</phase>
+							<goals><goal>flatten</goal></goals>
+						</execution>
+						<execution>
+							<id>flatten-clean</id>
+							<phase>clean</phase>
+							<goals><goal>clean</goal></goals>
+						</execution>
+					</executions>
 				</plugin>
 				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-enforcer-plugin -->
 				<plugin>
@@ -167,9 +196,6 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>${maven-surefire-plugin.version}</version>
 					<configuration>
-						<!-- 跳过单元测试 -->
-						<skip>true</skip>
-						<skipTests>true</skipTests>
 						<argLine>-Xmx1024m -Dfile.encoding=UTF-8</argLine>
 						<additionalClasspathElements>
 							<additionalClasspathElement>${basedir}/target/test-classes</additionalClasspathElement>
@@ -275,6 +301,10 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>flatten-maven-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -359,14 +389,17 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<!-- CI Friendly Version：全部子模块和内部依赖共用，可由 CI -Drevision 覆盖。 -->
+		<revision>1.0.x.20260630-SNAPSHOT</revision>
 		<java.version>1.8</java.version>
 		<!-- Maven Plugin versions -->
-		<maven.version>3.0</maven.version>
+		<maven.version>3.9.6</maven.version>
 		<maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
 		<maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
 		<maven-dependency-plugin.version>3.0.1</maven-dependency-plugin.version>
 		<maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
 		<maven-enforcer-plugin.version>3.6.3</maven-enforcer-plugin.version>
+		<maven-flatten-plugin.version>1.7.3</maven-flatten-plugin.version>
 		<maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
 		<maven-install-plugin.version>3.1.4</maven-install-plugin.version>
 		<maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
@@ -378,21 +411,16 @@
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
 		<!-- Dependency versions -->
 		<commons-beanutils.version>1.11.0</commons-beanutils.version>
-		<commons-collections4.version>4.4</commons-collections4.version>
 		<commons-lang3.version>3.18.0</commons-lang3.version>
-		<contiperf.version>2.3.4</contiperf.version>
         <fastjson2.version>2.0.56</fastjson2.version>
         <hutool.version>5.8.40</hutool.version>
 		<jackson.version>2.18.9</jackson.version>
-        <jsqlparser.version>4.9</jsqlparser.version>
+        <!-- 现有数据权限 Visitor 基于 JSqlParser 3.1 API，并保持 JDK 8 兼容。 -->
+        <jsqlparser.version>3.1</jsqlparser.version>
 		<junit.version>4.13.2</junit.version>
-		<reflections.version>0.9.11</reflections.version>
 		<slf4j.version>2.0.18</slf4j.version>
 		<lombok.version>1.18.46</lombok.version>
-		<spring.version>5.3.39</spring.version>
         <mybatis.version>3.5.17</mybatis.version>
-        <mybatis-spring.version>2.1.2</mybatis-spring.version>
-        <mybatis-plus.version>3.5.9</mybatis-plus.version>
 	</properties>
 
 	<dependencyManagement>
@@ -402,6 +430,27 @@
 				<groupId>com.alibaba.fastjson2</groupId>
 				<artifactId>fastjson2</artifactId>
 				<version>${fastjson2.version}</version>
+			</dependency>
+			<!-- Jackson：TypeHandler 与扩展模块统一使用同一版本线。 -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.datatype</groupId>
+				<artifactId>jackson-datatype-jsr310</artifactId>
+				<version>${jackson.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 			<dependency>
@@ -426,12 +475,6 @@
 			    <groupId>junit</groupId>
 			    <artifactId>junit</artifactId>
 			    <version>${junit.version}</version>
-			</dependency>
-			<!-- https://mvnrepository.com/artifact/org.databene/contiperf -->
-			<dependency>
-			    <groupId>org.databene</groupId>
-			    <artifactId>contiperf</artifactId>
-			   <version>${contiperf.version}</version>
 			</dependency>
 
 			<!-- https://mvnrepository.com/artifact/org.slf4j -->
@@ -464,23 +507,10 @@
 			    <artifactId>mybatis</artifactId>
 			    <version>${mybatis.version}</version>
 			</dependency>
-			<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
-			<dependency>
-			    <groupId>org.mybatis</groupId>
-			    <artifactId>mybatis-spring</artifactId>
-			    <version>${mybatis-spring.version}</version>
-			</dependency>
-			<!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus -->
-			<dependency>
-			    <groupId>com.baomidou</groupId>
-			    <artifactId>mybatis-plus</artifactId>
-			    <version>${mybatis-plus.version}</version>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<modules>
-		<module>mybatis-enhance-spi</module>
 		<module>mybatis-enhance-annotation</module>
 		<module>mybatis-enhance-core</module>
 		<module>mybatis-enhance-extension</module>
@@ -493,11 +523,6 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-		    <groupId>org.databene</groupId>
-		    <artifactId>contiperf</artifactId>
-		    <scope>test</scope>
 		</dependency>
 	</dependencies>
 

@@ -1,7 +1,8 @@
 package org.apache.mybatis.enhance.sensitive.handler;
 
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import org.apache.mybatis.enhance.sensitive.annotation.SensitiveType;
+
+import java.util.Objects;
 
 /**
  * 默认脱敏处理类
@@ -11,6 +12,7 @@ public class DafaultSensitiveHandler implements SensitiveTypeHandler {
 
     private static final int SIZE = 6;
     private static final int TWO =2;
+    private static final String ASTERISK = "*";
 
     @Override
     public SensitiveType getSensitiveType() {
@@ -19,7 +21,7 @@ public class DafaultSensitiveHandler implements SensitiveTypeHandler {
 
     @Override
     public String handle(Object src) {
-        if (null == src || "".equals(src)) {
+        if (Objects.isNull(src) || "".equals(src)) {
             return null;
         }
         String value =src.toString();
@@ -31,21 +33,21 @@ public class DafaultSensitiveHandler implements SensitiveTypeHandler {
         StringBuilder stringBuilder = new StringBuilder();
         if (len <= TWO) {
             if (pamathree == 1) {
-                return StringPool.ASTERISK;
+                return ASTERISK;
             }
-            stringBuilder.append(StringPool.ASTERISK);
+            stringBuilder.append(ASTERISK);
             stringBuilder.append(value.charAt(len - 1));
         } else {
             if (pamatwo <= 0) {
                 stringBuilder.append(value.charAt(0));
-                stringBuilder.append(StringPool.ASTERISK);
+                stringBuilder.append(ASTERISK);
                 stringBuilder.append(value.charAt(len - 1));
 
             } else if (pamatwo >= SIZE / TWO && SIZE + 1 != len) {
                 int pamafive = (len - SIZE) / 2;
                 stringBuilder.append(value, 0, pamafive);
                 for (int i = 0; i < SIZE; i++) {
-                    stringBuilder.append(StringPool.ASTERISK);
+                    stringBuilder.append(ASTERISK);
                 }
                 if (ispamaThree(pamathree)) {
                     stringBuilder.append(value, len - pamafive, len);
@@ -56,7 +58,7 @@ public class DafaultSensitiveHandler implements SensitiveTypeHandler {
                 int pamafour = len - 2;
                 stringBuilder.append(value.charAt(0));
                 for (int i = 0; i < pamafour; i++) {
-                    stringBuilder.append(StringPool.ASTERISK);
+                    stringBuilder.append(ASTERISK);
                 }
                 stringBuilder.append(value.charAt(len - 1));
             }

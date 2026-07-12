@@ -6,7 +6,6 @@ import cn.hutool.crypto.Padding;
 import cn.hutool.crypto.digest.HMac;
 import cn.hutool.crypto.digest.HmacAlgorithm;
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
-import com.baomidou.mybatisplus.core.toolkit.ExceptionUtils;
 import org.apache.mybatis.enhance.crypto.enums.SymmetricAlgorithmType;
 import org.apache.ibatis.enhance.util.SymmetricCryptoUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,11 +37,11 @@ public class DefaultEncryptedFieldHandler implements EncryptedFieldHandler {
     }
 
     public DefaultEncryptedFieldHandler(ObjectMapper objectMapper, SymmetricAlgorithmType algorithmType, HmacAlgorithm hmacAlgorithm, Mode mode, Padding padding, String key, String iv, boolean plainIsEncode) {
-        this.objectMapper = objectMapper;
-        this.algorithmType = algorithmType;
-        this.hmacAlgorithm = hmacAlgorithm;
-        this.mode = mode;
-        this.padding = padding;
+        this.objectMapper = Objects.requireNonNull(objectMapper, "ObjectMapper must not be null");
+        this.algorithmType = Objects.requireNonNull(algorithmType, "Algorithm type must not be null");
+        this.hmacAlgorithm = Objects.requireNonNull(hmacAlgorithm, "HMAC algorithm must not be null");
+        this.mode = Objects.requireNonNull(mode, "Crypto mode must not be null");
+        this.padding = Objects.requireNonNull(padding, "Crypto padding must not be null");
         this.key = Base64.decodeStr(key);
         this.iv = Objects.isNull(iv) ? null : Base64.decodeStr(iv);
         this.plainIsEncode = plainIsEncode;
@@ -53,7 +52,6 @@ public class DefaultEncryptedFieldHandler implements EncryptedFieldHandler {
         try {
             // 1、序列化Value
             String valueAsString = getObjectMapper().writeValueAsString(value);
-            log.debug("Plain Value To {} Encrypt: {}", algorithmType.getName(), valueAsString);
             // 2、获取加密器
             SymmetricCrypto crypto = algorithmType.getSymmetricCrypto(mode, padding, key, iv);
             // 3、加密Value，如果 plainIsEncode =true 则对加密结果进行Base64
@@ -62,46 +60,38 @@ public class DefaultEncryptedFieldHandler implements EncryptedFieldHandler {
             } else {
                 valueAsString = crypto.encryptHex(valueAsString);
             }
-            log.debug("{} Encrypt Value : {}", algorithmType.getName(), valueAsString);
             return valueAsString;
         } catch (Exception ex) {
-            log.error("{} Encrypt Error : {}", algorithmType.getName(), ex.getMessage());
-            throw ExceptionUtils.mpe("{} Encrypt Error", ex, algorithmType.getName());
+            throw new IllegalStateException(algorithmType.getName() + " encrypt failed", ex);
         }
     }
 
     @Override
     public <T> T decrypt(String value, Class<T> rtType) {
         try {
-            log.debug("Plain Value to {} Decrypt : {}", algorithmType.getName(), value);
             // 2、获取解密器
             SymmetricCrypto crypto = SymmetricCryptoUtil.getSymmetricCrypto(algorithmType.getName(), mode, padding, key, iv);
             // 3、解密请求体
             String decryptStr = crypto.decryptStr(value);
-            log.debug("{} Decrypt Value : {}", algorithmType.getName(), decryptStr);
             return getObjectMapper().readValue(decryptStr, rtType);
         } catch (Exception ex) {
-            log.error("{} Decrypt Error : {}", algorithmType.getName(), ex.getMessage());
-            throw ExceptionUtils.mpe("{} Decrypt Error", ex, algorithmType.getName());
+            throw new IllegalStateException(algorithmType.getName() + " decrypt failed", ex);
         }
     }
 
     @Override
     public <T> String hmac(T value) {
         try {
-            log.debug("Plain Value to {} HMAC : {}", hmacAlgorithm.name(), value);
-            HMac hMac = SymmetricCryptoUtil.getHmac(hmacAlgorithm, Base64.decodeStr(key));
+            HMac hMac = SymmetricCryptoUtil.getHmac(hmacAlgorithm, key);
             String hmacValue;
             if(plainIsEncode){
                 hmacValue = hMac.digestBase64(getObjectMapper().writeValueAsString(value), StandardCharsets.UTF_8, Boolean.TRUE);
             } else {
                 hmacValue = new String(hMac.digest(getObjectMapper().writeValueAsString(value)), StandardCharsets.UTF_8);
             }
-            log.debug("HMAC Digest Value : {}", hmacValue);
             return hmacValue;
         } catch (Exception ex) {
-            log.error("HMAC Digest Error : {}", ex.getMessage());
-            throw ExceptionUtils.mpe("HMAC Digest Error", ex);
+            throw new IllegalStateException("HMAC digest failed", ex);
         }
     }
 

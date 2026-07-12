@@ -32,9 +32,10 @@ public class SymmetricCryptoUtil {
      */
     public static SymmetricCrypto getSymmetricCrypto(String algorithmType, Mode mode, Padding padding, String key, String iv) {
         // 构造对称加密器
-        String keyStr = String.join("_", algorithmType, mode.name(), padding.name(), key, iv);
+        String keyStr = String.join("_", algorithmType, mode.name(), padding.name(),
+                Objects.toString(key, ""), Objects.toString(iv, ""));
         return SYMMETRIC_CRYPTO_CACHE.computeIfAbsent(keyStr, join -> {
-            String[] keyArr =  join.split("_");
+            String[] keyArr = join.split("_", -1);
             String algorithmTypeStr = Objects.toString(keyArr[0], SM4.ALGORITHM_NAME);
             String modeStr = Objects.toString(keyArr[1], Mode.ECB.name());
             String paddingStr = Objects.toString(keyArr[2], Padding.PKCS5Padding.name());
@@ -48,7 +49,12 @@ public class SymmetricCryptoUtil {
             if(SymmetricAlgorithm.AES.name().equalsIgnoreCase(algorithmType)){
                 return new AES(Mode.valueOf(modeStr), Padding.valueOf(paddingStr), keyBytes, ivBytes);
             }
-            return new AES(Mode.valueOf(algorithmTypeStr), Padding.valueOf(keyArr[2]), keyBytes, ivBytes);
+            SymmetricCrypto crypto = new SymmetricCrypto(
+                    algorithmTypeStr + "/" + modeStr + "/" + paddingStr, keyBytes);
+            if (Objects.nonNull(ivBytes)) {
+                crypto.setIv(ivBytes);
+            }
+            return crypto;
         });
     }
 

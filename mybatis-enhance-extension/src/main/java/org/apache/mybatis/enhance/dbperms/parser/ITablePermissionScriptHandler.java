@@ -19,14 +19,17 @@ import org.apache.ibatis.binding.MetaStatementHandler;
 
 import java.util.Optional;
 
+/**
+ * 基于权限脚本片段生成权限 SQL 的处理契约。
+ */
 public interface ITablePermissionScriptHandler {
 
 	/**
 	 *  SQL 处理
 	 *
 	 * @param metaHandler 元对象
-	 * @param originalSQL 当前执行 SQL
-	 * @return
+	 * @param segmentSQL 权限脚本片段
+	 * @return 权限 SQL；无需改写时返回空 Optional
 	 */
 	default Optional<String> process(MetaStatementHandler metaHandler, String segmentSQL) {
 		String permissionedSQL = dynamicPermissionedSQL(metaHandler, segmentSQL);
@@ -37,7 +40,7 @@ public interface ITablePermissionScriptHandler {
 	 * 生成动态SQL，无改变返回 NULL
 	 *
 	 * @param metaHandler 元对象
-	 * @param originalSQL 当前执行 SQL
+	 * @param segmentSQL 权限脚本片段
 	 * @return String
 	 */
 	String dynamicPermissionedSQL(MetaStatementHandler metaHandler, String segmentSQL);

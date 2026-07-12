@@ -6,7 +6,8 @@
     <parent>
         <groupId>io.github.hiwepy</groupId>
         <artifactId>mybatis-enhance</artifactId>
-        <version>1.0.x.20260630-SNAPSHOT</version>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>mybatis-enhance-extension</artifactId>
@@ -27,28 +28,26 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
+        <!-- 扩展代码直接使用 BeanUtils，显式声明以避免依赖 Core 的传递依赖。 -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+        </dependency>
+        <!-- @Slf4j 生成的日志字段直接依赖 SLF4J API。 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-        <!-- 仅依赖源码实际使用的 MyBatis-Plus API，禁止聚合包传递 Spring -->
+        <!-- 原生 MyBatis 插件、MappedStatement、Executor 与元对象 API。 -->
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-core</artifactId>
-            <version>${mybatis-plus.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-extension</artifactId>
-            <version>${mybatis-plus.version}</version>
-        </dependency>
-        <!-- JsqlParserSupport & jsqlparser-based InnerInterceptor base classes (split from mybatis-plus-extension since 3.5.9) -->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-jsqlparser</artifactId>
-            <version>${mybatis-plus.version}</version>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
@@ -65,11 +64,6 @@
         <dependency>
             <groupId>io.github.hiwepy</groupId>
             <artifactId>mybatis-enhance-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.hiwepy</groupId>
-            <artifactId>mybatis-enhance-spi</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
@@ -94,9 +88,9 @@
                                         <exclude>org.springframework:*</exclude>
                                         <exclude>org.springframework.*:*</exclude>
                                         <exclude>org.mybatis:mybatis-spring</exclude>
-                                        <exclude>com.baomidou:mybatis-plus-spring</exclude>
+                                        <exclude>com.baomidou:*</exclude>
                                     </excludes>
-                                    <message>mybatis-enhance-extension 必须保持 Spring 无关，Spring 集成应由独立适配模块提供。</message>
+                                    <message>mybatis-enhance-extension 必须保持纯原生 MyBatis，禁止引入 Spring 或 MyBatis-Plus。</message>
                                 </bannedDependencies>
                             </rules>
                         </configuration>

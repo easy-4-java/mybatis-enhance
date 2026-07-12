@@ -1,11 +1,9 @@
 package org.apache.ibatis.enhance.typehandler;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cn.hutool.json.JSONUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;
@@ -32,12 +30,7 @@ import java.util.List;
  *     }
  * }
  *
- * // 2. 在 PO 上标注
- * &#64;TableName(value = "user_list", autoResultMap = true)
- * public class UserPO {
- *     &#64;TableField(typeHandler = UserListTypeHandler.class)
- *     private List&lt;User&gt; users;
- * }
+ * // 2. 在 Mapper XML 的 result/typeHandler 中注册 UserListTypeHandler
  * </pre>
  *
  * @param <T> List 元素类型
@@ -51,8 +44,11 @@ public abstract class ListTypeHandler<T> extends BaseTypeHandler<List<T>> {
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, List<T> parameter, JdbcType jdbcType) throws SQLException {
-        String content = CollUtil.isEmpty(parameter) ? null : JSONUtil.toJsonStr(parameter);
-        ps.setString(i, content);
+        try {
+            ps.setString(i, parameter.isEmpty() ? null : OBJECT_MAPPER.writeValueAsString(parameter));
+        } catch (JsonProcessingException exception) {
+            throw new SQLException("Failed to serialize list parameter", exception);
+        }
     }
 
     @Override
@@ -70,11 +66,13 @@ public abstract class ListTypeHandler<T> extends BaseTypeHandler<List<T>> {
         return this.toList(cs.getString(columnIndex));
     }
 
-    private List<T> toList(String content) {
+    private List<T> toList(String content) throws SQLException {
         try {
-            return StrUtil.isBlank(content) ? new ArrayList<>() : OBJECT_MAPPER.readValue(content, this.elementType());
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            return StringUtils.isBlank(content)
+                    ? new ArrayList<>()
+                    : OBJECT_MAPPER.readValue(content, this.elementType());
+        } catch (JsonProcessingException exception) {
+            throw new SQLException("Failed to deserialize list column", exception);
         }
     }
 

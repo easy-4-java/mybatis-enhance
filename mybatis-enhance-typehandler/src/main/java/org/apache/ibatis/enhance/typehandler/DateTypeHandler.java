@@ -19,6 +19,7 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 
 import java.sql.*;
+import java.util.Objects;
 
 /**
  * 将字符串格式的日期:<code>yyyy-mm-dd</code>转换为JDBC能够识别的类型。
@@ -34,19 +35,19 @@ public class DateTypeHandler extends org.apache.ibatis.type.BaseTypeHandler<Stri
     @Override
     public String getNullableResult(ResultSet rs, String columnName) throws SQLException {
         Date date = rs.getDate(columnName);
-        return date.toString();
+        return Objects.isNull(date) ? null : date.toString();
     }
 
     @Override
     public String getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         Date date = cs.getDate(columnIndex);
-        return date.toString();
+        return Objects.isNull(date) ? null : date.toString();
     }
 
     @Override
     public String getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         Date date = rs.getDate(columnIndex);
-        return date.toString();
+        return Objects.isNull(date) ? null : date.toString();
     }
 
 }

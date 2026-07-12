@@ -6,7 +6,8 @@
     <parent>
         <groupId>io.github.hiwepy</groupId>
         <artifactId>mybatis-enhance</artifactId>
-        <version>1.0.x.20260630-SNAPSHOT</version>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>mybatis-enhance-core</artifactId>
@@ -35,18 +36,6 @@
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
         </dependency>
-        <!-- For Mybatis Eenhance -->
-        <dependency>
-            <groupId>io.github.hiwepy</groupId>
-            <artifactId>mybatis-enhance-annotation</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <!-- For Mybatis Enhance SPI（PageParam / Dialect / SqlObservationSink 等纯接口契约） -->
-        <dependency>
-            <groupId>io.github.hiwepy</groupId>
-            <artifactId>mybatis-enhance-spi</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 	</dependencies>
 
 	<build>
@@ -69,8 +58,9 @@
 										<exclude>org.springframework:*</exclude>
 										<exclude>org.springframework.*:*</exclude>
 										<exclude>org.mybatis:mybatis-spring</exclude>
+										<exclude>com.baomidou:*</exclude>
 									</excludes>
-									<message>mybatis-enhance-core 必须保持纯 MyBatis，禁止引入 Spring 集成依赖。</message>
+									<message>mybatis-enhance-core 必须保持纯 MyBatis，禁止引入 Spring 或 MyBatis-Plus。</message>
 								</bannedDependencies>
 							</rules>
 						</configuration>

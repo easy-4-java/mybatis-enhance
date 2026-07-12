@@ -1,31 +1,26 @@
 package org.apache.mybatis.enhance.crypto.handler;
 
-import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
-
+/**
+ * 实体数据签名与验签契约。
+ *
+ * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @since 1.0.x
+ */
 public interface DataSignatureHandler {
 
     /**
-     * 通过API（save、updateById等）修改数据库时
-     * @param entity 参数
-     * @param <T> 对象类型
-     * @return 签名完成后是否继续执行数据更新操作
-     */
-    <T> boolean doEntitySignature(T entity);
-
-    /**
-     * 通过UpdateWrapper、LambdaUpdateWrapper修改数据库时
+     * 根据参与签名的实体字段生成签名并写入签名字段。
      *
-     * @param entityClass   实体类
-     * @param updateWrapper 更新条件
-     * @return 签名完成后是否继续执行数据更新操作
+     * @param entity 待签名实体
+     * @return 已生成并写入签名时返回 true
      */
-    boolean doWrapperSignature(Class<?> entityClass, AbstractWrapper<?,?,?> updateWrapper);
+    boolean doEntitySignature(Object entity);
 
     /**
-     * 对单个对象进行验签
-     * @param rawObject 单个对象
-     * @param <T> 对象类型
+     * 校验查询对象的持久化签名，不匹配时由实现抛出校验异常。
+     *
+     * @param rawObject 待验签查询对象
+     * @param entityClass 对象对应的实体类型
      */
-    <T> void doSignatureVerification(Object rawObject, Class<T> entityClass);
-
+    void doSignatureVerification(Object rawObject, Class<?> entityClass);
 }

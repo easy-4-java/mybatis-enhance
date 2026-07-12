@@ -1,30 +1,24 @@
 package org.apache.mybatis.enhance.sensitive.handler;
 
-import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
-
+/**
+ * 实体字段写入前和查询后的脱敏契约。
+ *
+ * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @since 1.0.x
+ */
 public interface DataMaskingHandler {
 
     /**
-     * 通过API（save、updateById等）修改数据库时
-     * @param entity 参数
-     * @param <T> 对象类型
-     */
-    <T> void doQueryMasking(T entity);
-
-    /**
-     * 通过UpdateWrapper、LambdaUpdateWrapper修改数据库时
+     * 对写入参数中的敏感字段执行脱敏。
      *
-     * @param entityClass   实体类
-     * @param updateWrapper 更新条件
+     * @param entity 待处理实体
      */
-    void doQueryMasking(Class<?> entityClass, AbstractWrapper<?,?,?> updateWrapper);
+    void doParameterMasking(Object entity);
 
     /**
-     * 通过API（save、updateById等）修改数据库时
-     * @param entity 参数
-     * @param <T> 对象类型
+     * 对查询结果中的敏感字段执行脱敏。
+     *
+     * @param entity 待处理实体
      */
-    <T> void doResultMasking(T entity);
-
-
+    void doResultMasking(Object entity);
 }

@@ -1,65 +1,51 @@
 package org.apache.ibatis.enhance.typehandler;
 
+import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 
 import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
-import java.sql.*;
+import java.nio.charset.StandardCharsets;
+import java.sql.Blob;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Objects;
 
-/*
- * 自定义typehandler，解决mybatis存储blob字段后，出现乱码的问题 配置mapper.xml：
- * <result typeHandler="org.apache.ibatis.type.BlobStringTypeHandler"/>
- * @author <a href="https://github.com/hiwepy">hiwepy</a>
+/**
+ * UTF-8 字符串与数据库 BLOB 的双向类型处理器。
  */
 @MappedJdbcTypes(JdbcType.BLOB)
-public class BlobStringTypeHandler extends org.apache.ibatis.type.BaseTypeHandler<String> {// 指定字符集
+public class BlobStringTypeHandler extends BaseTypeHandler<String> {
 
-	private static final String DEFAULT_CHARSET = "UTF-8";
+    @Override
+    public void setNonNullParameter(PreparedStatement ps, int index, String parameter,
+                                    JdbcType jdbcType) throws SQLException {
+        byte[] bytes = parameter.getBytes(StandardCharsets.UTF_8);
+        ps.setBinaryStream(index, new ByteArrayInputStream(bytes), bytes.length);
+    }
 
-	@Override
-	public void setNonNullParameter(PreparedStatement ps, int i, String parameter, JdbcType jdbcType)
-			throws SQLException {
-		ByteArrayInputStream bis;
-		try {
-			bis = new ByteArrayInputStream(parameter.getBytes(DEFAULT_CHARSET));
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException("Blob Encoding Error!");
-		}
-		ps.setBinaryStream(i, bis, parameter.length());
-	}
+    @Override
+    public String getNullableResult(ResultSet rs, String columnName) throws SQLException {
+        return readBlob(rs.getBlob(columnName));
+    }
 
-	@Override
-	public String getNullableResult(ResultSet rs, String columnName) throws SQLException {
-		Blob blob = rs.getBlob(columnName);
-		byte[] returnValue = null;
-		if (null != blob) {
-			returnValue = blob.getBytes(1, (int) blob.length());
-		}
-		try {
-			return new String(returnValue, DEFAULT_CHARSET);
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException("Blob Encoding Error!");
-		}
-	}
+    @Override
+    public String getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+        return readBlob(rs.getBlob(columnIndex));
+    }
 
-	@Override
-	public String getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-		Blob blob = cs.getBlob(columnIndex);
-		byte[] returnValue = null;
-		if (null != blob) {
-			returnValue = blob.getBytes(1, (int) blob.length());
-		}
-		try {
-			return new String(returnValue, DEFAULT_CHARSET);
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException("Blob Encoding Error!");
-		}
-	}
+    @Override
+    public String getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+        return readBlob(cs.getBlob(columnIndex));
+    }
 
-	@Override
-	public String getNullableResult(ResultSet arg0, int arg1) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    private String readBlob(Blob blob) throws SQLException {
+        if (Objects.isNull(blob)) {
+            return null;
+        }
+        byte[] bytes = blob.getBytes(1, Math.toIntExact(blob.length()));
+        return new String(bytes, StandardCharsets.UTF_8);
+    }
 }

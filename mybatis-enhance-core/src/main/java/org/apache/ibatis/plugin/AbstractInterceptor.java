@@ -15,7 +15,6 @@
  */
 package org.apache.ibatis.plugin;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.builder.SqlSourceBuilder;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
@@ -28,13 +27,10 @@ import org.apache.ibatis.binding.MetaResultSetHandler;
 import org.apache.ibatis.binding.MetaStatementHandler;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.utils.MybatisUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Properties;
 
-@Slf4j
 public abstract class AbstractInterceptor implements Interceptor {
 
 	/* Context参数 */

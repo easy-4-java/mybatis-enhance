@@ -29,6 +29,8 @@ public abstract class BaseTypeHandler<T> extends org.apache.ibatis.type.BaseType
 
     /**
      * 获取实际的泛型类型（通过纯 Java 反射推断，零 MyBatis-Plus 依赖）。
+     *
+     * @return 当前处理器声明的目标 Java 类型
      */
     public Class<T> type() {
         Type superclass = getClass().getGenericSuperclass();
@@ -42,34 +44,54 @@ public abstract class BaseTypeHandler<T> extends org.apache.ibatis.type.BaseType
         throw new IllegalStateException("无法从 " + getClass().getName() + " 推断泛型类型");
     }
 
+    /**
+     * 创建包含当前泛型参数的 MyBatis 类型引用。
+     *
+     * @return 当前处理器目标类型的类型引用
+     */
     public TypeReference<T> typeReference() {
         return new TypeReference<T>() {};
     }
 
+    /**
+     * 将非空 Java 值转换为数据库字符串。
+     *
+     * @param obj 待写入的 Java 值
+     * @return 数据库存储字符串
+     */
     protected abstract String convert(T obj);
+
+    /**
+     * 将非空数据库字符串解析为 Java 值。
+     *
+     * @param result 数据库字符串
+     * @return 解析后的 Java 值
+     */
     protected abstract T parse(String result);
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException {
-        if (Objects.isNull(parameter)) return;
+        if (Objects.isNull(parameter)) {
+            return;
+        }
         ps.setString(i, this.convert(parameter));
     }
 
     @Override
     public T getNullableResult(ResultSet rs, String columnName) throws SQLException {
         String str = rs.getString(columnName);
-        return Objects.isNull(str) || !StringUtils.isNotBlank(str) ? null : this.parse(str);
+        return StringUtils.isBlank(str) ? null : this.parse(str);
     }
 
     @Override
     public T getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         String str = rs.getString(columnIndex);
-        return Objects.isNull(str) || !StringUtils.isNotBlank(str) ? null : this.parse(str);
+        return StringUtils.isBlank(str) ? null : this.parse(str);
     }
 
     @Override
     public T getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         String str = cs.getString(columnIndex);
-        return Objects.isNull(str) || !StringUtils.isNotBlank(str) ? null : this.parse(str);
+        return StringUtils.isBlank(str) ? null : this.parse(str);
     }
 }

@@ -1,273 +1,129 @@
 package org.apache.ibatis.enhance.util;
 
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.ReflectUtil;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.core.handlers.AnnotationHandler;
-import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
-import com.baomidou.mybatisplus.core.metadata.TableInfo;
-import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
-import com.baomidou.mybatisplus.core.toolkit.AnnotationUtils;
 import org.apache.mybatis.enhance.crypto.annotation.EncryptedField;
 import org.apache.mybatis.enhance.crypto.annotation.EncryptedTable;
 import org.apache.mybatis.enhance.crypto.annotation.TableSignature;
 import org.apache.mybatis.enhance.crypto.annotation.TableSignatureField;
-import org.apache.mybatis.enhance.sensitive.annotation.SensitiveField;
-import org.apache.mybatis.enhance.sensitive.annotation.SensitiveJSONField;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
-public class TableFieldHelper {
+/**
+ * 原生 MyBatis 实体字段元数据工具。
+ *
+ * <p>只依据 Java 反射和 mybatis-enhance 注解解析字段，不依赖 MyBatis-Plus
+ * {@code TableInfo}。字段元数据按实体类型缓存。</p>
+ */
+public final class TableFieldHelper {
 
-    /**
-     * 校验该实例的类是否被 @EncryptedTable所注解
-     */
-    public static boolean isExistEncryptedTable(Object object) {
-        Class<?> objectClass = object.getClass();
-/*
-        ReflectUtils.doWithFields(objectClass, field -> {
-            EncryptedTable encryptedTable = AnnotationUtils.findFirstAnnotation(EncryptedTable.class, field);
-            return Objects.nonNull(encryptedTable);
-        });*/
-        return isExistEncryptedTable(objectClass);
+    private static final ConcurrentMap<Class<?>, List<Field>> FIELD_CACHE = new ConcurrentHashMap<>();
+
+    private TableFieldHelper() {
     }
 
-    /**
-     * 校验该实例的类是否被@EncryptedTable所注解
-     */
-    public static boolean isExistEncryptedTable(Class<?> objectClass) {
-        EncryptedTable encryptedTable = AnnotationUtils.findFirstAnnotation(EncryptedTable.class, objectClass);
-        return Objects.nonNull(encryptedTable);
+    public static boolean isEncryptedTable(Class<?> entityType) {
+        return Objects.nonNull(entityType) && entityType.isAnnotationPresent(EncryptedTable.class);
     }
 
-    /**
-     * <p>
-     * 判断主键注解是否存在
-     * </p>
-     *
-     * @param list 字段列表
-     * @return true 为存在 {@link TableId} 注解;
-     */
-    public static boolean isExistTableCryptoField(List<Field> list, AnnotationHandler annotationHandler) {
-        return list.stream().anyMatch(field -> annotationHandler.isAnnotationPresent(field, EncryptedField.class));
+    public static List<Field> getFields(Class<?> entityType) {
+        Objects.requireNonNull(entityType, "Entity type must not be null");
+        return FIELD_CACHE.computeIfAbsent(entityType, TableFieldHelper::scanFields);
     }
 
-    /**
-     * <p>
-     * 获取该类的标记有 @SensitiveJSONField 注解的的字段信息列表
-     * </p>
-     *
-     * @param entityClazz 反射类
-     * @return 属性集合
-     */
-    public static List<TableFieldInfo> getSensitiveJSONFieldInfos(Class<?> entityClazz) {
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClazz);
-        return getSensitiveFieldInfos(tableInfo);
+    public static List<Field> getEncryptedFields(Class<?> entityType) {
+        if (!isEncryptedTable(entityType)) {
+            return Collections.emptyList();
+        }
+        return getFields(entityType).stream()
+                .filter(field -> field.isAnnotationPresent(EncryptedField.class))
+                .collect(Collectors.toList());
     }
 
-    /**
-     * <p>
-     * 获取该类的标记有 @SensitiveJSONField 注解的的字段信息列表
-     * </p>
-     *
-     * @param tableInfo 反射类
-     * @return 属性集合
-     */
-    public static List<TableFieldInfo> getSensitiveJSONFieldInfos(TableInfo tableInfo) {
-        return tableInfo.getFieldList().stream().filter(fieldInfo -> {
-            SensitiveJSONField encryptedField = AnnotationUtils.findFirstAnnotation(SensitiveJSONField.class, fieldInfo.getField());
-            return Objects.nonNull(encryptedField);
-        }).collect(Collectors.toList());
+    public static List<Field> getSortedSignatureFields(Class<?> entityType) {
+        TableSignature signature = entityType.getAnnotation(TableSignature.class);
+        if (Objects.isNull(signature)) {
+            return Collections.emptyList();
+        }
+        return getFields(entityType).stream()
+                .filter(field -> {
+                    TableSignatureField annotation = field.getAnnotation(TableSignatureField.class);
+                    return signature.unionAll()
+                            ? Objects.isNull(annotation) || !annotation.stored()
+                            : Objects.nonNull(annotation) && !annotation.stored();
+                })
+                .sorted(Comparator
+                        .comparingInt(TableFieldHelper::signatureOrder)
+                        .thenComparing(Field::getName))
+                .collect(Collectors.toList());
     }
 
-    /**
-     * <p>
-     * 获取该类的标记有 @SensitiveField 注解的的字段信息列表
-     * </p>
-     *
-     * @param entityClazz 反射类
-     * @return 属性集合
-     */
-    public static List<TableFieldInfo> getSensitiveFieldInfos(Class<?> entityClazz) {
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClazz);
-        return getSensitiveFieldInfos(tableInfo);
+    public static Optional<Field> getSignatureStoreField(Class<?> entityType) {
+        return getFields(entityType).stream()
+                .filter(field -> {
+                    TableSignatureField annotation = field.getAnnotation(TableSignatureField.class);
+                    return Objects.nonNull(annotation) && annotation.stored();
+                })
+                .findFirst();
     }
 
-    /**
-     * <p>
-     * 获取该类的标记有 @SensitiveField 注解的的字段信息列表
-     * </p>
-     *
-     * @param tableInfo 反射类
-     * @return 属性集合
-     */
-    public static List<TableFieldInfo> getSensitiveFieldInfos(TableInfo tableInfo) {
-        return tableInfo.getFieldList().stream().filter(fieldInfo -> {
-            /* 过滤注解非加密表字段属性 */
-            SensitiveField encryptedField = AnnotationUtils.findFirstAnnotation(SensitiveField.class, fieldInfo.getField());
-            return Objects.nonNull(encryptedField);
-        }).collect(Collectors.toList());
+    public static Object readValue(Object target, Field field) {
+        Objects.requireNonNull(target, "Target must not be null");
+        Objects.requireNonNull(field, "Field must not be null");
+        if (target instanceof Map) {
+            return ((Map<?, ?>) target).get(field.getName());
+        }
+        try {
+            return field.get(target);
+        } catch (IllegalAccessException exception) {
+            throw new IllegalStateException("Cannot read field " + field.getName(), exception);
+        }
     }
 
-    /**
-     * <p>
-     * 获取该类的标记有 @EncryptedField 注解的的字段信息列表
-     * </p>
-     *
-     * @param entityClazz 反射类
-     * @return 属性集合
-     */
-    public static List<TableFieldInfo> getEncryptedFieldInfos(Class<?> entityClazz) {
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClazz);
-        return getEncryptedFieldInfos(tableInfo);
+    @SuppressWarnings("unchecked")
+    public static void writeValue(Object target, Field field, Object value) {
+        Objects.requireNonNull(target, "Target must not be null");
+        Objects.requireNonNull(field, "Field must not be null");
+        if (target instanceof Map) {
+            ((Map<String, Object>) target).put(field.getName(), value);
+            return;
+        }
+        try {
+            field.set(target, value);
+        } catch (IllegalAccessException exception) {
+            throw new IllegalStateException("Cannot write field " + field.getName(), exception);
+        }
     }
 
-    /**
-     * <p>
-     * 获取该类的标记有 @EncryptedField 注解的的字段信息列表
-     * </p>
-     *
-     * @param tableInfo 反射类
-     * @return 属性集合
-     */
-    public static List<TableFieldInfo> getEncryptedFieldInfos(TableInfo tableInfo) {
-        return tableInfo.getFieldList().stream().filter(fieldInfo -> {
-            /* 过滤注解非加密表字段属性 */
-            EncryptedField encryptedField = AnnotationUtils.findFirstAnnotation(EncryptedField.class, fieldInfo.getField());
-            return Objects.nonNull(encryptedField);
-        }).collect(Collectors.toList());
+    private static int signatureOrder(Field field) {
+        TableSignatureField annotation = field.getAnnotation(TableSignatureField.class);
+        return Objects.isNull(annotation) ? 0 : annotation.order();
     }
 
-    /**
-     * 获取自定义Entity类联合签名的字段信息列表（未排序）
-     * 1、@TableSignature 注解且 unionAll = true 的实体类的所有字段
-     * 2、@TableSignature 注解且 unionAll = false 的实体类的被有 @TableSignatureField 注解且 stored = false 的字段信息列表
-     * </p>
-     *
-     * @param entityClazz 反射类
-     * @return 属性集合
-     */
-    public static List<TableFieldInfo> getSignatureFieldInfos(Class<?> entityClazz) {
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClazz);
-        return getSignatureFieldInfos(tableInfo);
-    }
-
-    /**
-     * 获取自定义Entity类联合签名的字段信息列表（未排序）
-     * 1、@TableSignature 注解且 unionAll = true 的实体类的所有字段
-     * 2、@TableSignature 注解且 unionAll = false 的实体类的被有 @TableSignatureField 注解且 stored = false 的字段信息列表
-     * </p>
-     *
-     * @param tableInfo 表信息
-     * @return 属性集合
-     */
-    public static List<TableFieldInfo> getSignatureFieldInfos(TableInfo tableInfo) {
-        TableSignature tableSignature = AnnotationUtils.findFirstAnnotation(TableSignature.class, tableInfo.getEntityType());
-        if (Objects.nonNull(tableSignature) && tableSignature.unionAll()) {
-            // 如果是联合签名，则返回除存储签名结果字段外的所有其他字段
-            return tableInfo.getFieldList().stream().filter(fieldInfo -> {
-                TableSignatureField tableSignatureField = AnnotationUtils.findFirstAnnotation(TableSignatureField.class, fieldInfo.getField());
-                if(Objects.isNull(tableSignatureField) ){
-                    return true;
+    private static List<Field> scanFields(Class<?> entityType) {
+        List<Field> fields = new ArrayList<>();
+        Class<?> current = entityType;
+        while (Objects.nonNull(current) && current != Object.class) {
+            for (Field field : current.getDeclaredFields()) {
+                if (Modifier.isStatic(field.getModifiers()) || field.isSynthetic()) {
+                    continue;
                 }
-                return !tableSignatureField.stored();
-            }).collect(Collectors.toList());
-        }
-        // 如果不是联合签名，则返回所有标记有 @TableSignatureField 注解且 stored = false 的字段
-        return tableInfo.getFieldList().stream().filter(fieldInfo -> {
-            TableSignatureField signatureField = AnnotationUtils.findFirstAnnotation(TableSignatureField.class, fieldInfo.getField());
-            return Objects.nonNull(signatureField) && !signatureField.stored();
-        }).collect(Collectors.toList());
-    }
-
-    /**
-     * <p>
-     * 获取自定义Entity类联合签名的字段信息列表（排序后）
-     * 1、@TableSignature 注解且 unionAll = true 的实体类的所有字段
-     * 2、@TableSignature 注解且 unionAll = false 的实体类的被有 @TableSignatureField 注解且 stored = false 的字段信息列表
-     * </p>
-     *
-     * @param entityClazz 反射类
-     * @return 属性集合
-     */
-    public static List<TableFieldInfo> getSortedSignatureFieldInfos(Class<?> entityClazz) {
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClazz);
-        return getSortedSignatureFieldInfos(tableInfo);
-    }
-
-    /**
-     * <p>
-     * 获取自定义Entity类联合签名的字段信息列表（排序后）
-     * 1、@TableSignature 注解且 unionAll = true 的实体类的所有字段
-     * 2、@TableSignature 注解且 unionAll = false 的实体类的被有 @TableSignatureField 注解且 stored = false 的字段信息列表
-     * </p>
-     *
-     * @param tableInfo 反射类
-     * @return 属性集合
-     */
-    public static List<TableFieldInfo> getSortedSignatureFieldInfos(TableInfo tableInfo) {
-        return getSignatureFieldInfos(tableInfo).stream().sorted(Comparator.comparing(info -> {
-            TableFieldInfo fieldInfo = (TableFieldInfo) info;
-            TableSignatureField ef1 = AnnotationUtils.findFirstAnnotation(TableSignatureField.class, fieldInfo.getField());
-            if (Objects.isNull(ef1)) {
-                return 0;
+                if (!field.isAccessible()) {
+                    field.setAccessible(true);
+                }
+                fields.add(field);
             }
-            return ef1.order();
-        }).thenComparing(info -> {
-            TableFieldInfo fieldInfo = (TableFieldInfo) info;
-            return fieldInfo.getColumn();
-        })).collect(Collectors.toList());
-    }
-
-    /**
-     * <p>
-     * 获取该类的标记有 @TableSignatureField 注解且 stored = false 的第一个字段信息
-     * </p>
-     *
-     * @param entityClazz 反射类
-     * @return 属性集合
-     */
-    public static Optional<TableFieldInfo> getTableSignatureStoreFieldInfo(Class<?> entityClazz) {
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClazz);
-        return getTableSignatureStoreFieldInfo(tableInfo);
-    }
-
-    /**
-     * <p>
-     * 获取该类的标记有 @TableSignatureField 注解且 stored = false 的第一个字段信息
-     * </p>
-     *
-     * @param tableInfo 反射类
-     * @return 属性集合
-     */
-    public static Optional<TableFieldInfo> getTableSignatureStoreFieldInfo(TableInfo tableInfo) {
-        return tableInfo.getFieldList().stream().filter(fieldInfo -> {
-            /* 过滤注解 @TableSignatureField 字段属性 */
-            TableSignatureField tableSignatureField = AnnotationUtils.findFirstAnnotation(TableSignatureField.class, fieldInfo.getField());
-            return Objects.nonNull(tableSignatureField) && tableSignatureField.stored();
-        }).findFirst();
-    }
-
-    public static Serializable getKeyValue(Object rawObject) {
-        return getKeyValue(rawObject, TableInfoHelper.getTableInfo(rawObject.getClass()));
-    }
-
-    public static Serializable getKeyValue(Object rawObject, TableInfo tableInfo) {
-        // 1、获取主键值
-        Serializable keyValue;
-        // 1.1、如果源数据是Map类型，则从Map中获取主键值
-        if(rawObject instanceof Map) {
-            Map<?,?> rawMap = (Map<?,?>) rawObject;
-            keyValue = MapUtil.getStr(rawMap, tableInfo.getKeyProperty());
+            current = current.getSuperclass();
         }
-        // 1.2、如果源数据是对象类型，则从对象中获取主键值
-        else {
-            keyValue = (Serializable) ReflectUtil.getFieldValue(rawObject, tableInfo.getKeyProperty());
-        }
-        return keyValue;
+        return Collections.unmodifiableList(fields);
     }
-
 }

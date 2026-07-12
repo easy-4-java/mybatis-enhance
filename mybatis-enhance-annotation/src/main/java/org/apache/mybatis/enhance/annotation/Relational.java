@@ -15,12 +15,11 @@
  */
 package org.apache.mybatis.enhance.annotation;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public enum Relational {
 
@@ -36,12 +35,13 @@ public enum Relational {
     }
 
     public static Relational fromString(String operator){
+        String normalized = Objects.requireNonNull(operator, "Operator must not be null").trim();
         for (Relational relational : Relational.values()) {
-            if(StringUtils.equalsIgnoreCase(StringUtils.trim(relational.operator), StringUtils.trim(operator.toUpperCase())) ){
+            if (relational.operator.trim().equalsIgnoreCase(normalized)) {
                 return relational;
             }
         }
-        throw new RuntimeException("Operator " + operator + " is not supported!");
+        throw new IllegalArgumentException("Operator " + operator + " is not supported");
     }
 
     public Map<String, String> toMap() {

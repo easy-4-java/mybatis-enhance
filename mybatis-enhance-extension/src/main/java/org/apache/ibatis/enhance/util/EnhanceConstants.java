@@ -1,8 +1,6 @@
 package org.apache.ibatis.enhance.util;
 
-import com.baomidou.mybatisplus.core.toolkit.Constants;
-
-public interface EnhanceConstants extends Constants {
+public interface EnhanceConstants {
 
     /**
      * 实体类
