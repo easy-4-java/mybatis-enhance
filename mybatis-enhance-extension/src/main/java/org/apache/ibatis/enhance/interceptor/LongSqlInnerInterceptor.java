@@ -1,7 +1,7 @@
 package org.apache.ibatis.enhance.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.enhance.plugin.EnhanceInterceptor;
+import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -23,7 +23,7 @@ import java.util.Objects;
  * @since 1.0.x
  */
 @Slf4j
-public class LongSqlEnhanceInterceptor implements EnhanceInterceptor {
+public class LongSqlInnerInterceptor implements EnhanceInnerInterceptor {
 
     private int longSqlThreshold = 2000;
     private LongSqlHandler longSqlHandler;
@@ -31,7 +31,7 @@ public class LongSqlEnhanceInterceptor implements EnhanceInterceptor {
     /**
      * 使用默认阈值 2000 个字符创建增强器。
      */
-    public LongSqlEnhanceInterceptor() {
+    public LongSqlInnerInterceptor() {
     }
 
     /**
@@ -39,7 +39,7 @@ public class LongSqlEnhanceInterceptor implements EnhanceInterceptor {
      *
      * @param longSqlThreshold SQL 字符数阈值；小于等于零时关闭检测
      */
-    public LongSqlEnhanceInterceptor(int longSqlThreshold) {
+    public LongSqlInnerInterceptor(int longSqlThreshold) {
         this.longSqlThreshold = longSqlThreshold;
     }
 
@@ -49,7 +49,7 @@ public class LongSqlEnhanceInterceptor implements EnhanceInterceptor {
      * @param longSqlThreshold SQL 字符数阈值
      * @param longSqlHandler   超长 SQL 回调；可为 {@code null}
      */
-    public LongSqlEnhanceInterceptor(int longSqlThreshold, LongSqlHandler longSqlHandler) {
+    public LongSqlInnerInterceptor(int longSqlThreshold, LongSqlHandler longSqlHandler) {
         this.longSqlThreshold = longSqlThreshold;
         this.longSqlHandler = longSqlHandler;
     }

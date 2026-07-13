@@ -1,7 +1,7 @@
 package org.apache.ibatis.enhance.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.enhance.plugin.EnhanceInterceptor;
+import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 import org.apache.ibatis.enhance.spi.SqlObservation;
 import org.apache.ibatis.enhance.spi.SqlObservationSink;
 import org.apache.ibatis.executor.Executor;
@@ -28,7 +28,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @since 1.0.x
  */
 @Slf4j
-public class SqlObservationEnhanceInterceptor implements EnhanceInterceptor {
+public class SqlObservationInnerInterceptor implements EnhanceInnerInterceptor {
 
     private final List<SqlObservationSink> sinks = new CopyOnWriteArrayList<>();
 
@@ -37,7 +37,7 @@ public class SqlObservationEnhanceInterceptor implements EnhanceInterceptor {
      *
      * <p>没有发现扩展接收器时自动注册 {@link SqlLoggingSink}。</p>
      */
-    public SqlObservationEnhanceInterceptor() {
+    public SqlObservationInnerInterceptor() {
         for (SqlObservationSink sink : ServiceLoader.load(SqlObservationSink.class)) {
             addSink(sink);
         }
@@ -51,7 +51,7 @@ public class SqlObservationEnhanceInterceptor implements EnhanceInterceptor {
      *
      * @param sink 自定义观测接收器；为 {@code null} 时忽略
      */
-    public SqlObservationEnhanceInterceptor(SqlObservationSink sink) {
+    public SqlObservationInnerInterceptor(SqlObservationSink sink) {
         this();
         addSink(sink);
     }

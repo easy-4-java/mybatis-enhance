@@ -1,7 +1,7 @@
-package org.apache.ibatis.enhance.interceptor;
+package org.apache.ibatis.enhance.crypto.interceptor;
 
 import lombok.Getter;
-import org.apache.ibatis.enhance.plugin.EnhanceInterceptor;
+import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 import org.apache.ibatis.enhance.util.MapperMethodUtils;
 import org.apache.ibatis.enhance.util.ParameterUtils;
 import org.apache.ibatis.executor.Executor;
@@ -14,12 +14,13 @@ import org.apache.ibatis.enhance.crypto.handler.DataEncryptionHandler;
 import org.apache.ibatis.enhance.crypto.handler.DefaultDataEncryptionHandler;
 import org.apache.ibatis.enhance.crypto.handler.EncryptedFieldHandler;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
- * 原生 MyBatis 查询参数及写入参数加密增强器。
+ * 原生 MyBatis 查询结果解密增强器。
  */
-public class DataEncryptionInterceptor implements EnhanceInterceptor {
+public class DataDecryptionInnerInterceptor implements EnhanceInnerInterceptor {
 
     @Getter
     private final DataEncryptionHandler dataEncryptionHandler;
@@ -28,28 +29,28 @@ public class DataEncryptionInterceptor implements EnhanceInterceptor {
     private final boolean enabled;
 
     /**
-     * 使用默认实体加密处理器创建启用状态的增强器。
+     * 使用默认实体解密处理器创建启用状态的增强器。
      *
      * @param encryptedFieldHandler 单字段加解密实现
      */
-    public DataEncryptionInterceptor(EncryptedFieldHandler encryptedFieldHandler) {
+    public DataDecryptionInnerInterceptor(EncryptedFieldHandler encryptedFieldHandler) {
         this(new DefaultDataEncryptionHandler(encryptedFieldHandler), true);
     }
 
     /**
-     * 创建可显式控制开关的参数加密增强器。
+     * 创建可显式控制开关的结果解密增强器。
      *
-     * @param dataEncryptionHandler 实体加密处理器
+     * @param dataEncryptionHandler 实体加解密处理器
      * @param enabled               是否启用
      */
-    public DataEncryptionInterceptor(DataEncryptionHandler dataEncryptionHandler, boolean enabled) {
+    public DataDecryptionInnerInterceptor(DataEncryptionHandler dataEncryptionHandler, boolean enabled) {
         this.dataEncryptionHandler = Objects.requireNonNull(
                 dataEncryptionHandler, "Data encryption handler must not be null");
         this.enabled = enabled;
     }
 
     /**
-     * 执行前置处理 {@code beforeQuery} 定义的框架操作。
+     * 执行后置处理 {@code afterQuery} 定义的框架操作。
      *
      * @param executor        MyBatis 执行器
      * @param mappedStatement 映射语句
@@ -57,33 +58,19 @@ public class DataEncryptionInterceptor implements EnhanceInterceptor {
      * @param rowBounds       分页边界
      * @param resultHandler   结果处理器
      * @param boundSql        绑定 SQL
+     * @param results         调用参数 {@code results}
      */
     @Override
-    public void beforeQuery(Executor executor, MappedStatement mappedStatement, Object parameter,
-                            RowBounds rowBounds, ResultHandler<?> resultHandler, BoundSql boundSql) {
-        encrypt(mappedStatement, parameter);
-    }
-
-    /**
-     * 执行前置处理 {@code beforeUpdate} 定义的框架操作。
-     *
-     * @param executor        MyBatis 执行器
-     * @param mappedStatement 映射语句
-     * @param parameter       方法参数
-     */
-    @Override
-    public void beforeUpdate(Executor executor, MappedStatement mappedStatement, Object parameter) {
-        encrypt(mappedStatement, parameter);
-    }
-
-    private void encrypt(MappedStatement mappedStatement, Object parameter) {
-        if (!enabled || Objects.isNull(parameter)
+    public void afterQuery(Executor executor, MappedStatement mappedStatement, Object parameter,
+                           RowBounds rowBounds, ResultHandler<?> resultHandler, BoundSql boundSql,
+                           List<Object> results) {
+        if (!enabled || Objects.isNull(results) || results.isEmpty()
                 || MapperMethodUtils.hasAnnotation(mappedStatement, IgnoreEncrypted.class)) {
             return;
         }
-        for (Object candidate : ParameterUtils.extractParameters(parameter)) {
-            if (ParameterUtils.isComplexObject(candidate)) {
-                dataEncryptionHandler.doEntityEncrypt(candidate);
+        for (Object result : results) {
+            if (ParameterUtils.isComplexObject(result)) {
+                dataEncryptionHandler.doRawObjectDecrypt(result, result.getClass());
             }
         }
     }

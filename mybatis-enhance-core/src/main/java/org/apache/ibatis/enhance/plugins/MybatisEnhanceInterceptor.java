@@ -1,4 +1,4 @@
-package org.apache.ibatis.enhance.plugin;
+package org.apache.ibatis.enhance.plugins;
 
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 
 /**
  * 原生 MyBatis 统一增强拦截器链。
@@ -34,7 +35,7 @@ public class MybatisEnhanceInterceptor implements Interceptor {
 
     private static final Logger log = LoggerFactory.getLogger(MybatisEnhanceInterceptor.class);
 
-    private final List<EnhanceInterceptor> interceptors = new ArrayList<>();
+    private final List<EnhanceInnerInterceptor> interceptors = new ArrayList<>();
 
     /**
      * 按调用顺序向增强链末尾注册增强器。
@@ -42,7 +43,7 @@ public class MybatisEnhanceInterceptor implements Interceptor {
      * @param interceptor 待注册的原生 MyBatis 增强器
      * @throws NullPointerException 增强器为 null 时抛出
      */
-    public void addInterceptor(EnhanceInterceptor interceptor) {
+    public void addInterceptor(EnhanceInnerInterceptor interceptor) {
         interceptors.add(Objects.requireNonNull(interceptor, "Enhance interceptor must not be null"));
     }
 
@@ -51,7 +52,7 @@ public class MybatisEnhanceInterceptor implements Interceptor {
      *
      * @return 按执行顺序排列的增强器列表
      */
-    public List<EnhanceInterceptor> getInterceptors() {
+    public List<EnhanceInnerInterceptor> getInterceptors() {
         return Collections.unmodifiableList(interceptors);
     }
 
@@ -77,13 +78,13 @@ public class MybatisEnhanceInterceptor implements Interceptor {
                 : (args.length == 6 ? (BoundSql) args[5] : mappedStatement.getBoundSql(parameter));
 
         if (isUpdate) {
-            for (EnhanceInterceptor interceptor : interceptors) {
+            for (EnhanceInnerInterceptor interceptor : interceptors) {
                 interceptor.beforeUpdate(executor, mappedStatement, parameter);
             }
         } else {
             RowBounds rowBounds = (RowBounds) args[2];
             ResultHandler<?> resultHandler = (ResultHandler<?>) args[3];
-            for (EnhanceInterceptor interceptor : interceptors) {
+            for (EnhanceInnerInterceptor interceptor : interceptors) {
                 interceptor.beforeQuery(executor, mappedStatement, parameter, rowBounds, resultHandler, boundSql);
             }
         }
@@ -104,14 +105,14 @@ public class MybatisEnhanceInterceptor implements Interceptor {
             try {
                 if (isUpdate) {
                     int affectedRows = (Integer) result;
-                    for (EnhanceInterceptor interceptor : interceptors) {
+                    for (EnhanceInnerInterceptor interceptor : interceptors) {
                         interceptor.afterUpdate(executor, mappedStatement, parameter, boundSql, affectedRows);
                     }
                 } else {
                     RowBounds rowBounds = (RowBounds) args[2];
                     ResultHandler<?> resultHandler = (ResultHandler<?>) args[3];
                     List<Object> results = (List<Object>) result;
-                    for (EnhanceInterceptor interceptor : interceptors) {
+                    for (EnhanceInnerInterceptor interceptor : interceptors) {
                         interceptor.afterQuery(executor, mappedStatement, parameter, rowBounds, resultHandler, boundSql, results);
                     }
                 }
@@ -122,11 +123,11 @@ public class MybatisEnhanceInterceptor implements Interceptor {
         }
 
         // 旁路通知：单个增强器异常隔离，不影响其他增强器和主流程
-        for (EnhanceInterceptor interceptor : interceptors) {
+        for (EnhanceInnerInterceptor interceptor : interceptors) {
             try {
                 interceptor.afterExecution(executor, mappedStatement, parameter, boundSql, result, failure, elapsedNanos);
             } catch (RuntimeException exception) {
-                log.warn("EnhanceInterceptor afterExecution failed: {}", interceptor.getClass().getName(), exception);
+                log.warn("EnhanceInnerInterceptor afterExecution failed: {}", interceptor.getClass().getName(), exception);
             }
         }
 

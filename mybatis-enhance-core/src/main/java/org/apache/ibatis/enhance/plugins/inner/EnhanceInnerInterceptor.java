@@ -1,4 +1,4 @@
-package org.apache.ibatis.enhance.plugin;
+package org.apache.ibatis.enhance.plugins.inner;
 
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -18,7 +18,7 @@ import java.util.List;
  * @author <a href="https://github.com/hiwepy">wandl</a>
  * @since 1.0.x
  */
-public interface EnhanceInterceptor {
+public interface EnhanceInnerInterceptor {
 
     /**
      * 在 Executor 执行查询前处理查询参数或 SQL 上下文。
