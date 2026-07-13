@@ -1,4 +1,4 @@
-package org.apache.mybatis.enhance.annotation.i18n;
+package org.apache.ibatis.enhance.annotation.i18n;
 
 import java.lang.annotation.*;
 

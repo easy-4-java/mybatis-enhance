@@ -1,4 +1,4 @@
-package org.apache.mybatis.enhance.annotation.permission;
+package org.apache.ibatis.enhance.annotation.permission;
 
 import java.lang.annotation.*;
 

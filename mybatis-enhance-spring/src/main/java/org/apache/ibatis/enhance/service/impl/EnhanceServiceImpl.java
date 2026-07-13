@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.apache.ibatis.enhance.mapper.EnhanceMapper;
 import org.apache.ibatis.enhance.service.IEnhanceService;
 import org.apache.ibatis.enhance.util.TableFieldHelper;
-import org.apache.mybatis.enhance.crypto.handler.DataSignatureHandler;
+import org.apache.ibatis.enhance.crypto.handler.DataSignatureHandler;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;

@@ -1,7 +1,7 @@
 package net.sf.jsqlparser.util;
 
 import org.apache.ibatis.binding.MetaStatementHandler;
-import org.apache.mybatis.enhance.dbperms.parser.ITablePermissionAutowireHandler;
+import org.apache.ibatis.enhance.dbperms.parser.ITablePermissionAutowireHandler;
 
 import java.util.Objects;
 import java.util.Optional;

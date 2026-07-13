@@ -9,10 +9,10 @@ import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
-import org.apache.mybatis.enhance.annotation.crypto.IgnoreEncrypted;
-import org.apache.mybatis.enhance.crypto.handler.DataEncryptionHandler;
-import org.apache.mybatis.enhance.crypto.handler.DefaultDataEncryptionHandler;
-import org.apache.mybatis.enhance.crypto.handler.EncryptedFieldHandler;
+import org.apache.ibatis.enhance.annotation.crypto.IgnoreEncrypted;
+import org.apache.ibatis.enhance.crypto.handler.DataEncryptionHandler;
+import org.apache.ibatis.enhance.crypto.handler.DefaultDataEncryptionHandler;
+import org.apache.ibatis.enhance.crypto.handler.EncryptedFieldHandler;
 
 import java.util.Objects;
 

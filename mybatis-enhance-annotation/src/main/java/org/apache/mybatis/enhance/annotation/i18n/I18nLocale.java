@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.mybatis.enhance.annotation.i18n;
+package org.apache.ibatis.enhance.annotation.i18n;
 
 import java.lang.annotation.*;
 

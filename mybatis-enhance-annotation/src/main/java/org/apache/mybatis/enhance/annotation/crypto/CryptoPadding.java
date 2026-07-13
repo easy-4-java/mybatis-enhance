@@ -1,4 +1,4 @@
-package org.apache.mybatis.enhance.annotation.crypto;
+package org.apache.ibatis.enhance.annotation.crypto;
 
 /**
  * 分组密码填充方式。

@@ -15,9 +15,9 @@ MyBatis-Plus；需要 MyBatis-Plus 专属能力时，应使用独立项目 `myba
 公共注解按能力域组织，避免所有协议堆积在同一个根包：
 
 ```text
-org.apache.mybatis.enhance.annotation.crypto
-org.apache.mybatis.enhance.annotation.i18n
-org.apache.mybatis.enhance.annotation.permission
+org.apache.ibatis.enhance.annotation.crypto
+org.apache.ibatis.enhance.annotation.i18n
+org.apache.ibatis.enhance.annotation.permission
 ```
 
 其中 crypto 与 i18n 注解可被 `mybatis-plus-enhance` 直接复用；MyBatis-Plus 不再维护重复定义。

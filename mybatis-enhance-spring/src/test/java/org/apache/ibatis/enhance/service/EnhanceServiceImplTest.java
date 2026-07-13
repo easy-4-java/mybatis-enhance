@@ -2,7 +2,7 @@ package org.apache.ibatis.enhance.service;
 
 import org.apache.ibatis.enhance.mapper.EnhanceMapper;
 import org.apache.ibatis.enhance.service.impl.EnhanceServiceImpl;
-import org.apache.mybatis.enhance.crypto.handler.DataSignatureHandler;
+import org.apache.ibatis.enhance.crypto.handler.DataSignatureHandler;
 import org.junit.Assert;
 import org.junit.Test;
 
