@@ -13,6 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/parser/DefaultTablePermissionScriptHandler.java
 package org.apache.ibatis.enhance.datascope.parser;
 
 import org.apache.ibatis.binding.MetaStatementHandler;
@@ -22,6 +23,17 @@ import org.apache.ibatis.enhance.datascope.dto.DataPermissionPart;
 import org.apache.ibatis.enhance.datascope.dto.DataPermissionPayload;
 import org.apache.ibatis.enhance.util.RandomString;
 import org.apache.ibatis.enhance.util.StringUtils;
+========
+package org.apache.ibatis.enhance.dbperms.parser;
+
+import org.apache.ibatis.binding.MetaStatementHandler;
+import org.apache.ibatis.enhance.dbperms.dto.DataPermission;
+import org.apache.ibatis.enhance.dbperms.dto.DataPermissionColumn;
+import org.apache.ibatis.enhance.dbperms.dto.DataPermissionPart;
+import org.apache.ibatis.enhance.dbperms.dto.DataPermissionPayload;
+import org.apache.ibatis.enhance.utils.RandomString;
+import org.apache.ibatis.enhance.utils.StringUtils;
+>>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/parser/DefaultTablePermissionScriptHandler.java
 
 import java.util.*;
 import java.util.Map.Entry;

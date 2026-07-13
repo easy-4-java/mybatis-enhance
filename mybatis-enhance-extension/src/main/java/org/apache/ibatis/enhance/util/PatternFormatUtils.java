@@ -2,10 +2,14 @@
  * Copyright (C) 2018 Jeebiz (http://jeebiz.net).
  * All Rights Reserved.
  */
+<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/util/PatternFormatUtils.java
 package org.apache.ibatis.enhance.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+========
+package org.apache.ibatis.enhance.utils;
+>>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/utils/PatternFormatUtils.java
 
 import java.util.HashMap;
 import java.util.Map;

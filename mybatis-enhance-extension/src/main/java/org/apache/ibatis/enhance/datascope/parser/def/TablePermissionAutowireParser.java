@@ -13,7 +13,11 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/parser/def/TablePermissionAutowireParser.java
 package org.apache.ibatis.enhance.datascope.parser.def;
+========
+package org.apache.ibatis.enhance.dbperms.parser.def;
+>>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/parser/def/TablePermissionAutowireParser.java
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -24,8 +28,13 @@ import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.util.SelectAutowirePermissionParser;
 import org.apache.ibatis.binding.MetaStatementHandler;
 import org.apache.ibatis.exception.MybatisException;
+<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/parser/def/TablePermissionAutowireParser.java
 import org.apache.ibatis.enhance.datascope.parser.ITablePermissionAutowireHandler;
 import org.apache.ibatis.enhance.datascope.parser.ITablePermissionParser;
+========
+import org.apache.ibatis.enhance.dbperms.parser.ITablePermissionAutowireHandler;
+import org.apache.ibatis.enhance.dbperms.parser.ITablePermissionParser;
+>>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/parser/def/TablePermissionAutowireParser.java
 
 /**
  * {@code TablePermissionAutowireParser} 解析器。

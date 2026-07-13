@@ -5,8 +5,11 @@ import org.apache.ibatis.enhance.mapper.EnhanceMapper;
 import org.apache.ibatis.enhance.service.IEnhanceService;
 import org.apache.ibatis.enhance.util.TableFieldHelper;
 import org.apache.ibatis.enhance.crypto.handler.DataSignatureHandler;
+<<<<<<< HEAD
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+=======
+>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移)
 
 import java.io.Serializable;
 import java.lang.reflect.Field;

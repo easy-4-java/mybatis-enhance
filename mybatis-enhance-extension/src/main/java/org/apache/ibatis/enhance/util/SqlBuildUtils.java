@@ -13,6 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/util/SqlBuildUtils.java
 package org.apache.ibatis.enhance.util;
 
 import org.apache.ibatis.utils.CollectionUtils;
@@ -21,6 +22,16 @@ import org.apache.ibatis.enhance.datascope.dto.DataPermission;
 import org.apache.ibatis.enhance.datascope.dto.DataPermissionColumn;
 import org.apache.ibatis.enhance.datascope.dto.DataPermissionForeign;
 import org.apache.ibatis.enhance.datascope.dto.DataSpecialPermission;
+========
+package org.apache.ibatis.enhance.utils;
+
+import org.apache.ibatis.utils.CollectionUtils;
+import org.apache.ibatis.enhance.annotation.permission.Relational;
+import org.apache.ibatis.enhance.dbperms.dto.DataPermission;
+import org.apache.ibatis.enhance.dbperms.dto.DataPermissionColumn;
+import org.apache.ibatis.enhance.dbperms.dto.DataPermissionForeign;
+import org.apache.ibatis.enhance.dbperms.dto.DataSpecialPermission;
+>>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/utils/SqlBuildUtils.java
 
 import java.util.*;
 import java.util.Map.Entry;

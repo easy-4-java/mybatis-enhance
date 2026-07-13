@@ -3,8 +3,13 @@ package net.sf.jsqlparser.util;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.binding.MetaStatementHandler;
 import org.apache.ibatis.enhance.annotation.permission.RequiresPermission;
+<<<<<<< HEAD
 import org.apache.ibatis.enhance.datascope.parser.DefaultTablePermissionAnnotationHandler;
 import org.apache.ibatis.enhance.datascope.parser.ITablePermissionAnnotationHandler;
+=======
+import org.apache.ibatis.enhance.dbperms.parser.DefaultTablePermissionAnnotationHandler;
+import org.apache.ibatis.enhance.dbperms.parser.ITablePermissionAnnotationHandler;
+>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移)
 
 import java.util.Objects;
 import java.util.Optional;

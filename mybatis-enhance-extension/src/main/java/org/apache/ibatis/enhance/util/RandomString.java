@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/util/RandomString.java
 package org.apache.ibatis.enhance.util;
+========
+package org.apache.ibatis.enhance.utils;
+>>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/utils/RandomString.java
 
 
 import java.util.Random;
