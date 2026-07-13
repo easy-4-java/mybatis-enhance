@@ -4,6 +4,9 @@
  */
 package org.apache.ibatis.enhance.util;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -15,6 +18,7 @@ import java.util.regex.Pattern;
  * <p>支持 {@code #{name}}、{@code ${name}}、{@code {index}} 以及调用方自定义正则四种替换方式。
  * 该工具只执行文本替换，不负责 SQL 参数化或输入安全校验。</p>
  */
+@Slf4j
 public abstract class PatternFormatUtils {
 
     protected static Pattern pattern_x = Pattern.compile("(?:(?:\\#\\{)(.*?)(?:\\}))+");
@@ -39,7 +43,7 @@ public abstract class PatternFormatUtils {
                     Object target = variables.getOrDefault(key, "");
                     message = message.replaceAll("\\#\\{" + key + "\\}", target == null ? "null" : target.toString());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.warn("Placeholder format failed: {}", e.getMessage());
                 }
             }
             while (matcher_y.find()) {
@@ -48,7 +52,7 @@ public abstract class PatternFormatUtils {
                     Object target = variables.getOrDefault(key, "");
                     message = message.replaceAll("\\$\\{" + key + "\\}", target == null ? "null" : target.toString());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.warn("Placeholder format failed: {}", e.getMessage());
                 }
             }
         }

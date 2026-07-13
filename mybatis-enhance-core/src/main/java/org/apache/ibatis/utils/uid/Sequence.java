@@ -1,8 +1,7 @@
 package org.apache.ibatis.utils.uid;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
@@ -18,9 +17,8 @@ import java.net.NetworkInterface;
  * <p>默认构造基于本机 MAC 与 PID 计算数据中心与机器 ID；显式构造允许指定固定
  * {@code workerId} 和 {@code datacenterId}。</p>
  */
+@Slf4j
 public class Sequence {
-
-    private static final Logger LOG = LoggerFactory.getLogger(Sequence.class);
 
     /* 时间起始标记点，作为基准，一般取系统的最近时间（一旦确定不能变动） */
     private final long twepoch = 1288834974657L;
@@ -103,7 +101,7 @@ public class Sequence {
                 id = id % (maxDatacenterId + 1);
             }
         } catch (Exception e) {
-            LOG.warn(" getDatacenterId: " + e.getMessage());
+            log.warn(" getDatacenterId: " + e.getMessage());
         }
         return id;
     }

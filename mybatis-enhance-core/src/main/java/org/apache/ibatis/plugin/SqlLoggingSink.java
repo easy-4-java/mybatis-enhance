@@ -1,9 +1,8 @@
 package org.apache.ibatis.plugin;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.enhance.spi.SqlObservation;
 import org.apache.ibatis.enhance.spi.SqlObservationSink;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
@@ -13,10 +12,10 @@ import java.util.Objects;
  * @author <a href="https://github.com/hiwepy">wandl</a>
  * @since 1.0.x
  */
+@Slf4j
 public final class SqlLoggingSink implements SqlObservationSink {
 
     public static final SqlLoggingSink INSTANCE = new SqlLoggingSink();
-    private static final Logger log = LoggerFactory.getLogger(SqlLoggingSink.class);
 
     private SqlLoggingSink() {
     }

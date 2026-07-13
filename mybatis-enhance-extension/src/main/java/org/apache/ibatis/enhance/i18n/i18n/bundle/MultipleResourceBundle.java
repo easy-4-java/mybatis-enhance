@@ -15,8 +15,7 @@
  */
 package org.apache.ibatis.enhance.i18n.i18n.bundle;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Enumeration;
 import java.util.ResourceBundle;
@@ -26,9 +25,9 @@ import java.util.ResourceBundle;
  *
  * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
  */
+@Slf4j
 public class MultipleResourceBundle extends ResourceBundle {
 
-    protected static Logger LOG = LoggerFactory.getLogger(MultipleResourceBundle.class);
     protected ResourceBundle[] bundles;
 
     /**
@@ -66,7 +65,7 @@ public class MultipleResourceBundle extends ResourceBundle {
                 }
             } catch (Exception e) {
                 // ingrone e
-                LOG.warn(e.getMessage());
+                log.warn(e.getMessage());
             }
         }
         return null;

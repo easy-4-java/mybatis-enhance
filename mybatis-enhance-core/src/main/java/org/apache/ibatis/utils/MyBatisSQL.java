@@ -24,7 +24,7 @@ public class MyBatisSQL {
      * @param args 调用参数
      */
     public static void main(String[] args) {
-        System.out.println("select t.xh,t.xsjbxxb_id,t.xqdmb_id,t.ssxy_id,t.zyfxdmb_id,".replaceAll("(\r \n(\\s*\r \n)+)", "\r\n").replaceAll(" +", ""));
+        System.out.println("select t.xh,t.xsjbxxb_id,t.xqdmb_id,t.ssxy_id,t.zyfxdmb_id,".replaceAll("(\\r\\n(\\s*\\r\\n)+)", "\r\n").replaceAll(" +", ""));
     }
 
     /**
