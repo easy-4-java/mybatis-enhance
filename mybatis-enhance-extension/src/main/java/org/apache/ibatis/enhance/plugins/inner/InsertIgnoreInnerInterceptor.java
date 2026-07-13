@@ -1,4 +1,4 @@
-package org.apache.ibatis.enhance.plugins.inner;
+package org.apache.ibatis.enhance.interceptor;
 
 import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 import org.apache.ibatis.executor.Executor;

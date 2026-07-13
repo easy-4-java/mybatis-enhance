@@ -19,7 +19,7 @@ import org.apache.ibatis.enhance.plugins.MybatisEnhanceInterceptor;
 import org.apache.ibatis.enhance.crypto.interceptor.DataDecryptionInnerInterceptor;
 import org.apache.ibatis.enhance.crypto.interceptor.DataEncryptionInnerInterceptor;
 import org.apache.ibatis.enhance.crypto.interceptor.DataSignatureInnerInterceptor;
-import org.apache.ibatis.enhance.plugins.inner.SqlObservationInnerInterceptor;
+import org.apache.ibatis.enhance.interceptor.SqlObservationInnerInterceptor;
 import org.apache.ibatis.enhance.spi.SqlObservationSink;
 import org.apache.ibatis.enhance.spi.SqlObservation;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
@@ -41,9 +41,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.junit.Assert.*;
@@ -118,7 +116,7 @@ public class CryptoSignatureIntegrationTest {
 
     @After
     public void tearDown() throws SQLException {
-        if (Objects.nonNull(dataSource)) {
+        if (dataSource != null) {
             dataSource.forceCloseAll();
         }
     }
@@ -206,7 +204,7 @@ public class CryptoSignatureIntegrationTest {
         // 查密文：两条记录的 mobile 都应为密文
         try (SqlSession session = sqlSessionFactory.openSession(false)) {
             CryptoMapper mapper = session.getMapper(CryptoMapper.class);
-            List<CryptoRecord> rawList = mapper.selectIgnoreDecryptBatchIds(Arrays.asList(1L, 2L));
+            List<CryptoRecord> rawList = mapper.selectIgnoreDecryptBatchIds(List.of(1L, 2L));
             assertEquals("批量原始查询应有 2 条", 2, rawList.size());
             for (CryptoRecord raw : rawList) {
                 assertNotEquals("密文不应等于明文", "13800001111", raw.getMobile());

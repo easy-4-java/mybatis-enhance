@@ -1,4 +1,4 @@
-package org.apache.ibatis.enhance.plugins.inner;
+package org.apache.ibatis.enhance.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
