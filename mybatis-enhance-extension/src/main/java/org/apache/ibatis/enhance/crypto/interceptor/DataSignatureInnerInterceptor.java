@@ -1,4 +1,4 @@
-package org.apache.ibatis.enhance.interceptor;
+package org.apache.ibatis.enhance.crypto.interceptor;
 
 import lombok.Getter;
 import org.apache.ibatis.enhance.plugin.EnhanceInterceptor;
@@ -16,7 +16,7 @@ import java.util.Objects;
 /**
  * 原生 MyBatis 写入签名与查询结果验签增强器。
  */
-public class DataSignatureInterceptor implements EnhanceInterceptor {
+public class DataSignatureInnerInterceptor implements EnhanceInterceptor {
 
     @Getter
     private final DataSignatureHandler dataSignatureHandler;
@@ -29,7 +29,7 @@ public class DataSignatureInterceptor implements EnhanceInterceptor {
      *
      * @param dataSignatureHandler 实体签名处理器
      */
-    public DataSignatureInterceptor(DataSignatureHandler dataSignatureHandler) {
+    public DataSignatureInnerInterceptor(DataSignatureHandler dataSignatureHandler) {
         this(dataSignatureHandler, true, true);
     }
 
@@ -40,7 +40,7 @@ public class DataSignatureInterceptor implements EnhanceInterceptor {
      * @param signEnabled          是否在写入前生成签名
      * @param verifyEnabled        是否在查询后校验签名
      */
-    public DataSignatureInterceptor(DataSignatureHandler dataSignatureHandler,
+    public DataSignatureInnerInterceptor(DataSignatureHandler dataSignatureHandler,
                                     boolean signEnabled, boolean verifyEnabled) {
         this.dataSignatureHandler = Objects.requireNonNull(
                 dataSignatureHandler, "Data signature handler must not be null");
@@ -56,7 +56,7 @@ public class DataSignatureInterceptor implements EnhanceInterceptor {
      * @param parameter       方法参数
      */
     @Override
-    public void beforeUpdate(Executor executor, MappedStatement mappedStatement, Object parameter) {
+public void beforeUpdate(Executor executor, MappedStatement mappedStatement, Object parameter) {
         if (!signEnabled || Objects.isNull(parameter)) {
             return;
         }

@@ -1,4 +1,4 @@
-package org.apache.ibatis.enhance.utils;
+package org.apache.ibatis.enhance.util;
 
 
 import java.util.Random;

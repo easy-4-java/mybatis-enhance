@@ -20,8 +20,8 @@ import org.apache.ibatis.enhance.dbperms.dto.DataPermission;
 import org.apache.ibatis.enhance.dbperms.dto.DataPermissionColumn;
 import org.apache.ibatis.enhance.dbperms.dto.DataPermissionPart;
 import org.apache.ibatis.enhance.dbperms.dto.DataPermissionPayload;
-import org.apache.ibatis.enhance.utils.RandomString;
-import org.apache.ibatis.enhance.utils.StringUtils;
+import org.apache.ibatis.enhance.util.RandomString;
+import org.apache.ibatis.enhance.util.StringUtils;
 
 import java.util.*;
 import java.util.Map.Entry;

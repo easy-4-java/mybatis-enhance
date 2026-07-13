@@ -1,4 +1,4 @@
-package org.apache.ibatis.enhance.interceptor;
+package org.apache.ibatis.enhance.crypto.interceptor;
 
 import lombok.Getter;
 import org.apache.ibatis.enhance.plugin.EnhanceInterceptor;
@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * 原生 MyBatis 查询结果解密增强器。
  */
-public class DataDecryptionInterceptor implements EnhanceInterceptor {
+public class DataDecryptionInnerInterceptor implements EnhanceInterceptor {
 
     @Getter
     private final DataEncryptionHandler dataEncryptionHandler;
@@ -33,7 +33,7 @@ public class DataDecryptionInterceptor implements EnhanceInterceptor {
      *
      * @param encryptedFieldHandler 单字段加解密实现
      */
-    public DataDecryptionInterceptor(EncryptedFieldHandler encryptedFieldHandler) {
+    public DataDecryptionInnerInterceptor(EncryptedFieldHandler encryptedFieldHandler) {
         this(new DefaultDataEncryptionHandler(encryptedFieldHandler), true);
     }
 
@@ -43,7 +43,7 @@ public class DataDecryptionInterceptor implements EnhanceInterceptor {
      * @param dataEncryptionHandler 实体加解密处理器
      * @param enabled               是否启用
      */
-    public DataDecryptionInterceptor(DataEncryptionHandler dataEncryptionHandler, boolean enabled) {
+    public DataDecryptionInnerInterceptor(DataEncryptionHandler dataEncryptionHandler, boolean enabled) {
         this.dataEncryptionHandler = Objects.requireNonNull(
                 dataEncryptionHandler, "Data encryption handler must not be null");
         this.enabled = enabled;

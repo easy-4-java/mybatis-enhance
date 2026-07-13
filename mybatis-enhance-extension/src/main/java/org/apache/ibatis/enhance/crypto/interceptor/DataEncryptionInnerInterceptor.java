@@ -1,4 +1,4 @@
-package org.apache.ibatis.enhance.interceptor;
+package org.apache.ibatis.enhance.crypto.interceptor;
 
 import lombok.Getter;
 import org.apache.ibatis.enhance.plugin.EnhanceInterceptor;
@@ -19,7 +19,7 @@ import java.util.Objects;
 /**
  * 原生 MyBatis 查询参数及写入参数加密增强器。
  */
-public class DataEncryptionInterceptor implements EnhanceInterceptor {
+public class DataEncryptionInnerInterceptor implements EnhanceInterceptor {
 
     @Getter
     private final DataEncryptionHandler dataEncryptionHandler;
@@ -32,7 +32,7 @@ public class DataEncryptionInterceptor implements EnhanceInterceptor {
      *
      * @param encryptedFieldHandler 单字段加解密实现
      */
-    public DataEncryptionInterceptor(EncryptedFieldHandler encryptedFieldHandler) {
+    public DataEncryptionInnerInterceptor(EncryptedFieldHandler encryptedFieldHandler) {
         this(new DefaultDataEncryptionHandler(encryptedFieldHandler), true);
     }
 
@@ -42,7 +42,7 @@ public class DataEncryptionInterceptor implements EnhanceInterceptor {
      * @param dataEncryptionHandler 实体加密处理器
      * @param enabled               是否启用
      */
-    public DataEncryptionInterceptor(DataEncryptionHandler dataEncryptionHandler, boolean enabled) {
+    public DataEncryptionInnerInterceptor(DataEncryptionHandler dataEncryptionHandler, boolean enabled) {
         this.dataEncryptionHandler = Objects.requireNonNull(
                 dataEncryptionHandler, "Data encryption handler must not be null");
         this.enabled = enabled;
@@ -72,7 +72,7 @@ public class DataEncryptionInterceptor implements EnhanceInterceptor {
      * @param parameter       方法参数
      */
     @Override
-    public void beforeUpdate(Executor executor, MappedStatement mappedStatement, Object parameter) {
+public void beforeUpdate(Executor executor, MappedStatement mappedStatement, Object parameter) {
         encrypt(mappedStatement, parameter);
     }
 

@@ -27,14 +27,14 @@ import java.util.regex.Pattern;
  * <p>典型用法：
  * <pre>
  * MybatisEnhanceInterceptor chain = new MybatisEnhanceInterceptor();
- * chain.addInterceptor(new InsertIgnoreEnhanceInterceptor());
- * // 使用 InsertIgnoreEnhanceInterceptor.enable() / reset() 控制作用域
+ * chain.addInterceptor(new InsertIgnoreInnerInterceptor());
+ * // 使用 InsertIgnoreInnerInterceptor.enable() / reset() 控制作用域
  * </pre>
  *
  * @author <a href="https://github.com/hiwepy">wandl</a>
  * @since 1.0.x
  */
-public class InsertIgnoreEnhanceInterceptor implements EnhanceInterceptor {
+public class InsertIgnoreInnerInterceptor implements EnhanceInterceptor {
 
     private static final Pattern INSERT_PATTERN = Pattern.compile(
             "^(\\s*)INSERT\\s+(?!IGNORE\\b)", Pattern.CASE_INSENSITIVE);

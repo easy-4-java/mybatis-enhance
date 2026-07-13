@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.ibatis.enhance.utils;
+package org.apache.ibatis.enhance.util;
 
 /**
  * SQL 语句类型。

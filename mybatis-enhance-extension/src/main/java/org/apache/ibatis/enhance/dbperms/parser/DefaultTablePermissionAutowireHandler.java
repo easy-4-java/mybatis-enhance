@@ -21,10 +21,10 @@ import org.apache.ibatis.enhance.dbperms.dto.DataPermission;
 import org.apache.ibatis.enhance.dbperms.dto.DataPermissionColumn;
 import org.apache.ibatis.enhance.dbperms.dto.DataPermissionPayload;
 import org.apache.ibatis.enhance.dbperms.dto.DataSpecialPermission;
-import org.apache.ibatis.enhance.utils.PatternFormatUtils;
-import org.apache.ibatis.enhance.utils.RandomString;
-import org.apache.ibatis.enhance.utils.SqlBuildUtils;
-import org.apache.ibatis.enhance.utils.StringUtils;
+import org.apache.ibatis.enhance.util.PatternFormatUtils;
+import org.apache.ibatis.enhance.util.RandomString;
+import org.apache.ibatis.enhance.util.SqlBuildUtils;
+import org.apache.ibatis.enhance.util.StringUtils;
 
 import java.util.*;
 import java.util.function.BiFunction;

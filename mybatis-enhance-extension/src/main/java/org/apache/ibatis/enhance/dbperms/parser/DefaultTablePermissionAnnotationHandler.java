@@ -22,8 +22,8 @@ import org.apache.ibatis.enhance.annotation.permission.RequiresPermission;
 import org.apache.ibatis.enhance.annotation.permission.RequiresPermissionColumn;
 import org.apache.ibatis.enhance.annotation.permission.RequiresPermissionForeign;
 import org.apache.ibatis.enhance.annotation.permission.RequiresSpecialPermission;
-import org.apache.ibatis.enhance.utils.PatternFormatUtils;
-import org.apache.ibatis.enhance.utils.StringUtils;
+import org.apache.ibatis.enhance.util.PatternFormatUtils;
+import org.apache.ibatis.enhance.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -21,14 +21,14 @@ import java.util.ServiceLoader;
  * 查询完成后的领域对象回填增强器。
  */
 @Slf4j
-public class ModelsFillsInterceptor implements EnhanceInterceptor {
+public class ModelsFillsInnerInterceptor implements EnhanceInterceptor {
 
     private final AggregateRecognizer aggregateRecognizer;
 
     /**
      * 创建使用 ServiceLoader 解析聚合识别器的回填增强器。
      */
-    public ModelsFillsInterceptor() {
+    public ModelsFillsInnerInterceptor() {
         this(resolveRecognizer());
     }
 
@@ -37,7 +37,7 @@ public class ModelsFillsInterceptor implements EnhanceInterceptor {
      *
      * @param aggregateRecognizer 聚合对象识别策略
      */
-    public ModelsFillsInterceptor(AggregateRecognizer aggregateRecognizer) {
+    public ModelsFillsInnerInterceptor(AggregateRecognizer aggregateRecognizer) {
         this.aggregateRecognizer = Objects.requireNonNull(
                 aggregateRecognizer, "Aggregate recognizer must not be null");
     }

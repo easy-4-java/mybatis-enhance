@@ -2,7 +2,7 @@
  * Copyright (C) 2018 Jeebiz (http://jeebiz.net).
  * All Rights Reserved.
  */
-package org.apache.ibatis.enhance.utils;
+package org.apache.ibatis.enhance.util;
 
 import java.util.HashMap;
 import java.util.Map;
