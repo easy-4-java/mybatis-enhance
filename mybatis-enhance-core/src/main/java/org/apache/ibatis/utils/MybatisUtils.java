@@ -1,5 +1,6 @@
 package org.apache.ibatis.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.builder.SqlSourceBuilder;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
@@ -18,8 +19,6 @@ import org.apache.ibatis.transaction.Transaction;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
 import org.apache.ibatis.type.TypeHandlerRegistry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -35,10 +34,10 @@ import java.util.concurrent.ConcurrentMap;
  *
  * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
  */
+@Slf4j
 public abstract class MybatisUtils {
 
     protected static final ConcurrentMap<ObjectFactory, ResultHandler<Object>> handlersMap = new ConcurrentHashMap<ObjectFactory, ResultHandler<Object>>();
-    protected static Logger LOG = LoggerFactory.getLogger(MybatisUtils.class);
 
     /**
      * 获取 {@code target}。
@@ -290,7 +289,7 @@ public abstract class MybatisUtils {
             ResultHandler<Object> resultHandler = new DefaultResultHandler(configuration.getObjectFactory());
             return executor.query(ms, MybatisUtils.wrapCollection(parameterObject), new RowBounds(), resultHandler);
         } catch (Exception e) {
-            LOG.error("Ignore this exception", e);
+            log.error("Ignore this exception", e);
         }
         return null;
     }

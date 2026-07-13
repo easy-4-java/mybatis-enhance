@@ -16,9 +16,8 @@
 
 package org.apache.ibatis.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.*;
 import java.sql.SQLException;
@@ -39,6 +38,7 @@ import java.util.List;
  * @author Chris Beams
  * @since 1.2.2
  */
+@Slf4j
 public abstract class ReflectionUtils {
 
     /*
@@ -72,7 +72,6 @@ public abstract class ReflectionUtils {
             return (!method.isBridge() && method.getDeclaringClass() != Object.class);
         }
     };
-    protected static Logger LOG = LoggerFactory.getLogger(ReflectionUtils.class);
 
     /*循环向上转型, 获取对象的DeclaredField,并强制设置为可访问
      */
@@ -174,7 +173,7 @@ public abstract class ReflectionUtils {
                 field.setAccessible(false);
             }
         } catch (IllegalAccessException e) {
-            LOG.error(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -230,7 +229,7 @@ public abstract class ReflectionUtils {
                 field.setAccessible(false);
             }
         } catch (IllegalAccessException e) {
-            LOG.error(e.getMessage());
+            log.error(e.getMessage());
         }
         return result;
     }
