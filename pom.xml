@@ -429,7 +429,7 @@
         <fastjson2.version>2.0.56</fastjson2.version>
         <hutool.version>5.8.40</hutool.version>
         <jackson.version>2.18.9</jackson.version>
-        <!-- 现有数据权限 Visitor 基于 JSqlParser 3.1 API，并保持 JDK 8 兼容。 -->
+        <!-- 现有数据权限 Visitor 基于 JSqlParser 3.1 API 实现。 -->
         <jsqlparser.version>3.1</jsqlparser.version>
         <junit.version>4.13.2</junit.version>
         <slf4j.version>2.0.18</slf4j.version>
