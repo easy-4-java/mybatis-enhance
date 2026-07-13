@@ -1,7 +1,7 @@
 package org.apache.ibatis.enhance.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.enhance.plugin.EnhanceInterceptor;
+import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 import org.apache.ibatis.enhance.spi.AggregateRecognizer;
 import org.apache.ibatis.enhance.spi.DefaultAggregateRecognizer;
 import org.apache.ibatis.enhance.spi.Fillable;
@@ -21,7 +21,7 @@ import java.util.ServiceLoader;
  * 查询完成后的领域对象回填增强器。
  */
 @Slf4j
-public class ModelsFillsInnerInterceptor implements EnhanceInterceptor {
+public class ModelsFillsInnerInterceptor implements EnhanceInnerInterceptor {
 
     private final AggregateRecognizer aggregateRecognizer;
 

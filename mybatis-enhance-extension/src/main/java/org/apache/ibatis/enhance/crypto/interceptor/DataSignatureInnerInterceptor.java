@@ -1,7 +1,7 @@
 package org.apache.ibatis.enhance.crypto.interceptor;
 
 import lombok.Getter;
-import org.apache.ibatis.enhance.plugin.EnhanceInterceptor;
+import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 import org.apache.ibatis.enhance.util.ParameterUtils;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -16,7 +16,7 @@ import java.util.Objects;
 /**
  * 原生 MyBatis 写入签名与查询结果验签增强器。
  */
-public class DataSignatureInnerInterceptor implements EnhanceInterceptor {
+public class DataSignatureInnerInterceptor implements EnhanceInnerInterceptor {
 
     @Getter
     private final DataSignatureHandler dataSignatureHandler;

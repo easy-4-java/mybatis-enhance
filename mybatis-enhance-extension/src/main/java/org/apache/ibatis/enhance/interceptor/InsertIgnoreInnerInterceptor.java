@@ -1,6 +1,6 @@
 package org.apache.ibatis.enhance.interceptor;
 
-import org.apache.ibatis.enhance.plugin.EnhanceInterceptor;
+import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  * @author <a href="https://github.com/hiwepy">wandl</a>
  * @since 1.0.x
  */
-public class InsertIgnoreInnerInterceptor implements EnhanceInterceptor {
+public class InsertIgnoreInnerInterceptor implements EnhanceInnerInterceptor {
 
     private static final Pattern INSERT_PATTERN = Pattern.compile(
             "^(\\s*)INSERT\\s+(?!IGNORE\\b)", Pattern.CASE_INSENSITIVE);

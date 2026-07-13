@@ -1,7 +1,7 @@
 package org.apache.ibatis.enhance.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.enhance.plugin.EnhanceInterceptor;
+import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -23,7 +23,7 @@ import java.util.Objects;
  * @since 1.0.x
  */
 @Slf4j
-public class LongSqlInnerInterceptor implements EnhanceInterceptor {
+public class LongSqlInnerInterceptor implements EnhanceInnerInterceptor {
 
     private int longSqlThreshold = 2000;
     private LongSqlHandler longSqlHandler;

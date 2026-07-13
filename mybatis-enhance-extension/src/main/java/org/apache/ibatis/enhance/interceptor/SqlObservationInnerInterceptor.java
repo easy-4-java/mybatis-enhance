@@ -1,7 +1,7 @@
 package org.apache.ibatis.enhance.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.enhance.plugin.EnhanceInterceptor;
+import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 import org.apache.ibatis.enhance.spi.SqlObservation;
 import org.apache.ibatis.enhance.spi.SqlObservationSink;
 import org.apache.ibatis.executor.Executor;
@@ -28,7 +28,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @since 1.0.x
  */
 @Slf4j
-public class SqlObservationInnerInterceptor implements EnhanceInterceptor {
+public class SqlObservationInnerInterceptor implements EnhanceInnerInterceptor {
 
     private final List<SqlObservationSink> sinks = new CopyOnWriteArrayList<>();
 

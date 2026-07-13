@@ -1,4 +1,4 @@
-package org.apache.ibatis.enhance.plugin;
+package org.apache.ibatis.enhance.plugins;
 
 import org.apache.ibatis.builder.StaticSqlSource;
 import org.apache.ibatis.executor.Executor;
@@ -10,6 +10,7 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.junit.Assert;
+import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -62,7 +63,7 @@ public class MybatisEnhanceInterceptorTest {
     public void shouldPassBoundSqlToAfterUpdate() throws Throwable {
         List<String> events = new ArrayList<>();
         MybatisEnhanceInterceptor interceptor = new MybatisEnhanceInterceptor();
-        interceptor.addInterceptor(new EnhanceInterceptor() {
+        interceptor.addInterceptor(new EnhanceInnerInterceptor() {
             @Override
             public void afterUpdate(Executor executor, MappedStatement mappedStatement, Object parameter,
                                     BoundSql boundSql, int affectedRows) {
@@ -80,7 +81,7 @@ public class MybatisEnhanceInterceptorTest {
     @Test
     public void shouldIsolateAfterExecutionException() throws Throwable {
         MybatisEnhanceInterceptor interceptor = new MybatisEnhanceInterceptor();
-        interceptor.addInterceptor(new EnhanceInterceptor() {
+        interceptor.addInterceptor(new EnhanceInnerInterceptor() {
             @Override
             public void afterExecution(Executor executor, MappedStatement mappedStatement, Object parameter,
                                        BoundSql boundSql, Object result, Throwable failure, long elapsedNanos) {
@@ -124,8 +125,8 @@ public class MybatisEnhanceInterceptorTest {
         Assert.assertFalse(events.contains("observer-after-update"));
     }
 
-    private EnhanceInterceptor tracker(String name, List<String> events) {
-        return new EnhanceInterceptor() {
+    private EnhanceInnerInterceptor tracker(String name, List<String> events) {
+        return new EnhanceInnerInterceptor() {
             @Override
             public void beforeQuery(Executor executor, MappedStatement mappedStatement, Object parameter,
                                     RowBounds rowBounds, ResultHandler<?> resultHandler, BoundSql boundSql) {

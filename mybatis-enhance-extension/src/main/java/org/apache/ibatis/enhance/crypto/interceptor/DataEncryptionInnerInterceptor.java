@@ -1,7 +1,7 @@
 package org.apache.ibatis.enhance.crypto.interceptor;
 
 import lombok.Getter;
-import org.apache.ibatis.enhance.plugin.EnhanceInterceptor;
+import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 import org.apache.ibatis.enhance.util.MapperMethodUtils;
 import org.apache.ibatis.enhance.util.ParameterUtils;
 import org.apache.ibatis.executor.Executor;
@@ -19,7 +19,7 @@ import java.util.Objects;
 /**
  * 原生 MyBatis 查询参数及写入参数加密增强器。
  */
-public class DataEncryptionInnerInterceptor implements EnhanceInterceptor {
+public class DataEncryptionInnerInterceptor implements EnhanceInnerInterceptor {
 
     @Getter
     private final DataEncryptionHandler dataEncryptionHandler;
