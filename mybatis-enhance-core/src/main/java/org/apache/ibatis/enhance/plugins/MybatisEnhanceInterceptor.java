@@ -1,5 +1,6 @@
 package org.apache.ibatis.enhance.plugins;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -7,8 +8,6 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
@@ -22,6 +21,7 @@ import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
  * @author <a href="https://github.com/hiwepy">wandl</a>
  * @since 1.0.x
  */
+@Slf4j
 @Intercepts({
         @Signature(type = Executor.class, method = "update",
                 args = {MappedStatement.class, Object.class}),
@@ -32,8 +32,6 @@ import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
                         CacheKey.class, BoundSql.class})
 })
 public class MybatisEnhanceInterceptor implements Interceptor {
-
-    private static final Logger log = LoggerFactory.getLogger(MybatisEnhanceInterceptor.class);
 
     private final List<EnhanceInnerInterceptor> interceptors = new ArrayList<>();
 

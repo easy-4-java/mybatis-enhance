@@ -23,11 +23,6 @@ import org.apache.ibatis.enhance.annotation.i18n.I18nMapper;
 import org.apache.ibatis.enhance.annotation.i18n.I18nPrimary;
 import org.apache.ibatis.enhance.i18n.i18n.handler.DataI18nMappedHandler;
 import org.apache.ibatis.enhance.i18n.i18n.handler.DataI18nMapper;
-<<<<<<< HEAD
-=======
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
->>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移)
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
