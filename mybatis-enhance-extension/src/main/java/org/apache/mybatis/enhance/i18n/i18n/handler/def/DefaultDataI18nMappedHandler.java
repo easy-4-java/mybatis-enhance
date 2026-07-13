@@ -13,17 +13,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.mybatis.enhance.i18n.i18n.handler.def;
+package org.apache.ibatis.enhance.i18n.i18n.handler.def;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.mybatis.enhance.annotation.i18n.I18nColumn;
-import org.apache.mybatis.enhance.annotation.i18n.I18nLocale;
-import org.apache.mybatis.enhance.annotation.i18n.I18nMapper;
-import org.apache.mybatis.enhance.annotation.i18n.I18nPrimary;
-import org.apache.mybatis.enhance.i18n.i18n.handler.DataI18nMappedHandler;
-import org.apache.mybatis.enhance.i18n.i18n.handler.DataI18nMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.ibatis.enhance.annotation.i18n.I18nColumn;
+import org.apache.ibatis.enhance.annotation.i18n.I18nLocale;
+import org.apache.ibatis.enhance.annotation.i18n.I18nMapper;
+import org.apache.ibatis.enhance.annotation.i18n.I18nPrimary;
+import org.apache.ibatis.enhance.i18n.i18n.handler.DataI18nMappedHandler;
+import org.apache.ibatis.enhance.i18n.i18n.handler.DataI18nMapper;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -39,13 +38,13 @@ import java.util.concurrent.ConcurrentMap;
  *
  * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
  */
+@Slf4j
 @SuppressWarnings("unchecked")
 public class DefaultDataI18nMappedHandler implements DataI18nMappedHandler {
 
     protected static final ConcurrentMap<Class<?>, DataI18nMapper> COMPLIED_I18N_MAPPER = new ConcurrentHashMap<Class<?>, DataI18nMapper>();
     protected static final ConcurrentMap<Class<?>, Field[]> COMPLIED_FIELDS = new ConcurrentHashMap<Class<?>, Field[]>();
     protected static final ConcurrentMap<Class<?>, String> COMPLIED_PRIMARYS = new ConcurrentHashMap<Class<?>, String>();
-    protected static Logger LOG = LoggerFactory.getLogger(DefaultDataI18nMappedHandler.class);
 
     /**
      * 获取类的属性描述符（替代 {@code org.springframework.beans.BeanUtils.getPropertyDescriptors}）：
@@ -59,7 +58,7 @@ public class DefaultDataI18nMappedHandler implements DataI18nMappedHandler {
             BeanInfo beanInfo = Introspector.getBeanInfo(clazz, Object.class);
             return beanInfo.getPropertyDescriptors();
         } catch (IntrospectionException e) {
-            LOG.error(e.getLocalizedMessage(), e);
+            log.error(e.getLocalizedMessage(), e);
             return new PropertyDescriptor[0];
         }
     }

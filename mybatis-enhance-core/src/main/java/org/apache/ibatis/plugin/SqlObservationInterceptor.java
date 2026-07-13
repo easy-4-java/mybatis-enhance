@@ -1,5 +1,6 @@
 package org.apache.ibatis.plugin;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.enhance.spi.SqlObservation;
 import org.apache.ibatis.enhance.spi.SqlObservationSink;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -7,8 +8,6 @@ import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.util.*;
@@ -23,10 +22,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author <a href="https://github.com/hiwepy">wandl</a>
  * @since 1.0.x
  */
+@Slf4j
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})})
 public class SqlObservationInterceptor implements Interceptor {
-
-    private static final Logger log = LoggerFactory.getLogger(SqlObservationInterceptor.class);
 
     private final List<SqlObservationSink> sinks = new CopyOnWriteArrayList<>();
 

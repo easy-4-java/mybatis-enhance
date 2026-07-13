@@ -29,9 +29,6 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeException;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
@@ -48,7 +45,6 @@ import java.util.List;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class MybatisParameterHandler implements ParameterHandler {
 
-    protected static Logger LOG = LoggerFactory.getLogger(MybatisParameterHandler.class);
     protected final TypeHandlerRegistry typeHandlerRegistry;
     protected final MappedStatement mappedStatement;
     protected final Object parameterObject;
