@@ -2,10 +2,12 @@ package org.apache.ibatis.enhance.service;
 
 import org.apache.ibatis.enhance.mapper.EnhanceMapper;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -130,7 +132,7 @@ public interface IEnhanceService<T> {
      */
     default T getSignedById(Serializable id) {
         T entity = getEnhanceMapper().selectById(id);
-        if (entity == null) {
+        if (Objects.isNull(entity)) {
             return null;
         }
         doSignatureVerification(entity, entity.getClass());
@@ -155,7 +157,7 @@ public interface IEnhanceService<T> {
      */
     default List<T> listSignedByIds(Collection<? extends Serializable> idList) {
         List<T> list = getEnhanceMapper().selectBatchIds(idList);
-        if (list != null && !list.isEmpty()) {
+        if (!CollectionUtils.isEmpty(list)) {
             list.forEach(row -> doSignatureVerification(row, row.getClass()));
         }
         return list;
@@ -168,7 +170,7 @@ public interface IEnhanceService<T> {
      */
     default List<T> listSigned() {
         List<T> list = getEnhanceMapper().selectList();
-        if (list != null && !list.isEmpty()) {
+        if (!CollectionUtils.isEmpty(list)) {
             list.forEach(row -> doSignatureVerification(row, row.getClass()));
         }
         return list;
@@ -198,7 +200,7 @@ public interface IEnhanceService<T> {
     @Transactional(rollbackFor = Exception.class)
     default void doSignatureVerificationById(Serializable id) {
         T entity = getEnhanceMapper().selectIgnoreDecryptById(id);
-        if (entity != null) {
+        if (Objects.nonNull(entity)) {
             doSignatureVerification(entity, entity.getClass());
         }
     }
