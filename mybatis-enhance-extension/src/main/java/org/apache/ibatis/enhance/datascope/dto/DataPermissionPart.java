@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.ibatis.enhance.dbperms.dto;
+package org.apache.ibatis.enhance.datascope.dto;
 
 import lombok.Getter;
 import lombok.Setter;

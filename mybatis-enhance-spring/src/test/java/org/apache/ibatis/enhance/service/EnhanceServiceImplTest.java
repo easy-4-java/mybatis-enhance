@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -116,6 +117,62 @@ public class EnhanceServiceImplTest {
         Assert.assertTrue(mapper.calls.get(2).startsWith("selectIgnoreDecryptBatchIds"));
     }
 
+    @Test
+    public void saveBatchSignedShouldSignByConfiguredBatchSize() {
+        TrackingMapper<User> mapper = new TrackingMapper<>();
+        CountingHandler handler = new CountingHandler();
+        UserService<User> service = new UserService<>(mapper, handler);
+
+        boolean result = service.saveBatchSigned(Arrays.asList(
+                new User(1L, "甲"), new User(2L, "乙"), new User(3L, "丙")), 2);
+
+        Assert.assertTrue(result);
+        Assert.assertEquals(Arrays.asList(
+                "insert(1)",
+                "insert(2)",
+                "selectIgnoreDecryptBatchIds([1, 2])",
+                "insert(3)",
+                "selectIgnoreDecryptBatchIds([3])"), mapper.calls);
+        Assert.assertEquals(3, handler.signatureCount.get());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void saveBatchSignedShouldRejectNonPositiveBatchSize() {
+        TrackingMapper<User> mapper = new TrackingMapper<>();
+        CountingHandler handler = new CountingHandler();
+        UserService<User> service = new UserService<>(mapper, handler);
+
+        service.saveBatchSigned(Arrays.asList(new User(1L, "甲")), 0);
+    }
+
+    @Test
+    public void updateBatchSignedByIdShouldSignByConfiguredBatchSize() {
+        TrackingMapper<User> mapper = new TrackingMapper<>();
+        CountingHandler handler = new CountingHandler();
+        UserService<User> service = new UserService<>(mapper, handler);
+
+        boolean result = service.updateBatchSignedById(Arrays.asList(
+                new User(1L, "甲"), new User(2L, "乙"), new User(3L, "丙")), 2);
+
+        Assert.assertTrue(result);
+        Assert.assertEquals(Arrays.asList(
+                "updateById(1)",
+                "updateById(2)",
+                "selectIgnoreDecryptBatchIds([1, 2])",
+                "updateById(3)",
+                "selectIgnoreDecryptBatchIds([3])"), mapper.calls);
+        Assert.assertEquals(3, handler.signatureCount.get());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void updateBatchSignedByIdShouldRejectNonPositiveBatchSize() {
+        TrackingMapper<User> mapper = new TrackingMapper<>();
+        CountingHandler handler = new CountingHandler();
+        UserService<User> service = new UserService<>(mapper, handler);
+
+        service.updateBatchSignedById(Arrays.asList(new User(1L, "甲")), 0);
+    }
+
     // ===== 测试辅助类 =====
 
     static class User {
@@ -177,7 +234,9 @@ public class EnhanceServiceImplTest {
             List<T> result = new ArrayList<>();
             for (Serializable id : idList) {
                 T e = stored.get(id);
-                if (e != null) result.add(e);
+                if (Objects.nonNull(e)) {
+                    result.add(e);
+                }
             }
             return result;
         }
@@ -199,7 +258,9 @@ public class EnhanceServiceImplTest {
             List<T> result = new ArrayList<>();
             for (Serializable id : idList) {
                 T e = stored.get(id);
-                if (e != null) result.add(e);
+                if (Objects.nonNull(e)) {
+                    result.add(e);
+                }
             }
             return result;
         }

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.ibatis.enhance.dbperms.interceptor;
+package org.apache.ibatis.enhance.datascope.interceptor;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -30,9 +30,9 @@ import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.enhance.annotation.permission.RequiresPermission;
 import org.apache.ibatis.enhance.annotation.permission.RequiresPermissions;
 import org.apache.ibatis.enhance.annotation.permission.RequiresSpecialPermission;
-import org.apache.ibatis.enhance.dbperms.parser.def.TablePermissionAnnotationParser;
-import org.apache.ibatis.enhance.dbperms.parser.def.TablePermissionAutowireParser;
-import org.apache.ibatis.enhance.dbperms.parser.def.TablePermissionScriptParser;
+import org.apache.ibatis.enhance.datascope.parser.def.TablePermissionAnnotationParser;
+import org.apache.ibatis.enhance.datascope.parser.def.TablePermissionAutowireParser;
+import org.apache.ibatis.enhance.datascope.parser.def.TablePermissionScriptParser;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;

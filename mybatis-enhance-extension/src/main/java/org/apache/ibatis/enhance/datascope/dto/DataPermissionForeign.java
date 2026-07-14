@@ -1,4 +1,4 @@
-package org.apache.ibatis.enhance.dbperms.dto;
+package org.apache.ibatis.enhance.datascope.dto;
 
 import lombok.Getter;
 import lombok.Setter;

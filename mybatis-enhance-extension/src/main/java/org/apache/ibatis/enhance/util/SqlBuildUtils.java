@@ -17,10 +17,10 @@ package org.apache.ibatis.enhance.util;
 
 import org.apache.ibatis.utils.CollectionUtils;
 import org.apache.ibatis.enhance.annotation.permission.Relational;
-import org.apache.ibatis.enhance.dbperms.dto.DataPermission;
-import org.apache.ibatis.enhance.dbperms.dto.DataPermissionColumn;
-import org.apache.ibatis.enhance.dbperms.dto.DataPermissionForeign;
-import org.apache.ibatis.enhance.dbperms.dto.DataSpecialPermission;
+import org.apache.ibatis.enhance.datascope.dto.DataPermission;
+import org.apache.ibatis.enhance.datascope.dto.DataPermissionColumn;
+import org.apache.ibatis.enhance.datascope.dto.DataPermissionForeign;
+import org.apache.ibatis.enhance.datascope.dto.DataSpecialPermission;
 
 import java.util.*;
 import java.util.Map.Entry;

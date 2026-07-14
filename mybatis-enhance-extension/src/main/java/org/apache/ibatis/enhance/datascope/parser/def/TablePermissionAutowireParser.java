@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.ibatis.enhance.dbperms.parser.def;
+package org.apache.ibatis.enhance.datascope.parser.def;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -24,8 +24,8 @@ import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.util.SelectAutowirePermissionParser;
 import org.apache.ibatis.binding.MetaStatementHandler;
 import org.apache.ibatis.exception.MybatisException;
-import org.apache.ibatis.enhance.dbperms.parser.ITablePermissionAutowireHandler;
-import org.apache.ibatis.enhance.dbperms.parser.ITablePermissionParser;
+import org.apache.ibatis.enhance.datascope.parser.ITablePermissionAutowireHandler;
+import org.apache.ibatis.enhance.datascope.parser.ITablePermissionParser;
 
 /**
  * {@code TablePermissionAutowireParser} 解析器。

@@ -13,14 +13,14 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.ibatis.enhance.dbperms.parser;
+package org.apache.ibatis.enhance.datascope.parser;
 
 import org.apache.ibatis.binding.MetaStatementHandler;
 import org.apache.ibatis.utils.CollectionUtils;
-import org.apache.ibatis.enhance.dbperms.dto.DataPermission;
-import org.apache.ibatis.enhance.dbperms.dto.DataPermissionColumn;
-import org.apache.ibatis.enhance.dbperms.dto.DataPermissionPayload;
-import org.apache.ibatis.enhance.dbperms.dto.DataSpecialPermission;
+import org.apache.ibatis.enhance.datascope.dto.DataPermission;
+import org.apache.ibatis.enhance.datascope.dto.DataPermissionColumn;
+import org.apache.ibatis.enhance.datascope.dto.DataPermissionPayload;
+import org.apache.ibatis.enhance.datascope.dto.DataSpecialPermission;
 import org.apache.ibatis.enhance.util.PatternFormatUtils;
 import org.apache.ibatis.enhance.util.RandomString;
 import org.apache.ibatis.enhance.util.SqlBuildUtils;

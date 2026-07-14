@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.ibatis.enhance.dbperms.interceptor;
+package org.apache.ibatis.enhance.datascope.interceptor;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.crypto.digest.DigestUtil;

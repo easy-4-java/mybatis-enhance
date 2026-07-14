@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.ibatis.enhance.dbperms.parser;
+package org.apache.ibatis.enhance.datascope.parser;
 
 
 import java.util.*;

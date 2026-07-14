@@ -3,8 +3,8 @@ package net.sf.jsqlparser.util;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.binding.MetaStatementHandler;
 import org.apache.ibatis.enhance.annotation.permission.RequiresSpecialPermission;
-import org.apache.ibatis.enhance.dbperms.parser.DefaultTablePermissionAnnotationHandler;
-import org.apache.ibatis.enhance.dbperms.parser.ITablePermissionAnnotationHandler;
+import org.apache.ibatis.enhance.datascope.parser.DefaultTablePermissionAnnotationHandler;
+import org.apache.ibatis.enhance.datascope.parser.ITablePermissionAnnotationHandler;
 
 import java.util.Objects;
 import java.util.Optional;
