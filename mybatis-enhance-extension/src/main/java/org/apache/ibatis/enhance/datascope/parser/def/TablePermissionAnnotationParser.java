@@ -13,11 +13,15 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/parser/def/TablePermissionAnnotationParser.java
 <<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/parser/def/TablePermissionAnnotationParser.java
 package org.apache.ibatis.enhance.datascope.parser.def;
 ========
 package org.apache.ibatis.enhance.dbperms.parser.def;
 >>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/parser/def/TablePermissionAnnotationParser.java
+========
+package org.apache.ibatis.enhance.datascope.parser.def;
+>>>>>>>> e00fac5 (refactor: align source logic with 3.0.x):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/parser/def/TablePermissionAnnotationParser.java
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -33,11 +37,15 @@ import org.apache.ibatis.binding.MetaStatementHandler;
 import org.apache.ibatis.exception.MybatisException;
 import org.apache.ibatis.enhance.annotation.permission.RequiresPermission;
 import org.apache.ibatis.enhance.annotation.permission.RequiresSpecialPermission;
+<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/parser/def/TablePermissionAnnotationParser.java
 <<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/parser/def/TablePermissionAnnotationParser.java
 import org.apache.ibatis.enhance.datascope.parser.ITablePermissionParser;
 ========
 import org.apache.ibatis.enhance.dbperms.parser.ITablePermissionParser;
 >>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/parser/def/TablePermissionAnnotationParser.java
+========
+import org.apache.ibatis.enhance.datascope.parser.ITablePermissionParser;
+>>>>>>>> e00fac5 (refactor: align source logic with 3.0.x):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/parser/def/TablePermissionAnnotationParser.java
 
 /**
  * {@code TablePermissionAnnotationParser} 解析器。

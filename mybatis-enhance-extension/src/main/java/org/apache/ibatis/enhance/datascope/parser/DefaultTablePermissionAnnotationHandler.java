@@ -13,11 +13,15 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/parser/DefaultTablePermissionAnnotationHandler.java
 <<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/parser/DefaultTablePermissionAnnotationHandler.java
 package org.apache.ibatis.enhance.datascope.parser;
 ========
 package org.apache.ibatis.enhance.dbperms.parser;
 >>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/parser/DefaultTablePermissionAnnotationHandler.java
+========
+package org.apache.ibatis.enhance.datascope.parser;
+>>>>>>>> e00fac5 (refactor: align source logic with 3.0.x):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/parser/DefaultTablePermissionAnnotationHandler.java
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.ibatis.binding.MetaStatementHandler;
@@ -26,6 +30,7 @@ import org.apache.ibatis.enhance.annotation.permission.RequiresPermission;
 import org.apache.ibatis.enhance.annotation.permission.RequiresPermissionColumn;
 import org.apache.ibatis.enhance.annotation.permission.RequiresPermissionForeign;
 import org.apache.ibatis.enhance.annotation.permission.RequiresSpecialPermission;
+<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/parser/DefaultTablePermissionAnnotationHandler.java
 <<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/parser/DefaultTablePermissionAnnotationHandler.java
 import org.apache.ibatis.enhance.util.PatternFormatUtils;
 import org.apache.ibatis.enhance.util.StringUtils;
@@ -33,6 +38,10 @@ import org.apache.ibatis.enhance.util.StringUtils;
 import org.apache.ibatis.enhance.utils.PatternFormatUtils;
 import org.apache.ibatis.enhance.utils.StringUtils;
 >>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/parser/DefaultTablePermissionAnnotationHandler.java
+========
+import org.apache.ibatis.enhance.util.PatternFormatUtils;
+import org.apache.ibatis.enhance.util.StringUtils;
+>>>>>>>> e00fac5 (refactor: align source logic with 3.0.x):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/parser/DefaultTablePermissionAnnotationHandler.java
 
 import java.util.ArrayList;
 import java.util.HashMap;
