@@ -13,15 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/interceptor/AbstractDataPermissionInterceptor.java
-<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/interceptor/AbstractDataPermissionInterceptor.java
 package org.apache.ibatis.enhance.datascope.interceptor;
-========
-package org.apache.ibatis.enhance.dbperms.interceptor;
->>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/interceptor/AbstractDataPermissionInterceptor.java
-========
-package org.apache.ibatis.enhance.datascope.interceptor;
->>>>>>>> e00fac5 (refactor: align source logic with 3.0.x):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/interceptor/AbstractDataPermissionInterceptor.java
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.crypto.digest.DigestUtil;

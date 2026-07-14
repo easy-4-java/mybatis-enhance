@@ -13,15 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/interceptor/DefaultDataPermissionStatementInterceptor.java
-<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/interceptor/DefaultDataPermissionStatementInterceptor.java
 package org.apache.ibatis.enhance.datascope.interceptor;
-========
-package org.apache.ibatis.enhance.dbperms.interceptor;
->>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/interceptor/DefaultDataPermissionStatementInterceptor.java
-========
-package org.apache.ibatis.enhance.datascope.interceptor;
->>>>>>>> e00fac5 (refactor: align source logic with 3.0.x):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/interceptor/DefaultDataPermissionStatementInterceptor.java
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -38,21 +30,9 @@ import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.enhance.annotation.permission.RequiresPermission;
 import org.apache.ibatis.enhance.annotation.permission.RequiresPermissions;
 import org.apache.ibatis.enhance.annotation.permission.RequiresSpecialPermission;
-<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/interceptor/DefaultDataPermissionStatementInterceptor.java
-<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/interceptor/DefaultDataPermissionStatementInterceptor.java
 import org.apache.ibatis.enhance.datascope.parser.def.TablePermissionAnnotationParser;
 import org.apache.ibatis.enhance.datascope.parser.def.TablePermissionAutowireParser;
 import org.apache.ibatis.enhance.datascope.parser.def.TablePermissionScriptParser;
-========
-import org.apache.ibatis.enhance.dbperms.parser.def.TablePermissionAnnotationParser;
-import org.apache.ibatis.enhance.dbperms.parser.def.TablePermissionAutowireParser;
-import org.apache.ibatis.enhance.dbperms.parser.def.TablePermissionScriptParser;
->>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/interceptor/DefaultDataPermissionStatementInterceptor.java
-========
-import org.apache.ibatis.enhance.datascope.parser.def.TablePermissionAnnotationParser;
-import org.apache.ibatis.enhance.datascope.parser.def.TablePermissionAutowireParser;
-import org.apache.ibatis.enhance.datascope.parser.def.TablePermissionScriptParser;
->>>>>>>> e00fac5 (refactor: align source logic with 3.0.x):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/interceptor/DefaultDataPermissionStatementInterceptor.java
 
 import java.lang.reflect.Method;
 import java.sql.Connection;

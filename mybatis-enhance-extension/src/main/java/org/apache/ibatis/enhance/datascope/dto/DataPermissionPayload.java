@@ -13,15 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/dto/DataPermissionPayload.java
-<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/dto/DataPermissionPayload.java
 package org.apache.ibatis.enhance.datascope.dto;
-========
-package org.apache.ibatis.enhance.dbperms.dto;
->>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/dto/DataPermissionPayload.java
-========
-package org.apache.ibatis.enhance.datascope.dto;
->>>>>>>> e00fac5 (refactor: align source logic with 3.0.x):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/dto/DataPermissionPayload.java
 
 import lombok.Getter;
 import lombok.Setter;

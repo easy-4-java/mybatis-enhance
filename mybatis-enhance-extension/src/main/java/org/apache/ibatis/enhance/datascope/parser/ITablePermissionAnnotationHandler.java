@@ -13,15 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/parser/ITablePermissionAnnotationHandler.java
-<<<<<<<< HEAD:mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/parser/ITablePermissionAnnotationHandler.java
 package org.apache.ibatis.enhance.datascope.parser;
-========
-package org.apache.ibatis.enhance.dbperms.parser;
->>>>>>>> 8e73aaa (fix(rename): PR-A1 遗留清理 — 补齐剩余 52 个文件的 mybatis → ibatis 路径迁移):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/dbperms/parser/ITablePermissionAnnotationHandler.java
-========
-package org.apache.ibatis.enhance.datascope.parser;
->>>>>>>> e00fac5 (refactor: align source logic with 3.0.x):mybatis-enhance-extension/src/main/java/org/apache/ibatis/enhance/datascope/parser/ITablePermissionAnnotationHandler.java
 
 import org.apache.ibatis.binding.MetaStatementHandler;
 import org.apache.ibatis.enhance.annotation.permission.RequiresPermission;
