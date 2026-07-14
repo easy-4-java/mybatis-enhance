@@ -545,14 +545,5 @@
         <module>mybatis-enhance-spring</module>
     </modules>
 
-    <dependencies>
-        <!-- Test dependencies -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
 
 </project>
