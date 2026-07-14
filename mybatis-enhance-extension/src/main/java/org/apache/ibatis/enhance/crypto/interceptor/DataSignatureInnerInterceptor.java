@@ -56,7 +56,7 @@ public class DataSignatureInnerInterceptor implements EnhanceInnerInterceptor {
      * @param parameter       方法参数
      */
     @Override
-    public void beforeUpdate(Executor executor, MappedStatement mappedStatement, Object parameter) {
+public void beforeUpdate(Executor executor, MappedStatement mappedStatement, Object parameter) {
         if (!signEnabled || Objects.isNull(parameter)) {
             return;
         }

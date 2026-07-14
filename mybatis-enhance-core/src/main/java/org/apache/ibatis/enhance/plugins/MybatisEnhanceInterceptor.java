@@ -6,11 +6,11 @@ import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.*;
+import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
 import java.util.*;
-import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 
 /**
  * 原生 MyBatis 统一增强拦截器链。

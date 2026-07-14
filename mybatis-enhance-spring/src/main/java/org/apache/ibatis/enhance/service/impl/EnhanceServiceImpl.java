@@ -5,15 +5,15 @@ import org.apache.ibatis.enhance.mapper.EnhanceMapper;
 import org.apache.ibatis.enhance.service.IEnhanceService;
 import org.apache.ibatis.enhance.util.TableFieldHelper;
 import org.apache.ibatis.enhance.crypto.handler.DataSignatureHandler;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * {@link IEnhanceService} 的抽象基础实现。
@@ -69,47 +69,64 @@ public abstract class EnhanceServiceImpl<M extends EnhanceMapper<T>, T> implemen
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public <RT> void doSignatureVerification(RT rowObject, Class<?> entityClass) {
         getDataSignatureHandler().doSignatureVerification(rowObject, entityClass);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean saveBatchSigned(Collection<T> entityList, int batchSize) {
-        if (entityList == null || entityList.isEmpty()) {
+        if (CollectionUtils.isEmpty(entityList)) {
             return false;
         }
+        if (batchSize <= 0) {
+            throw new IllegalArgumentException("batchSize must be greater than 0");
+        }
         M mapper = getBaseMapper();
-        Set<Serializable> idSet = new HashSet<>(entityList.size());
-        List<T> bucket = new ArrayList<>(Math.min(batchSize, entityList.size()));
+        List<Serializable> idBucket = new ArrayList<>(Math.min(batchSize, entityList.size()));
         for (T entity : entityList) {
             mapper.insert(entity);
-            idSet.add(getIdValue(entity));
-            if (bucket.size() >= batchSize) {
-                bucket.clear();
+            idBucket.add(getIdValue(entity));
+            if (idBucket.size() >= batchSize) {
+                doSignatureByBatchIds(idBucket);
+                idBucket.clear();
             }
         }
-        // 批量补签
-        doSignatureByBatchIds(idSet);
+        // 补签不足一个批次的剩余记录
+        if (!CollectionUtils.isEmpty(idBucket)) {
+            doSignatureByBatchIds(idBucket);
+        }
         return true;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateBatchSignedById(Collection<T> entityList, int batchSize) {
-        if (entityList == null || entityList.isEmpty()) {
+        if (CollectionUtils.isEmpty(entityList)) {
             return false;
         }
+        if (batchSize <= 0) {
+            throw new IllegalArgumentException("batchSize must be greater than 0");
+        }
         M mapper = getBaseMapper();
-        Set<Serializable> idSet = new HashSet<>(entityList.size());
+        List<Serializable> idBucket = new ArrayList<>(Math.min(batchSize, entityList.size()));
         for (T entity : entityList) {
             mapper.updateById(entity);
-            idSet.add(getIdValue(entity));
+            idBucket.add(getIdValue(entity));
+            if (idBucket.size() >= batchSize) {
+                doSignatureByBatchIds(idBucket);
+                idBucket.clear();
+            }
         }
-        // 批量补签
-        doSignatureByBatchIds(idSet);
+        if (!CollectionUtils.isEmpty(idBucket)) {
+            doSignatureByBatchIds(idBucket);
+        }
         return true;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean saveOrUpdateSigned(T entity) {
         Serializable id = getIdValue(entity);
         M mapper = getBaseMapper();
@@ -140,13 +157,14 @@ public abstract class EnhanceServiceImpl<M extends EnhanceMapper<T>, T> implemen
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void doSignatureByBatchIds(Collection<? extends Serializable> idList) {
-        if (idList == null || idList.isEmpty()) {
+        if (CollectionUtils.isEmpty(idList)) {
             return;
         }
         // 1、批量查询原始数据
         List<T> list = getEnhanceMapper().selectIgnoreDecryptBatchIds(idList);
-        if (list == null || list.isEmpty()) {
+        if (CollectionUtils.isEmpty(list)) {
             return;
         }
         // 2、逐条签名并收集需要更新的实体
@@ -172,7 +190,7 @@ public abstract class EnhanceServiceImpl<M extends EnhanceMapper<T>, T> implemen
                 if (value instanceof Serializable) {
                     return (Serializable) value;
                 }
-                if (value != null) {
+                if (Objects.nonNull(value)) {
                     throw new IllegalStateException("主键字段 id 不是 Serializable：" + value.getClass());
                 }
                 return null;
