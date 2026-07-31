@@ -46,7 +46,6 @@
 		</snapshotRepository>
 	</distributionManagement>
 
-
     <build>
         <pluginManagement>
             <plugins>
@@ -532,6 +531,5 @@
         <module>mybatis-enhance-typehandler</module>
         <module>mybatis-enhance-spring</module>
     </modules>
-
 
 </project>
