@@ -21,22 +21,24 @@ import org.apache.ibatis.reflection.MetaObject;
 import java.lang.reflect.Field;
 
 
-/*
- * @className	： BoundSqlUtils
- * @description	： BoundSql对象操作工具
- * @version 	V1.0
+/**
+ * {@link BoundSql} 对象操作工具。
+ *
+ * <p>主要解决物理分页场景下 {@code foreach} 参数失效的问题：原生 MyBatis 在构造新的
+ * {@code BoundSql}（如分页计数 SQL）时不会复制 {@code metaParameters}，导致循环参数
+ * 解析失败。本工具通过反射传递 {@code metaParameters} 解决该问题。</p>
  */
 public class BoundSQLUtils {
 
-	/*
-	 *
-	 * @description	：解决 MyBatis 物理分页foreach 参数失效
-	 * <pre>
-	 * 	场景：MyBatis 物理分页，查询条件中需要用到foreach ，参数失效，查不到结果
-	 * 	分析：把java.sql的debug打开，sql语句正常，参数也正常。debug物理分页代码，setParameters时，
-	 * 	   boundSql.getAdditionalParameter(propertyName)获取值始终是null，没有拿到参数。但是BoundSql的metaParameters中可以看到相关的参数值。
-	 * 	解决方法：
-	 * 		BoundSql countBS = new BoundSql(configuration, sql, boundSql.getParameterMappings(), parameterObject);
+    /*
+     *
+     * @description	：解决 MyBatis 物理分页foreach 参数失效
+     * <pre>
+     * 	场景：MyBatis 物理分页，查询条件中需要用到foreach ，参数失效，查不到结果
+     * 	分析：把java.sql的debug打开，sql语句正常，参数也正常。debug物理分页代码，setParameters时，
+     * 	   boundSql.getAdditionalParameter(propertyName)获取值始终是null，没有拿到参数。但是BoundSql的metaParameters中可以看到相关的参数值。
+     * 	解决方法：
+     * 		BoundSql countBS = new BoundSql(configuration, sql, boundSql.getParameterMappings(), parameterObject);
      *      Field metaParamsField = ReflectUtil.getFieldByFieldName(boundSql, "metaParameters");
      *      if (metaParamsField != null) {
      *           MetaObject mo = (MetaObject) ReflectUtil.getValueByFieldName(boundSql, "metaParameters");
@@ -44,19 +46,19 @@ public class BoundSQLUtils {
      *      }
      *      setParameters(prepStat, configuration, countBS, parameterObject);
      * </pre>
-	 * @param sourceBoundSql
-	 * @param targetBoundSql
-	 */
-	public static void setBoundSql(BoundSql sourceBoundSql,BoundSql targetBoundSql){
-		Field metaParamsField = ReflectionUtils.getAccessibleField(sourceBoundSql, "metaParameters");
-		if (metaParamsField != null) {
-	       try {
-				MetaObject metaParameters = (MetaObject) ReflectionUtils.getField("metaParameters",sourceBoundSql);
-				ReflectionUtils.setField("metaParameters", targetBoundSql, metaParameters);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
+     * @param sourceBoundSql
+     * @param targetBoundSql
+     */
+    public static void setBoundSql(BoundSql sourceBoundSql, BoundSql targetBoundSql) {
+        Field metaParamsField = ReflectionUtils.getAccessibleField(sourceBoundSql, "metaParameters");
+        if (metaParamsField != null) {
+            try {
+                MetaObject metaParameters = (MetaObject) ReflectionUtils.getField("metaParameters", sourceBoundSql);
+                ReflectionUtils.setField("metaParameters", targetBoundSql, metaParameters);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

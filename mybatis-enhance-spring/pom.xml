@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.easy4j</groupId>
+        <artifactId>mybatis-enhance</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>mybatis-enhance-spring</artifactId>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>基于 Spring 事务的增强 Service 集成：提供带签名/验签语义的 Service API，对齐 mybatis-plus-enhance-spring 的使用方式。</description>
+
+    <dependencies>
+        <!-- Extension：Service 直接复用签名处理器与 EnhanceMapper。 -->
+        <dependency>
+            <groupId>io.github.easy4j</groupId>
+            <artifactId>mybatis-enhance-extension</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- MyBatis Core：Service API 暴露 Serializable、ResultHandler 等类型。 -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+        </dependency>
+        <!-- Spring TX：Service 写操作的 @Transactional 事务语义（唯一运行期 Spring 依赖）。 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+        <!-- Lombok：生成 Getter 等编译期代码，不向使用方传播。 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- 公共 Annotation：测试实体使用表签名注解。 -->
+        <dependency>
+            <groupId>io.github.easy4j</groupId>
+            <artifactId>mybatis-enhance-annotation</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Spring Context：测试 @Service 等容器注解。 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
