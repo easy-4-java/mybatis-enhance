@@ -1,6 +1,5 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.easy4j</groupId>
@@ -62,7 +61,7 @@
     <build>
         <pluginManagement>
             <plugins>
-                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+                
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -81,13 +80,13 @@
                         </annotationProcessorPaths>
                     </configuration>
                 </plugin>
-                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-deploy-plugin -->
+                
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>${maven-deploy-plugin.version}</version>
                 </plugin>
-                <!-- Flatten：解析 ${revision}，生成可直接发布和消费的 POM。 -->
+                
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>flatten-maven-plugin</artifactId>
@@ -113,7 +112,7 @@
                         </execution>
                     </executions>
                 </plugin>
-                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-enforcer-plugin -->
+                
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
@@ -129,13 +128,13 @@
                                 <rules>
                                     <requireMavenVersion>
                                         <message>
-                                            <![CDATA[You are running an older version of Maven. This application requires at least Maven ${maven.version}.]]>
+                                            You are running an older version of Maven. This application requires at least Maven ${maven.version}.
                                         </message>
                                         <version>[${maven.version}.0,)</version>
                                     </requireMavenVersion>
                                     <requireJavaVersion>
                                         <message>
-                                            <![CDATA[You are running an older version of Java. This application requires at least JDK ${java.version}.]]>
+                                            You are running an older version of Java. This application requires at least JDK ${java.version}.
                                         </message>
                                         <version>[${java.version}.0,)</version>
                                     </requireJavaVersion>
@@ -144,7 +143,7 @@
                         </execution>
                     </executions>
                 </plugin>
-                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-gpg-plugin -->
+                
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
@@ -159,13 +158,13 @@
                         </execution>
                     </executions>
                 </plugin>
-                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-install-plugin -->
+                
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-install-plugin</artifactId>
                     <version>${maven-install-plugin.version}</version>
                 </plugin>
-                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
+                
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
@@ -174,7 +173,7 @@
                         <encoding>${project.build.sourceEncoding}</encoding>
                     </configuration>
                 </plugin>
-                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-release-plugin -->
+                
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
@@ -187,7 +186,7 @@
                         <goals>deploy</goals>
                     </configuration>
                 </plugin>
-                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
+                
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
@@ -204,7 +203,7 @@
                         </execution>
                     </executions>
                 </plugin>
-                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
+                
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -222,7 +221,7 @@
                         </excludes>
                     </configuration>
                 </plugin>
-                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
+                
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
@@ -237,7 +236,7 @@
                         </archive>
                     </configuration>
                 </plugin>
-                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
+                
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
@@ -266,7 +265,7 @@
                         <serverId>ossrh</serverId>
                         <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                         <autoReleaseAfterClose>false</autoReleaseAfterClose>
-                        <!-- <sslAllowAll>true</sslAllowAll> -->
+                        
                         <stagingProgressPauseDurationSeconds>60</stagingProgressPauseDurationSeconds>
                         <stagingProgressTimeoutMinutes>20</stagingProgressTimeoutMinutes>
                         <detectBuildFailures>true</detectBuildFailures>
@@ -274,53 +273,7 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-        <plugins>
-            <!--环境检查插件：代码编译前的环境检查 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-            </plugin>
-            <!-- 编译插件：编译主代码至主输出目录 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <!-- 资源插件：复制主资源文件至主输出目录 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-            </plugin>
-            <!-- 单元测试插件 ：执行测试用例 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-            </plugin>
-            <!-- jar包生成插件 ：创建项目jar包 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-            </plugin>
-            <!-- 源码插件:发布时自动将源码同时发布 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-            <!-- 安装插件：将项目输出构件安装到本地仓库 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-            </plugin>
-            <!-- 发布插件 ：将项目输出构件部署到远程仓库 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>flatten-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+        </build>
 
     <profiles>
         <profile>
@@ -336,57 +289,57 @@
             <id>release</id>
             <build>
                 <plugins>
-                    <!--环境检查插件：代码编译前的环境检查 -->
+                    
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-enforcer-plugin</artifactId>
                     </plugin>
-                    <!-- 编译插件：编译主代码至主输出目录 -->
+                    
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
                     </plugin>
-                    <!-- 资源插件：复制主资源文件至主输出目录 -->
+                    
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-resources-plugin</artifactId>
                     </plugin>
-                    <!-- 单元测试插件 ：执行测试用例 -->
+                    
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                     </plugin>
-                    <!-- jar包生成插件 ：创建项目jar包 -->
+                    
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jar-plugin</artifactId>
                     </plugin>
-                    <!-- 源码插件:发布时自动将源码同时发布 -->
+                    
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
                     </plugin>
-                    <!-- javadoc -->
+                    
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
                     </plugin>
-                    <!-- 安装插件：将项目输出构件安装到本地仓库 -->
+                    
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-install-plugin</artifactId>
                     </plugin>
-                    <!-- 签名插件：对构建的jar、javadoc、source使用gpg来签名 -->
+                    
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                     </plugin>
-                    <!-- 发布插件 ：将项目输出构件部署到远程仓库 -->
+                    
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-deploy-plugin</artifactId>
                     </plugin>
-                    <!-- 版本自动升级插件 ：重置版本号 -->
+                    
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-release-plugin</artifactId>
@@ -403,51 +356,51 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <!-- CI Friendly Version：全部子模块和内部依赖共用，可由 CI -Drevision 覆盖。 -->
+        
         <revision>1.0.x.20260630-SNAPSHOT</revision>
         <java.version>1.8</java.version>
-        <!-- Maven Plugin versions -->
-        <maven.version>3.9.6</maven.version>
+        
+        <maven.version>3.0</maven.version>
         <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
-        <maven-dependency-plugin.version>3.0.1</maven-dependency-plugin.version>
+        <maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
         <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
         <maven-enforcer-plugin.version>3.6.3</maven-enforcer-plugin.version>
         <maven-flatten-plugin.version>1.7.3</maven-flatten-plugin.version>
         <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
         <maven-install-plugin.version>3.1.4</maven-install-plugin.version>
         <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
-        <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
         <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
         <maven-resources-plugin.version>3.5.0</maven-resources-plugin.version>
-        <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
         <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
-        <maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
-        <!-- Dependency versions -->
+        <maven-nexus-staging-plugin.version>1.7.0</maven-nexus-staging-plugin.version>
+        
         <commons-beanutils.version>1.11.0</commons-beanutils.version>
-        <commons-lang3.version>3.18.0</commons-lang3.version>
+        <commons-lang3.version>3.20.0</commons-lang3.version>
         <fastjson2.version>2.0.56</fastjson2.version>
         <hutool.version>5.8.40</hutool.version>
-        <jackson.version>2.18.9</jackson.version>
-        <!-- 现有数据权限 Visitor 基于 JSqlParser 3.1 API，并保持 JDK 8 兼容。 -->
+        <jackson.version>2.17.2</jackson.version>
+        
         <jsqlparser.version>3.1</jsqlparser.version>
         <junit.version>4.13.2</junit.version>
         <slf4j.version>2.0.18</slf4j.version>
         <lombok.version>1.18.46</lombok.version>
         <mybatis.version>3.5.17</mybatis.version>
-        <!-- Spring 5.3.x 是最后支持 JDK 8 的版本线，仅 mybatis-enhance-spring 模块使用。 -->
+        
         <spring-framework.version>5.3.39</spring-framework.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2 -->
+            
             <dependency>
                 <groupId>com.alibaba.fastjson2</groupId>
                 <artifactId>fastjson2</artifactId>
                 <version>${fastjson2.version}</version>
             </dependency>
-            <!-- Jackson：TypeHandler 与扩展模块统一使用同一版本线。 -->
+            
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
@@ -468,32 +421,32 @@
                 <artifactId>jackson-datatype-jsr310</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+            
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
+            
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/com.github.jsqlparser/jsqlparser -->
+            
             <dependency>
                 <groupId>com.github.jsqlparser</groupId>
                 <artifactId>jsqlparser</artifactId>
                 <version>${jsqlparser.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/junit/junit -->
+            
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.slf4j -->
+            
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
@@ -505,25 +458,25 @@
                 <version>${slf4j.version}</version>
                 <scope>test</scope>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+            
             <dependency>
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>${commons-beanutils.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+            
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
             </dependency>
-                <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+                
                 <dependency>
                     <groupId>org.mybatis</groupId>
                     <artifactId>mybatis</artifactId>
                     <version>${mybatis.version}</version>
                 </dependency>
-                <!-- Spring 只允许由 mybatis-enhance-spring 模块直接声明，其他模块 enforcer 禁止。 -->
+                
                 <dependency>
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-tx</artifactId>
@@ -537,7 +490,7 @@
             </dependencies>
         </dependencyManagement>
 
-    <modules>
+    <dependencies><dependency><groupId>junit</groupId><artifactId>junit</artifactId><scope>test</scope></dependency><dependency><groupId>org.projectlombok</groupId><artifactId>lombok</artifactId><scope>provided</scope></dependency><dependency><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></dependency></dependencies><modules>
         <module>mybatis-enhance-annotation</module>
         <module>mybatis-enhance-core</module>
         <module>mybatis-enhance-extension</module>
@@ -545,14 +498,4 @@
         <module>mybatis-enhance-spring</module>
     </modules>
 
-    <dependencies>
-        <!-- Test dependencies -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-
-</project>
+    </project>
