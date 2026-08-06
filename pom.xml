@@ -6,7 +6,6 @@
     <name>${project.groupId}:${project.artifactId}</name>
     <url>https://github.com/easy-4-java/${project.artifactId}</url>
     <version>${revision}</version>
-    <description>${project.artifactId} - Easy4J (io.github.easy4j) component</description>
     <packaging>pom</packaging>
 
     <!-- 开源协议采用 Apache 2.0 协议 -->
