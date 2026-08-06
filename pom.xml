@@ -477,7 +477,7 @@
             </dependencies>
         </dependencyManagement>
 
-    <modules>
+    <dependencies><dependency><groupId>org.projectlombok</groupId><artifactId>lombok</artifactId><scope>provided</scope></dependency><dependency><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></dependency></dependencies><modules>
         <module>mybatis-enhance-annotation</module>
         <module>mybatis-enhance-core</module>
         <module>mybatis-enhance-extension</module>
@@ -485,4 +485,4 @@
         <module>mybatis-enhance-spring</module>
     </modules>
 
-<dependencies><dependency><groupId>org.projectlombok</groupId><artifactId>lombok</artifactId><scope>provided</scope></dependency><dependency><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></dependency></dependencies></project>
+</project>
