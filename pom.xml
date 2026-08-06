@@ -6,7 +6,8 @@
     <artifactId>mybatis-enhance</artifactId>
     <version>${revision}</version>
     <name>${project.groupId}:${project.artifactId}</name>
-    <url>https://github.com/easy-4-java/${project.artifactId}</url>
+    	<description>${project.artifactId} - Easy4J (io.github.easy4j) component</description>
+<url>https://github.com/easy-4-java/${project.artifactId}</url>
     <packaging>pom</packaging>
 
     <licenses>
@@ -296,7 +297,8 @@
                 <jdk>[1.8,)</jdk>
             </activation>
             <properties>
-                <additionalparam>-Xdoclint:none</additionalparam>
+                <central-publishing-maven-plugin.version>0.7.0</central-publishing-maven-plugin.version>
+		<additionalparam>-Xdoclint:none</additionalparam>
             </properties>
         </profile>
         <profile>
