@@ -1,139 +1,239 @@
 # mybatis-enhance
 
-`mybatis-enhance` 是面向原生 MyBatis 的增强组件。项目只依赖 MyBatis 核心 API，不依赖 Spring、MyBatis-Spring 或
-MyBatis-Plus；需要 MyBatis-Plus 专属能力时，应使用独立项目 `mybatis-plus-enhance`。
+[Overview](#1-project-overview) | [Features](#2-features--status) | [Requirements](#3-requirements--compatibility) | [Architecture](#4-architecture--modules) | [Installation](#5-installation) | [Quick Start](#6-quick-start) | [Configuration](#7-configuration) | [Core Usage](#8-core-usage--api) | [Testing & Build](#9-testing--build) | [Versioning](#10-versioning--branches) | [License](#11-contributing--license)
 
-本项目保留四个职责清晰的模块：
+> **Status**: maintained on the `feature/2.0.x` line (JDK 17). Artifacts are not yet published to Maven Central; they are distributed through the project's private repository and GitHub Releases.
 
-| 模块                            | 职责                                          | 可独立使用                  |
-|-------------------------------|---------------------------------------------|------------------------|
-| `mybatis-enhance-annotation`  | 数据权限、国际化、加解密和签名等纯 Java 注解                   | 是，零运行时依赖               |
-| `mybatis-enhance-core`        | 原生 MyBatis 拦截器链、SPI、通用插件与基础工具               | 是                      |
-| `mybatis-enhance-extension`   | 数据权限、国际化、加解密、签名、字段填充及 JSqlParser SQL AST 增强 | 否，依赖 annotation 与 core |
-| `mybatis-enhance-typehandler` | JSON、集合、日期、Blob、RSA 模板等通用 TypeHandler       | 是，可用于 MyBatis-Plus 项目  |
+## 1. Project Overview
 
-公共注解按能力域组织，避免所有协议堆积在同一个根包：
+`mybatis-enhance` is an enhancement component set for **plain MyBatis**. It depends only on MyBatis core APIs — not on Spring, MyBatis-Spring or MyBatis-Plus. If you need MyBatis-Plus-specific capabilities, use the separate `mybatis-plus-enhance` project instead.
+
+What it is:
+
+- A unified MyBatis interceptor chain (`MybatisEnhanceInterceptor` + `EnhanceInnerInterceptor` SPI) that lets you order write-time encryption, write-time signature, post-query verification and post-query decryption in one plugin registration;
+- Standalone interceptors for pagination (`PaginationInterceptor` + `Dialect`), `INSERT IGNORE` rewriting, long-SQL detection and SQL observation;
+- Data-scope (row-level permission), i18n, field encryption / signature and field-fill capabilities in `mybatis-enhance-extension`, backed by JSqlParser 3.1 SQL AST tooling;
+- A generic `TypeHandler` collection (arrays, JSON via Fastjson2/Jackson/Hutool, collections, Blob, Date, RSA templates) that is reusable from MyBatis-Plus projects too;
+- Spring-transaction-aware service semantics (`IEnhanceService`) with save/update-then-sign workflows.
+
+What it is not:
+
+- Not a MyBatis-Plus alternative and not a Spring Boot starter;
+- No data-masking annotations/interceptors — masking belongs to the presentation/serialization boundary (the org's `ddd4j-extension-jackson` `@Sensitive`), not to the persistence layer. The persistence layer handles reversible encryption, integrity signatures and data scope.
+
+Typical scenarios:
+
+| Scenario | Module / class |
+| :--- | :--- |
+| Encrypt-on-write, sign, verify and decrypt-on-read | `mybatis-enhance-extension` → `MybatisEnhanceInterceptor` + `DataEncryption/DataSignature/DataDecryptionInnerInterceptor` |
+| Row-level data scope (annotation / script / autowire) | `mybatis-enhance-extension` → `datascope` parsers + `DefaultDataPermissionStatementInterceptor` |
+| Column i18n switching | `mybatis-enhance-extension` → `i18n` handlers + `AbstractDataI18nInterceptor` |
+| Pagination without a full ORM | `mybatis-enhance-core` → `PaginationInterceptor` + `MysqlDialect` |
+| JSON / array / Blob columns | `mybatis-enhance-typehandler` → e.g. `JsonTypeHandler`, `ArrayStringTypeHandler` |
+| Signed persistence in Spring services | `mybatis-enhance-spring` → `IEnhanceService.saveSigned / updateSignedById` |
+
+## 2. Features & Status
+
+| Capability | Status | Notes |
+| :--- | :--- | :--- |
+| Unified enhancement interceptor chain | Implemented | `MybatisEnhanceInterceptor` (Executor update/query) + `EnhanceInnerInterceptor` SPI (`before/afterUpdate`, `before/afterQuery`, `afterExecution`) |
+| Pagination | Implemented | `PaginationInterceptor` + `Dialect` / `MysqlDialect` (`buildPaginationSql`, `buildCountSql`) |
+| `INSERT IGNORE` rewriting | Implemented | `InsertIgnoreInterceptor` (+ global enable/reset switch) |
+| Long-SQL detection | Implemented | `LongSqlInterceptor` (threshold + handler) |
+| SQL observation | Implemented | `SqlObservationInterceptor` + `SqlObservationSink` / `SqlLoggingSink` |
+| Field encryption / signature | Implemented | `mybatis-enhance-extension` crypto handlers + inner interceptors |
+| Data scope (row-level permission) | Implemented | annotation / script / autowire parsers over JSqlParser AST |
+| i18n columns | Implemented | `mybatis-enhance-extension` i18n handlers + bundles |
+| Generic TypeHandlers | Implemented | 20 ready-to-use TypeHandlers + 6 abstract bases (26 classes) in `mybatis-enhance-typehandler` |
+| Spring service semantics | Implemented | `IEnhanceService` / `EnhanceServiceImpl` (Spring TX) |
+| Tests | Present | `MybatisEnhanceInterceptorTest`, crypto/signature integration tests, `PermissionTableVisitorTest` |
+
+## 3. Requirements & Compatibility
+
+| Item | Requirement |
+| :--- | :--- |
+| JDK | 17+ |
+| Maven | 3.9.6+ (Maven Wrapper `mvnw` included) |
+| MyBatis | 3.5.17 |
+| JSqlParser | 3.1 (intentional compatibility baseline for the SQL AST tooling) |
+| Other deps (managed in root pom) | fastjson2 2.0.62, hutool 5.8.40, jackson 2.17.2, commons-lang3, slf4j-api 2.0.18, lombok (provided) |
+| Multi-module versioning | `${revision}` + flatten-maven-plugin |
+
+Version lines (details per line in [COMPATIBILITY.md](COMPATIBILITY.md)):
+
+| Branch | JDK | Version pattern |
+| :--- | :---: | :--- |
+| `feature/1.0.x` | 8 | `1.0.x.*` |
+| `feature/2.0.x` | 17 | `2.0.x.*` |
+| `feature/3.0.x` | 21 | `3.0.x.*` |
+
+## 4. Architecture & Modules
 
 ```text
-org.apache.ibatis.enhance.annotation.crypto
-org.apache.ibatis.enhance.annotation.i18n
-org.apache.ibatis.enhance.annotation.permission
+            +---------------------------------------------+
+            |  mybatis-enhance-annotation (pure Java)     |
+            |  crypto / i18n / permission annotations     |
+            +---------------------+-----------------------+
+                                  |
++-----------------+    +----------v-----------+    +---------------------------+
+| mybatis-enhance-|    | mybatis-enhance-core |    | mybatis-enhance-extension  |
+| typehandler     |    | interceptors, SPI,   |    | datascope / crypto / i18n /|
+| JSON/array/Blob |    | pagination, utils    |    | fill + JSqlParser AST      |
++--------+--------+    +----------+-----------+    +-------------+-------------+
+         |                        |                               |
+         +------------------------+-------------------------------+
+                                  |
+                                  v
+                           MyBatis 3.5.17
 ```
 
-其中 crypto 与 i18n 注解可被 `mybatis-plus-enhance` 直接复用；MyBatis-Plus 不再维护重复定义。
+Five modules:
 
-模块依赖方向如下：
+| Module | Responsibility | Standalone use |
+| :--- | :--- | :--- |
+| `mybatis-enhance-annotation` | Pure-Java annotations for data permission, i18n, encryption and signature | Yes, zero runtime deps |
+| `mybatis-enhance-core` | Native MyBatis interceptor chain, SPI (`Dialect`, `Fillable`, ...), standalone plugins and base utils | Yes |
+| `mybatis-enhance-extension` | Data scope, i18n, encryption/signature, field fill and JSqlParser SQL AST enhancement | No, needs annotation + core |
+| `mybatis-enhance-typehandler` | Generic TypeHandlers: JSON, collections, Blob, Date, RSA templates, ... | Yes, also usable in MyBatis-Plus projects |
+| `mybatis-enhance-spring` | Spring TX service semantics (`IEnhanceService`) with sign/verify workflows | Yes, with extension + spring-tx |
 
-```text
-mybatis-enhance-extension --> mybatis-enhance-annotation
-             |
-             +-------------> mybatis-enhance-core --> MyBatis
+Annotation packages are organized by capability under `org.apache.ibatis.enhance.annotation.{crypto,i18n,permission}`; the crypto and i18n annotations are also reused by `mybatis-plus-enhance` (no duplicated definitions). Module dependency direction: `extension → {annotation, core}`, `spring → extension`, `typehandler → MyBatis` only.
 
-mybatis-enhance-typehandler ------------------------> MyBatis
-```
+## 5. Installation
 
-## 环境与版本
-
-当前 `1.0.x` 分支以 JDK 8 为基线：
-
-- JDK 8
-- Maven 3.9.6+
-- MyBatis 3.5.17
-- JSqlParser 3.1
-
-JSqlParser 3.1 是有意保留的兼容基线。`net.sf.jsqlparser.util` 下的数据权限 Visitor 和 SQL AST
-工具属于本项目的增强能力，不是需要清除的第三方包侵入。其他版本线见 [COMPATIBILITY.md](COMPATIBILITY.md)。
-
-## Maven 依赖
-
-仅使用通用 TypeHandler：
+Using only the generic TypeHandlers:
 
 ```xml
-
 <dependency>
-    <groupId>io.github.hiwepy</groupId>
+    <groupId>io.github.easy4j</groupId>
     <artifactId>mybatis-enhance-typehandler</artifactId>
-    <version>${mybatis-enhance.version}</version>
+    <version>2.0.x.x.20260630-SNAPSHOT</version>
 </dependency>
 ```
 
-使用完整原生 MyBatis 增强能力：
+Full native-MyBatis enhancement:
 
 ```xml
-
 <dependency>
-    <groupId>io.github.hiwepy</groupId>
+    <groupId>io.github.easy4j</groupId>
     <artifactId>mybatis-enhance-extension</artifactId>
-    <version>${mybatis-enhance.version}</version>
+    <version>2.0.x.x.20260630-SNAPSHOT</version>
 </dependency>
 ```
 
-只需要拦截器链或 SPI 时，可以直接依赖 `mybatis-enhance-core`。只需要注解协议时，可以直接依赖 `mybatis-enhance-annotation`。
+Gradle:
 
-## 原生 MyBatis 增强链
+```groovy
+implementation 'io.github.easy4j:mybatis-enhance-extension:2.0.x.x.20260630-SNAPSHOT'
+```
 
-`MybatisEnhanceInterceptor` 是统一外层插件，内部的 `EnhanceInterceptor` 按注册顺序执行。这样可以用一个 MyBatis
-插件明确控制写入前加密、写入前签名、查询后验签和查询后解密等生命周期。
+Only need the interceptor chain/SPI? Depend on `mybatis-enhance-core` directly. Only need annotation protocols? Depend on `mybatis-enhance-annotation`. Snapshots are served from the project's private repository (see `distributionManagement` in the pom). No Maven Central release is available yet.
+
+## 6. Quick Start
+
+Wire the unified enhancement chain with encryption + signature inner interceptors (pattern from the project README):
 
 ```java
+import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.enhance.plugins.MybatisEnhanceInterceptor;
+import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
+import org.apache.ibatis.enhance.crypto.handler.EncryptedFieldHandler;
+import org.apache.ibatis.enhance.crypto.handler.DataSignatureHandler;
+import org.apache.ibatis.enhance.crypto.interceptor.DataEncryptionInnerInterceptor;
+import org.apache.ibatis.enhance.crypto.interceptor.DataSignatureInnerInterceptor;
+import org.apache.ibatis.enhance.crypto.interceptor.DataDecryptionInnerInterceptor;
+
 EncryptedFieldHandler encryptedFieldHandler = createEncryptedFieldHandler();
 DataSignatureHandler signatureHandler = createSignatureHandler();
 
 MybatisEnhanceInterceptor enhanceInterceptor = new MybatisEnhanceInterceptor();
-enhanceInterceptor.
-
-addInterceptor(new DataEncryptionInterceptor(encryptedFieldHandler));
-        enhanceInterceptor.
-
-addInterceptor(new DataSignatureInterceptor(signatureHandler));
-        enhanceInterceptor.
-
-addInterceptor(new DataDecryptionInterceptor(encryptedFieldHandler));
+enhanceInterceptor.addInterceptor(new DataEncryptionInnerInterceptor(encryptedFieldHandler));
+enhanceInterceptor.addInterceptor(new DataSignatureInnerInterceptor(signatureHandler));
+enhanceInterceptor.addInterceptor(new DataDecryptionInnerInterceptor(encryptedFieldHandler));
 
 Configuration configuration = new Configuration();
-configuration.
-
-addInterceptor(enhanceInterceptor);
+configuration.addInterceptor(enhanceInterceptor);
 ```
 
-写操作调用 `beforeUpdate` 后执行 SQL，再调用 `afterUpdate`；查询操作调用 `beforeQuery` 后执行 SQL，再调用 `afterQuery`
-。同一生命周期内严格遵循注册顺序，因此签名字段依赖密文时，应先注册加密增强器，再注册签名增强器。
+Lifecycle semantics: writes run `beforeUpdate` → SQL → `afterUpdate`; queries run `beforeQuery` → SQL → `afterQuery`; `afterExecution` is a bypass notification with per-interceptor exception isolation. Inner interceptors execute strictly in registration order — since signature fields depend on ciphertext, register encryption before signature.
 
-## JSqlParser 数据权限增强
+## 7. Configuration
 
-`mybatis-enhance-extension` 保留了基于 JSqlParser AST 的数据权限能力，能够遍历主查询、JOIN
-和嵌套子查询中的表，并按注解、自动装配或特殊权限策略替换表表达式。公共入口包括：
+No application-property prefix. Behavior is configured programmatically:
 
-- `QueryTablesNamesFinder`：提取查询涉及的表；
-- `SelectAutowirePermissionParser`：应用自动装配的数据权限；
-- `SelectAnnotationPermissionParser` / `SelectAnnotationPermissionsParser`：应用单个或多个注解权限；
-- `SelectAnnotationSpecialPermissionParser` / `SelectAnnotationSpecialPermissionsParser`：应用特殊权限；
-- `SqlParserTool`：提供基于 AST 的 SQL 解析与改写工具。
+- inner-interceptor order in `MybatisEnhanceInterceptor.addInterceptor(...)`;
+- `LongSqlInterceptor(longSqlThreshold, longSqlHandler)` thresholds;
+- `InsertIgnoreInterceptor.enable()/reset()` global switch;
+- `Dialect` selection for `PaginationInterceptor` (e.g. `new PaginationInterceptor(new MysqlDialect())`);
+- crypto key material through `CryptoKeyMaterial` / `StaticCryptoKeyProvider` and handlers (`DataEncryptionHandler`, `DataSignatureHandler`, `EncryptedFieldHandler`);
+- tenant/i18n contexts via `TenantContext` and `DataInputProvider`.
 
-这些类复用 JSqlParser 官方 `TablesNamesFinder` 完成统一遍历，项目代码只维护权限替换策略，避免多份 Visitor 实现产生行为漂移。
+## 8. Core Usage / API
 
-## TypeHandler 复用边界
+### 8.1 Pagination interceptor
 
-`mybatis-enhance-typehandler` 只有 MyBatis 与序列化工具依赖，不包含 Spring 和 MyBatis-Plus API。因此它既可用于原生
-MyBatis，也可作为基础能力被 MyBatis-Plus 项目直接依赖。模块内置 Maven Enforcer 规则，防止后续误引入框架集成依赖。
+```java
+import org.apache.ibatis.enhance.plugins.PaginationInterceptor;
+import org.apache.ibatis.enhance.spi.MysqlDialect;
 
-## 脱敏能力边界
+PaginationInterceptor pagination = new PaginationInterceptor(new MysqlDialect());
+configuration.addInterceptor(pagination);
+// Dialect contract: String buildPaginationSql(originalSql, offset, size);
+//                  String buildCountSql(originalSql);
+```
 
-数据脱敏属于接口输出或序列化边界，不应在 MyBatis 写入参数、查询结果或缓存对象上原地修改。因此本项目不提供脱敏注解和脱敏拦截器：
+### 8.2 Signed persistence via Spring service
 
-- 持久化层负责可逆加解密、完整性签名和数据权限；
-- 表现层负责按调用场景生成脱敏视图；
-- ddd4j 项目统一使用 `ddd4j-extension-jackson` 的 `@Sensitive`、`SensitiveStrategy` 和 `SensitiveJsonSerializer`；
-- 非 Jackson 项目应在其 DTO 映射或序列化适配器中实现同等输出策略。
+```java
+import org.apache.ibatis.enhance.service.IEnhanceService;
 
-## 构建与验证
+IEnhanceService<User> service = ...;
+
+service.saveSigned(user);              // insert + sign by id (Spring @Transactional)
+service.updateSignedById(user);        // update + re-sign
+service.saveBatchSigned(userList);     // batch insert + sign (default batch size 1000)
+```
+
+`EnhanceMapper<T>` provides `insert / updateById / selectById / selectBatchIds / selectList` plus `@IgnoreEncrypted` variants (`selectIgnoreDecryptById`, `selectIgnoreDecryptBatchIds`) that skip decryption on read.
+
+### 8.3 Data scope with JSqlParser
+
+`mybatis-enhance-extension` keeps JSqlParser-AST-based data-scope rewriting: `QueryTablesNamesFinder` extracts tables; `SelectAutowirePermissionParser`, `SelectAnnotationPermission(s)Parser` and `SelectAnnotationSpecialPermission(s)Parser` apply autowired / annotated / special permission strategies; `SqlParserTool` is the general AST parse/rewrite entry. The visitors reuse JSqlParser's official `TablesNamesFinder` traversal so only the permission-replacement policy is maintained here.
+
+### 8.4 Masking boundary (explicitly out of scope)
+
+Data masking is a serialization-boundary concern. This project does not modify write parameters, query results or cached objects in place: the persistence layer handles reversible encryption, integrity signature and data scope; the presentation layer generates masked views (the org's `ddd4j-extension-jackson` provides `@Sensitive` + `SensitiveStrategy` + `SensitiveJsonSerializer`).
+
+## 9. Testing & Build
 
 ```bash
-JAVA_HOME=$(/usr/libexec/java_home -v 1.8) mvn clean verify
+./mvnw clean verify
 ```
 
-多模块版本统一由 `${revision}` 管理，`flatten-maven-plugin` 会在构建时生成可发布、可消费的 POM。发布时使用：
+Multi-module versions are driven by `${revision}`; `flatten-maven-plugin` generates the consumable POMs at build time. Release:
 
 ```bash
-mvn -Prelease clean deploy -Drevision=<release-version>
+./mvnw -Prelease clean deploy -Drevision=<release-version>
 ```
+
+Quality gates:
+
+- Test suites: `MybatisEnhanceInterceptorTest` (core), crypto/signature integration tests (`CryptoSignatureIntegrationTest`, `CryptoHandlersTest`, `CryptoMapper` + `CryptoMapper.xml`) and `PermissionTableVisitorTest` (extension);
+- JaCoCo coverage reporting plus a line-coverage check rule with a 90% minimum target (`haltOnFailure=false`);
+- Source and Javadoc jars attached at package time; Maven Enforcer rules guard the build environment.
+
+## 10. Versioning & Branches
+
+Three parallel version lines, each bound to a JDK baseline:
+
+| Branch | JDK | Version pattern | Maintenance |
+| :--- | :---: | :--- | :--- |
+| `feature/1.0.x` | 8 | `1.0.x.*` | Current development line |
+| `feature/2.0.x` | 17 | `2.0.x.*` | Maintained in parallel |
+| `feature/3.0.x` | 21 | `3.0.x.*` | Maintained in parallel |
+
+Cross-line sync targets 1:1 capability parity, but dependency versions, compile settings, JSqlParser API adaptations and Java syntax must match each line's JDK baseline — build configs are not copied mechanically (see [COMPATIBILITY.md](COMPATIBILITY.md)). The current branch snapshot is `2.0.x.x.20260630-SNAPSHOT`; releases are cut via GitHub Releases, Maven Central publication is planned but not yet done.
+
+## 11. Contributing & License
+
+Contributions are welcome — open an issue or pull request on GitHub. All source files are licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt).
