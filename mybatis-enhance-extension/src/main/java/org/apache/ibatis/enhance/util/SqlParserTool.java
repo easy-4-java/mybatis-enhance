@@ -14,11 +14,11 @@ import net.sf.jsqlparser.statement.drop.Drop;
 import net.sf.jsqlparser.statement.execute.Execute;
 import net.sf.jsqlparser.statement.insert.Insert;
 import net.sf.jsqlparser.statement.merge.Merge;
-import net.sf.jsqlparser.statement.replace.Replace;
 import net.sf.jsqlparser.statement.select.*;
 import net.sf.jsqlparser.statement.truncate.Truncate;
 import net.sf.jsqlparser.statement.update.Update;
 import net.sf.jsqlparser.statement.upsert.Upsert;
+import net.sf.jsqlparser.statement.upsert.UpsertType;
 import net.sf.jsqlparser.util.TablesNamesFinder;
 
 import java.util.*;
@@ -69,9 +69,6 @@ public final class SqlParserTool {
         if (statement instanceof Merge) {
             return SqlType.MERGE;
         }
-        if (statement instanceof Replace) {
-            return SqlType.REPLACE;
-        }
         if (statement instanceof Select) {
             return SqlType.SELECT;
         }
@@ -82,6 +79,10 @@ public final class SqlParserTool {
             return SqlType.UPDATE;
         }
         if (statement instanceof Upsert) {
+            UpsertType upsertType = ((Upsert) statement).getUpsertType();
+            if (UpsertType.REPLACE.equals(upsertType) || UpsertType.REPLACE_SET.equals(upsertType)) {
+                return SqlType.REPLACE;
+            }
             return SqlType.UPSERT;
         }
         return SqlType.NONE;
@@ -125,7 +126,7 @@ public final class SqlParserTool {
      * @param selectBody SELECT AST
      * @return JOIN 列表；不存在时返回空列表
      */
-    public static List<Join> getJoins(SelectBody selectBody) {
+    public static List<Join> getJoins(Select selectBody) {
         if (selectBody instanceof PlainSelect) {
             List<Join> joins = ((PlainSelect) selectBody).getJoins();
             return Objects.isNull(joins) ? new ArrayList<>() : joins;
@@ -139,7 +140,7 @@ public final class SqlParserTool {
      * @param selectBody SELECT AST
      * @return INTO 表列表；不存在时返回空列表
      */
-    public static List<Table> getIntoTables(SelectBody selectBody) {
+    public static List<Table> getIntoTables(Select selectBody) {
         if (selectBody instanceof PlainSelect) {
             List<Table> tables = ((PlainSelect) selectBody).getIntoTables();
             return Objects.isNull(tables) ? new ArrayList<>() : tables;
@@ -153,7 +154,7 @@ public final class SqlParserTool {
      * @param selectBody SELECT AST
      * @param tables     INTO 表列表
      */
-    public static void setIntoTables(SelectBody selectBody, List<Table> tables) {
+    public static void setIntoTables(Select selectBody, List<Table> tables) {
         if (selectBody instanceof PlainSelect) {
             ((PlainSelect) selectBody).setIntoTables(tables);
         }
@@ -165,7 +166,7 @@ public final class SqlParserTool {
      * @param selectBody SELECT AST
      * @return LIMIT 节点；不存在或不是普通 SELECT 时返回 null
      */
-    public static Limit getLimit(SelectBody selectBody) {
+    public static Limit getLimit(Select selectBody) {
         return selectBody instanceof PlainSelect ? ((PlainSelect) selectBody).getLimit() : null;
     }
 
@@ -175,7 +176,7 @@ public final class SqlParserTool {
      * @param selectBody SELECT AST
      * @param rows       最大返回行数
      */
-    public static void setLimit(SelectBody selectBody, long rows) {
+    public static void setLimit(Select selectBody, long rows) {
         if (selectBody instanceof PlainSelect) {
             Limit limit = new Limit();
             limit.setRowCount(new LongValue(rows));
@@ -189,12 +190,12 @@ public final class SqlParserTool {
      * @param selectBody SELECT AST
      * @return FROM 项；不存在时返回 null
      */
-    public static FromItem getFromItem(SelectBody selectBody) {
+    public static FromItem getFromItem(Select selectBody) {
         if (selectBody instanceof PlainSelect) {
             return ((PlainSelect) selectBody).getFromItem();
         }
-        if (selectBody instanceof WithItem) {
-            return getFromItem(((WithItem) selectBody).getSelectBody());
+        if (selectBody instanceof ParenthesedSelect) {
+            return getFromItem(((ParenthesedSelect) selectBody).getSelect());
         }
         return null;
     }
@@ -205,9 +206,9 @@ public final class SqlParserTool {
      * @param selectBody SELECT AST
      * @return 子查询；FROM 不是子查询时返回 null
      */
-    public static SubSelect getSubSelect(SelectBody selectBody) {
+    public static ParenthesedSelect getSubSelect(Select selectBody) {
         FromItem fromItem = getFromItem(selectBody);
-        return fromItem instanceof SubSelect ? (SubSelect) fromItem : null;
+        return fromItem instanceof ParenthesedSelect ? (ParenthesedSelect) fromItem : null;
     }
 
     /**
@@ -216,9 +217,9 @@ public final class SqlParserTool {
      * @param selectBody SELECT AST
      * @return 存在两层连续 FROM 子查询时返回 true
      */
-    public static boolean isMultiSubSelect(SelectBody selectBody) {
-        SubSelect first = getSubSelect(selectBody);
-        return Objects.nonNull(first) && Objects.nonNull(getSubSelect(first.getSelectBody()));
+    public static boolean isMultiSubSelect(Select selectBody) {
+        ParenthesedSelect first = getSubSelect(selectBody);
+        return Objects.nonNull(first) && Objects.nonNull(getSubSelect(first.getSelect()));
     }
 
     /**
@@ -227,7 +228,7 @@ public final class SqlParserTool {
      * @param selectBody SELECT AST
      * @return 选择项列表；非普通 SELECT 时返回空列表
      */
-    public static List<SelectItem> getSelectItems(SelectBody selectBody) {
+    public static List<SelectItem<?>> getSelectItems(Select selectBody) {
         return selectBody instanceof PlainSelect
                 ? ((PlainSelect) selectBody).getSelectItems()
                 : new ArrayList<>();

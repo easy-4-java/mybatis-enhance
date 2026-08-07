@@ -20,6 +20,7 @@ import lombok.experimental.Accessors;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
+import net.sf.jsqlparser.statement.StatementVisitor;
 import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.util.SelectAnnotationPermissionParser;
 import net.sf.jsqlparser.util.SelectAnnotationPermissionsParser;
@@ -83,7 +84,7 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
             if (null != statement && statement instanceof Select) {
                 Select select = (Select) statement;
                 // 动态修改SQL
-                select.accept(new SelectAnnotationPermissionsParser(metaHandler, permissions));
+                select.accept((StatementVisitor<?>) new SelectAnnotationPermissionsParser(metaHandler, permissions));
                 // 获取处理后的SQL
                 parsedSQL = select.getSelectBody().toString();
             }
@@ -112,7 +113,7 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
             if (null != statement && statement instanceof Select) {
                 Select select = (Select) statement;
                 // 动态修改SQL
-                select.accept(new SelectAnnotationPermissionParser(metaHandler, permission));
+                select.accept((StatementVisitor<?>) new SelectAnnotationPermissionParser(metaHandler, permission));
                 // 获取处理后的SQL
                 parsedSQL = select.getSelectBody().toString();
             }
@@ -141,7 +142,7 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
             if (null != statement && statement instanceof Select) {
                 Select select = (Select) statement;
                 // 动态修改SQL
-                select.accept(new SelectAnnotationSpecialPermissionsParser(metaHandler, permissions));
+                select.accept((StatementVisitor<?>) new SelectAnnotationSpecialPermissionsParser(metaHandler, permissions));
                 // 获取处理后的SQL
                 parsedSQL = select.getSelectBody().toString();
             }
@@ -170,7 +171,7 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
             if (null != statement && statement instanceof Select) {
                 Select select = (Select) statement;
                 // 动态修改SQL
-                select.accept(new SelectAnnotationSpecialPermissionParser(metaHandler, permission));
+                select.accept((StatementVisitor<?>) new SelectAnnotationSpecialPermissionParser(metaHandler, permission));
                 // 获取处理后的SQL
                 parsedSQL = select.getSelectBody().toString();
             }
