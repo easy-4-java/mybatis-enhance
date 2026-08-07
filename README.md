@@ -4,6 +4,8 @@
 
 [![Java](https://img.shields.io/badge/Java-8-orange)](https://github.com/easy-4-java/mybatis-enhance) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](./LICENSE)
 
+mybatis-enhance is an enhancement component set for **plain MyBatis
+
 > **Status**: maintained on the `feature/1.0.x` line (JDK 8). Artifacts are not yet published to Maven Central; they are distributed through the project's private repository and GitHub Releases.
 
 ## Table of Contents
