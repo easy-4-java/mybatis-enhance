@@ -66,6 +66,7 @@
             <artifactId>mybatis-enhance-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- ========= Test ========= -->
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
