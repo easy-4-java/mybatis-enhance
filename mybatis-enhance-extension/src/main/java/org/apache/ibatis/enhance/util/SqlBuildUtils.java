@@ -32,6 +32,11 @@ import java.util.stream.Stream;
  *
  * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
  */
+/**
+ * Utility class for mybatis-enhance.
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ */
 public class SqlBuildUtils {
 
     /**

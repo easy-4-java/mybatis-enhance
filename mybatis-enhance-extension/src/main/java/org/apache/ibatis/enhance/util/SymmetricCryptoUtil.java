@@ -19,6 +19,11 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 对称加密工具类
  */
+/**
+ * Utility class for mybatis-enhance.
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ */
 public class SymmetricCryptoUtil {
 
     private static final Map<String, SymmetricCrypto> SYMMETRIC_CRYPTO_CACHE = new ConcurrentHashMap<>();
