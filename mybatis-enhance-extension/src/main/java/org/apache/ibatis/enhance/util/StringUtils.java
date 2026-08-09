@@ -20,6 +20,11 @@ package org.apache.ibatis.enhance.util;
  *
  * <p>该类型是 mybatis-enhance 公共或受保护扩展面的一部分。</p>
  */
+/**
+ * Utility class for mybatis-enhance.
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ */
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     /***

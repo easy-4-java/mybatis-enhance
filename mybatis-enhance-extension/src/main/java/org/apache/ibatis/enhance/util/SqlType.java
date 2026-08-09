@@ -20,6 +20,11 @@ package org.apache.ibatis.enhance.util;
  *
  * <p>用于 SQL 解析和拦截器分派，不代表 JDBC 执行结果类型。</p>
  */
+/**
+ * Enumeration for SQL statement types.
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ */
 public enum SqlType {
     /** 修改数据库对象。 */
     ALTER,

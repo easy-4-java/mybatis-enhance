@@ -6,6 +6,11 @@ import java.util.Random;
 /**
  * A provider of randomized {@link String} values.
  */
+/**
+ * Utility class for mybatis-enhance.
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ */
 public class RandomString {
 
     /**

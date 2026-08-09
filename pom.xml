@@ -654,6 +654,20 @@
                 <artifactId>slf4j-simple</artifactId>
                 <version>${slf4j.version}</version>
                 <scope>test</scope>
+        </dependency>
+        <!-- For JUnit Jupiter -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- For AssertJ -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.27.3</version>
+            <scope>test</scope>
             </dependency>
             <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
             <dependency>
@@ -690,6 +704,20 @@
 
     <!-- 项目依赖（dependencies） -->
     <dependencies>
+        <!-- For JUnit Jupiter -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- For AssertJ -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.27.3</version>
+            <scope>test</scope>
+        </dependency>
         <!-- For Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
