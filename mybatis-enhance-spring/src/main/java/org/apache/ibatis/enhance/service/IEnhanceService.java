@@ -22,7 +22,7 @@ import java.util.Optional;
  * {@code Wrapper} / {@code IPage} 相关重载（原生无等价概念）。核心 CRUD + 签名语义完整保留。</p>
  *
  * @param <T> 实体类型
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 public interface IEnhanceService<T> {

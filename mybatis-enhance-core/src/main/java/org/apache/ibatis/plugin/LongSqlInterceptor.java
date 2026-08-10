@@ -16,7 +16,7 @@ import java.util.Objects;
  * <p>本拦截器按 SQL 字符长度进行保护，不执行数据库 {@code EXPLAIN}，
  * 也不负责基于真实执行耗时判断慢 SQL。
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 @Slf4j

@@ -24,7 +24,7 @@ package org.apache.ibatis.enhance.spi;
  * <p>领域框架（如 ddd4j）通过 {@code META-INF/services/org.apache.ibatis.enhance.spi.AggregateRecognizer}
  * 注册具体实现；无注册时使用 {@link DefaultAggregateRecognizer#INSTANCE}（恒返回 false，拦截器 no-op）。
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 public interface AggregateRecognizer {

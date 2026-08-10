@@ -27,7 +27,7 @@ import org.apache.ibatis.plugin.meta.MetaExecutor;
 /**
  * Mybatis拦截器插件适配器: 执行顺序是: doExecutorIntercept，doParameterIntercept，doStatementIntercept，doResultSetIntercept
  *
- * @author ： <a href="https://github.com/hiwepy">hiwepy</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 public abstract class AbstractInterceptorAdapter extends AbstractInterceptor {
 

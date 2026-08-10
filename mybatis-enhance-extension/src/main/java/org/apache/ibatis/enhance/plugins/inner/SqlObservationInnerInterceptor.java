@@ -24,7 +24,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  * <p>单个 Sink 抛出的运行时异常被隔离记录，不影响其他 Sink 和主流程。</p>
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 @Slf4j

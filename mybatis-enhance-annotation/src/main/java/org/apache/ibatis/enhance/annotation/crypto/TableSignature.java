@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * <p>签名处理器根据 {@link TableSignatureField} 选择参与签名的字段，并将结果写入标记为
  * 存储字段的属性。</p>
  *
- * @author wandl
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

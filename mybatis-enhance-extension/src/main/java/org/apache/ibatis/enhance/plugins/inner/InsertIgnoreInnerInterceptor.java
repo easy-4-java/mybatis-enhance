@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  * // 使用 InsertIgnoreInnerInterceptor.enable() / reset() 控制作用域
  * </pre>
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 public class InsertIgnoreInnerInterceptor implements EnhanceInnerInterceptor {

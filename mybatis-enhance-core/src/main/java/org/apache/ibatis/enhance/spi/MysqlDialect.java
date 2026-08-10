@@ -21,7 +21,7 @@ package org.apache.ibatis.enhance.spi;
  * <p>分页：{@code SELECT ... LIMIT offset, size}。
  * 计数：{@code SELECT COUNT(1) FROM (originalSql) TOTAL}。
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 public final class MysqlDialect implements Dialect {

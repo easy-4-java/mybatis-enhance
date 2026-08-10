@@ -21,7 +21,7 @@ package org.apache.ibatis.enhance.spi;
  * <p>当 classpath 上不存在 {@code META-INF/services/org.apache.ibatis.enhance.spi.AggregateRecognizer}
  * 时，拦截器使用此实现，保证在纯 MyBatis 场景下整体行为为 no-op。
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 public final class DefaultAggregateRecognizer implements AggregateRecognizer {

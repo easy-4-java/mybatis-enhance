@@ -7,7 +7,7 @@ import java.lang.annotation.*;
  *
  * <p>该类型级开关用于避免对普通实体进行不必要的字段反射扫描。</p>
  *
- * @author wandl
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

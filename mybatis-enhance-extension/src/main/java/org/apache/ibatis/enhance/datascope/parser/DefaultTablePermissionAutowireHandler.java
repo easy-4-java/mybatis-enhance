@@ -34,7 +34,7 @@ import java.util.stream.Stream;
 
 /***
  * 根据注解的权限信息组装权限语句
- * @author <a href="https://github.com/hiwepy">hiwepy</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 public class DefaultTablePermissionAutowireHandler implements ITablePermissionAutowireHandler {
 

@@ -31,7 +31,7 @@
  *       没有等价物；如需复杂条件构造器，请在 native MyBatis 中手写 {@code @SelectProvider}。</li>
  * </ul>
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 2.0.x
  */
 package org.apache.ibatis.enhance.service;

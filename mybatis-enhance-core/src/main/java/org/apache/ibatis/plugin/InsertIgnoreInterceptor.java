@@ -49,7 +49,7 @@ import java.util.Objects;
  * 该方式对单条简单 INSERT 是充分的，但对包含大小写混合、注释或子查询的 SQL 不可靠。
  * 追求严谨的场景建议改用 JSqlParser 重写（{@code mybatis-enhance-extension} 提供）。
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})})

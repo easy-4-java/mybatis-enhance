@@ -33,7 +33,7 @@ import java.util.List;
  * <p>此接口放置在 {@code mybatis-enhance-spi}（零运行时依赖）中，作为
  * 拦截器插件与领域框架之间的解耦边界，避免拦截器反向依赖 ddd4j-core 等领域包。
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 public interface Fillable {

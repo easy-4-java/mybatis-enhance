@@ -27,7 +27,7 @@ package org.apache.ibatis.enhance.spi;
  * <p>默认实现：{@link MysqlDialect}（{@code LIMIT offset, size} + {@code SELECT COUNT(1) FROM (...)}）。
  * 后续可补 {@code PgsqlDialect} / {@code OracleDialect} 等。
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 public interface Dialect {

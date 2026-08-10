@@ -5,7 +5,7 @@ import java.util.Optional;
 /**
  * 数据签名存储字段读写扩展点。
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 public interface DataSignatureReadWriteProvider {

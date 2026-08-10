@@ -58,7 +58,7 @@ public class MyBatisSQLUtils {
     /*
      *
      * @description	： 解析出执行的SQL
-     * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
+     * @author <a href="https://github.com/loong10k">Loong Wan</a>
      * @date 		：2017年9月12日 下午11:34:03
      * @param statement
      * @param parameterObject
@@ -71,7 +71,7 @@ public class MyBatisSQLUtils {
     /*
      *
      * @description	： 解析出执行的SQL
-     * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
+     * @author <a href="https://github.com/loong10k">Loong Wan</a>
      * @date 		：2017年9月12日 下午11:33:40
      * @param statement
      * @param parameterObject

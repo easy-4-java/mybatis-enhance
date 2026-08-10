@@ -11,7 +11,7 @@ import java.util.Objects;
  *
  * <p>该类只管理租户标识，不负责决定表名、租户字段或 SQL 注入规则。</p>
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.x
  */
 public class TenantContext {

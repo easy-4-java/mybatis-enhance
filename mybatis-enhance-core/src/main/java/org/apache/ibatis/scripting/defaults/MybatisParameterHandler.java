@@ -40,7 +40,7 @@ import java.util.List;
  * 的拦截器场景，保持对外部配置参数解析的一致性。</p>
  *
  * @see org.apache.ibatis.scripting.defaults.DefaultParameterHandler
- * @author <a href="https://github.com/hiwepy">hiwepy</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class MybatisParameterHandler implements ParameterHandler {

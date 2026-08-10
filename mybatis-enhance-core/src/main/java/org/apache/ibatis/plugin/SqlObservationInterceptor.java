@@ -19,7 +19,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * <p>负责采集规范化 SQL、绑定参数和执行耗时，并通过
  * {@link SqlObservationSink} 发布观测结果。
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 @Slf4j

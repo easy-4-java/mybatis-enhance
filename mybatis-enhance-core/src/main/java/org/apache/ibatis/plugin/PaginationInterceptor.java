@@ -56,7 +56,7 @@ import java.util.Objects;
  *
  * <p><b>拦截点</b>：{@code @Signature(type=StatementHandler.class, method="prepare", args={Connection.class, Integer.class})}。
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 @Slf4j

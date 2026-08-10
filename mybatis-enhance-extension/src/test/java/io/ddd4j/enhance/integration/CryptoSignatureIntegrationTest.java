@@ -59,7 +59,7 @@ import static org.junit.Assert.*;
  * {@code MybatisPlusEnhanceInterceptor}，使用标准 MyBatis {@link Configuration}
  * 而非 {@code MybatisConfiguration}，使用 SQLite 而非 H2。</p>
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.x
  */
 public class CryptoSignatureIntegrationTest {

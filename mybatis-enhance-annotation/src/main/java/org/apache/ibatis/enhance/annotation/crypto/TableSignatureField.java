@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * <p>当多个字段参与联合签名时，处理器按照 {@link #order()} 排序，确保不同运行环境生成
  * 相同的待签名文本。</p>
  *
- * @author wandl
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

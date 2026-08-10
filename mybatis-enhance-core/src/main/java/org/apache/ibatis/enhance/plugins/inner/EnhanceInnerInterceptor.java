@@ -15,7 +15,7 @@ import java.util.List;
  * <p>该接口只依赖 MyBatis，不依赖 MyBatis-Plus。Extension 可以按注册顺序组合
  * 加密、签名、国际化和领域对象回填等能力。</p>
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 public interface EnhanceInnerInterceptor {

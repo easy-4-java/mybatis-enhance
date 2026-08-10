@@ -111,7 +111,7 @@ public abstract class AbstractInterceptor implements Interceptor {
      *	创建顺序是:Executor，StatementHandler，ParameterHandler，ResultSetHandler
      *	执行顺序是:Executor，ParameterHandler，StatementHandler，ResultSetHandler
      * </pre>
-     * @author 		：<a href="https://github.com/hiwepy">hiwepy</a>
+     * @author <a href="https://github.com/loong10k">Loong Wan</a>
      * @date 		：2017年9月12日 下午11:35:29
      * @param invocation
      * @return

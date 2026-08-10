@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 
 /***
  * 根据SQL中的特殊脚本的权限信息组装权限语句
- * @author <a href="https://github.com/hiwepy">hiwepy</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 public class DefaultTablePermissionScriptHandler implements ITablePermissionScriptHandler {
 

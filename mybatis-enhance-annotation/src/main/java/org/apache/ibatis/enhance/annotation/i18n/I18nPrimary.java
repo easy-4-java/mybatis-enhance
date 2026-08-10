@@ -7,7 +7,7 @@ import java.lang.annotation.*;
  *
  * <p>处理器可通过该标记定位主表记录，并与外部语言资源或国际化附表建立关联。</p>
  *
- * @author hiwepy
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 @Documented
 @Inherited

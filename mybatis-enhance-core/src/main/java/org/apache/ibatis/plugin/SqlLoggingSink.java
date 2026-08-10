@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * 默认 SQL 观测日志接收器。
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 @Slf4j

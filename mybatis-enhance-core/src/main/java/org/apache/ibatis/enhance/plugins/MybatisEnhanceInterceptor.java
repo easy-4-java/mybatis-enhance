@@ -18,7 +18,7 @@ import java.util.*;
  * <p>增强器按注册顺序执行 before/after 生命周期。使用统一入口可以明确加密、签名、
  * 验签和解密顺序，并避免同一 Executor 被多个外层插件重复代理。</p>
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 @Slf4j

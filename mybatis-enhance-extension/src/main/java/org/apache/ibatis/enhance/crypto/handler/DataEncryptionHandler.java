@@ -3,7 +3,7 @@ package org.apache.ibatis.enhance.crypto.handler;
 /**
  * 原生 MyBatis 实体字段加解密处理契约。
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 public interface DataEncryptionHandler {

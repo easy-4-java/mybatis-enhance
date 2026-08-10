@@ -3,7 +3,7 @@ package org.apache.ibatis.enhance.crypto.handler;
 /**
  * 实体数据签名与验签契约。
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 public interface DataSignatureHandler {

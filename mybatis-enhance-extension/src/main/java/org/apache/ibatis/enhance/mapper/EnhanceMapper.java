@@ -33,7 +33,7 @@ import java.util.List;
  * 返回数据库原始密文，供签名/验签流程读取真实字段值。</p>
  *
  * @param <T> 实体类型
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 public interface EnhanceMapper<T> {

@@ -33,7 +33,7 @@ import java.util.Objects;
  *
  * @param <M> 实体对应的增强 Mapper 类型
  * @param <T> 实体类型
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 public abstract class EnhanceServiceImpl<M extends EnhanceMapper<T>, T> implements IEnhanceService<T> {

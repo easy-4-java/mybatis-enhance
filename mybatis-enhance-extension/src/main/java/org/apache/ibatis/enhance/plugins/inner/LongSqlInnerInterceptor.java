@@ -19,7 +19,7 @@ import java.util.Objects;
  * 但走统一增强链。在查询和写入前按 SQL 字符长度进行保护性检测，超阈值时
  * 记录警告并触发回调。本增强器不执行数据库 EXPLAIN，也不基于真实耗时判断慢 SQL。</p>
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 @Slf4j

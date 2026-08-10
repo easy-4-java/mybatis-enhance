@@ -5,7 +5,7 @@ package org.apache.ibatis.enhance.annotation.crypto;
  *
  * <p>该枚举只描述框架契约，避免注解模块向使用方暴露具体密码库类型。</p>
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 public enum CryptoPadding {

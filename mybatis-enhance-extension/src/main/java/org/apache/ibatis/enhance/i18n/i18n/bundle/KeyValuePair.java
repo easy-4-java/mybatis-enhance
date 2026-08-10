@@ -23,7 +23,7 @@ import java.util.Objects;
  * <p>This is useful as an argument type for options whose values take on the form {@code key=value}, such as JVM
  * command line system properties.</p>
  *
- * @author <a href="mailto:pholser@alumni.rice.edu">Paul Holser</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 public final class KeyValuePair {
 

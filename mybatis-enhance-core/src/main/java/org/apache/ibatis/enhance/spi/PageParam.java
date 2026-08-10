@@ -26,7 +26,7 @@ import java.util.List;
  *
  * <p>典型 ddd4j 实现：{@code io.ddd4j.core.api.Page<T> implements PageParam}。
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 public interface PageParam {

@@ -9,7 +9,7 @@ import java.util.Objects;
  * <p>字段与 mybatis-plus-enhance 的 SqlObservation 对齐：mappedStatementId、sql、elapsedNanos、failure；
  * 并保留原生项目独有的 sortedParams（按参数名稳定排序后的参数文本视图）。</p>
  *
- * @author <a href="https://github.com/hiwepy">wandl</a>
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.x
  */
 public final class SqlObservation {
