@@ -399,20 +399,22 @@
             <activation>
                 <jdk>[1.8,)</jdk>
             </activation>
-            <properties>
-                <central-publishing-maven-plugin.version>0.11.0</central-publishing-maven-plugin.version>
-                <additionalparam>-Xdoclint:none</additionalparam>
-                <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
-            
-		<junit.version>4.13.2</junit.version>
-		<slf4j.version>2.0.18</slf4j.version>
-		<lombok.version>1.18.46</lombok.version>
-		<commons-beanutils.version>1.11.0</commons-beanutils.version>
-		<jackson.version>2.17.2</jackson.version>
-		<commons-lang3.version>3.20.0</commons-lang3.version>
-		<fastjson2.version>2.0.62</fastjson2.version>
-		<junit-jupiter.version>6.1.0</junit-jupiter.version>
-		<commons-lang.version>2.6</commons-lang.version></properties>
+    <properties>
+        <!-- Dependency versions -->
+        <additionalparam>-Xdoclint:none</additionalparam>
+        <central-publishing-maven-plugin.version>0.11.0</central-publishing-maven-plugin.version>
+        <commons-beanutils.version>1.11.0</commons-beanutils.version>
+        <commons-lang3.version>3.20.0</commons-lang3.version>
+        <commons-lang.version>2.6</commons-lang.version>
+        <fastjson2.version>2.0.62</fastjson2.version>
+        <jackson.version>2.17.2</jackson.version>
+        <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
+        <junit-jupiter.version>6.1.0</junit-jupiter.version>
+        <junit.version>4.13.2</junit.version>
+        <lombok.version>1.18.46</lombok.version>
+        <slf4j.version>2.0.18</slf4j.version>
+    </properties>
+
         </profile>
         <!-- 发布到 Maven Central Portal：mvn -Prelease deploy（GPG 签名 + 源码 + Javadoc + Central 发布插件） -->
 
@@ -550,11 +552,23 @@
 
     <!-- 版本属性定义：Java 版本、依赖版本与 Maven 插件版本统一管理 -->
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <revision>2.0.x.20260630-SNAPSHOT</revision>
         <java.version>17</java.version>
         <maven.version>3.0</maven.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Dependency versions -->
+        <commons-beanutils.version>1.11.0</commons-beanutils.version>
+        <commons-lang3.version>3.20.0</commons-lang3.version>
+        <fastjson2.version>2.0.56</fastjson2.version>
+        <hutool.version>5.8.40</hutool.version>
+        <jackson.version>2.17.2</jackson.version>
+        <jsqlparser.version>3.1</jsqlparser.version>
+        <junit.version>4.13.2</junit.version>
+        <lombok.version>1.18.46</lombok.version>
+        <mybatis.version>3.5.17</mybatis.version>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <revision>2.0.x.20260630-SNAPSHOT</revision>
+        <slf4j.version>2.0.18</slf4j.version>
+        <spring-framework.version>6.2.11</spring-framework.version>
         <!-- Maven Plugin versions -->
         <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
@@ -566,24 +580,13 @@
         <maven-install-plugin.version>3.1.4</maven-install-plugin.version>
         <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
         <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
+        <maven-nexus-staging-plugin.version>1.7.0</maven-nexus-staging-plugin.version>
         <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
         <maven-resources-plugin.version>3.5.0</maven-resources-plugin.version>
-        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
         <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
-        <maven-nexus-staging-plugin.version>1.7.0</maven-nexus-staging-plugin.version>
-        <commons-beanutils.version>1.11.0</commons-beanutils.version>
-        <commons-lang3.version>3.20.0</commons-lang3.version>
-        <fastjson2.version>2.0.56</fastjson2.version>
-        <hutool.version>5.8.40</hutool.version>
-        <!-- Dependency versions -->
-        <jackson.version>2.17.2</jackson.version>
-        <jsqlparser.version>3.1</jsqlparser.version>
-        <junit.version>4.13.2</junit.version>
-        <slf4j.version>2.0.18</slf4j.version>
-        <lombok.version>1.18.46</lombok.version>
-        <mybatis.version>3.5.17</mybatis.version>
-        <spring-framework.version>6.2.11</spring-framework.version>
+        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
     </properties>
+
 
     <!-- 依赖版本统一管理（dependencyManagement） -->
     <dependencyManagement>
