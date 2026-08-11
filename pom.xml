@@ -583,6 +583,7 @@
         <lombok.version>1.18.46</lombok.version>
         <mybatis.version>3.5.17</mybatis.version>
         <spring-framework.version>6.2.11</spring-framework.version>
+        <maven-jacoco-plugin.version>0.8.15</maven-jacoco-plugin.version>
     </properties>
 
     <!-- 依赖版本统一管理（dependencyManagement） -->
