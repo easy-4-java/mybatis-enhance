@@ -1,6 +1,7 @@
 package org.apache.ibatis.enhance.typehandler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.lang.reflect.Array;
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.Objects;
  */
 public abstract class JsonStringTypeHandler<T> extends AbstractJacksonJsonTypeHandler<T> {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new JsonMapper();
 
     private Class<?> componentType;
     private Object[] componentArray;

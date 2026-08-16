@@ -2,8 +2,8 @@ package org.apache.ibatis.enhance.typehandler;
 
 import cn.hutool.core.date.DateUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;
@@ -31,11 +31,12 @@ public class MyJacksonTypeHandler extends AbstractJacksonJsonTypeHandler<Object>
     private static final ObjectMapper OBJECT_MAPPER;
 
     static {
-        OBJECT_MAPPER = new ObjectMapper();
-        OBJECT_MAPPER.setDefaultPropertyInclusion(JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.NON_NULL));
-        OBJECT_MAPPER.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
-        OBJECT_MAPPER.setDateFormat(DateUtil.newSimpleFormat("yyyy-MM-dd HH:mm:ss"));
-        OBJECT_MAPPER.registerModule(new JavaTimeModule());
+        // Jackson 3.x 内置 java.time 支持（原 jackson-datatype-jsr310 已合并进 databind），无需注册 JavaTimeModule
+        OBJECT_MAPPER = JsonMapper.builder()
+                .changeDefaultPropertyInclusion(v -> JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.NON_NULL))
+                .defaultTimeZone(TimeZone.getTimeZone("GMT+8:00"))
+                .defaultDateFormat(DateUtil.newSimpleFormat("yyyy-MM-dd HH:mm:ss"))
+                .build();
     }
 
     private final Class<?> type;

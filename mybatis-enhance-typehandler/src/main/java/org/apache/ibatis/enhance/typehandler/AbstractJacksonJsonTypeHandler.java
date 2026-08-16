@@ -1,7 +1,8 @@
 package org.apache.ibatis.enhance.typehandler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Jackson JSON 类型处理器基类：varchar &lt;-&gt; T（JSON 字符串）。
@@ -24,7 +25,7 @@ public abstract class AbstractJacksonJsonTypeHandler<T> extends BaseTypeHandler<
      * 共享的 ObjectMapper（按 Jackson 官方建议复用线程安全实例）。
      * 子类如需自定义配置，可 override {@link #objectMapper()} 返回独立实例。
      */
-    private static final ObjectMapper DEFAULT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper DEFAULT_MAPPER = new JsonMapper();
 
     /**
      * 获取 ObjectMapper 实例。
@@ -45,7 +46,7 @@ public abstract class AbstractJacksonJsonTypeHandler<T> extends BaseTypeHandler<
     protected String convert(T obj) {
         try {
             return objectMapper().writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new RuntimeException("Jackson serialization failed for " + type().getName(), e);
         }
     }
@@ -61,7 +62,7 @@ public abstract class AbstractJacksonJsonTypeHandler<T> extends BaseTypeHandler<
     protected <X> X deserialize(String json, Class<X> clazz) {
         try {
             return objectMapper().readValue(json, clazz);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new RuntimeException("Jackson deserialization failed for " + clazz.getName(), e);
         }
     }

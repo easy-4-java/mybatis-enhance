@@ -1,8 +1,9 @@
 package org.apache.ibatis.enhance.typehandler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;
@@ -37,7 +38,7 @@ import java.util.List;
 @MappedTypes({List.class})
 public abstract class ListTypeHandler<T> extends AbstractJacksonJsonTypeHandler<List<T>> {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new JsonMapper();
 
     /**
      * 完成 {@code objectMapper} 对应的框架处理。
@@ -74,7 +75,7 @@ public abstract class ListTypeHandler<T> extends AbstractJacksonJsonTypeHandler<
     protected List<T> parse(String json) {
         try {
             return OBJECT_MAPPER.readValue(json, this.elementType());
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new RuntimeException("Failed to deserialize list column", e);
         }
     }

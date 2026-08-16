@@ -3,7 +3,8 @@ package io.ddd4j.enhance.integration;
 import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;
 import cn.hutool.crypto.digest.HmacAlgorithm;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import io.ddd4j.enhance.integration.CryptoSignatureIntegrationTest.CryptoRecord;
 import org.apache.ibatis.enhance.annotation.crypto.EncryptedField;
 import org.apache.ibatis.enhance.annotation.crypto.EncryptedTable;
@@ -89,7 +90,7 @@ public class CryptoSignatureIntegrationTest {
 
         // 构建加密处理器（与 Plus 版相同的注解契约）
         DefaultEncryptedFieldHandler encryptedFieldHandler = new DefaultEncryptedFieldHandler(
-                new ObjectMapper(),
+                new JsonMapper(),
                 SymmetricAlgorithmType.AES,
                 HmacAlgorithm.HmacSHA256,
                 Mode.CBC,
