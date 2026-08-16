@@ -407,7 +407,6 @@
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <commons-lang.version>2.6</commons-lang.version>
         <fastjson2.version>2.0.62</fastjson2.version>
-        <jackson.version>2.17.2</jackson.version>
         <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
         <junit-jupiter.version>6.1.0</junit-jupiter.version>
         <junit.version>4.13.2</junit.version>
@@ -561,7 +560,7 @@
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <fastjson2.version>2.0.56</fastjson2.version>
         <hutool.version>5.8.40</hutool.version>
-        <jackson.version>2.17.2</jackson.version>
+        <jackson-bom.version>2.22.1</jackson-bom.version>
         <jsqlparser.version>3.1</jsqlparser.version>
         <junit.version>4.13.2</junit.version>
         <lombok.version>1.18.46</lombok.version>
@@ -594,35 +593,19 @@
     <!-- 依赖版本统一管理（dependencyManagement） -->
     <dependencyManagement>
         <dependencies>
+            <!-- For Jackson BOM -->
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!-- For Fastjson2 -->
             <dependency>
                 <groupId>com.alibaba.fastjson2</groupId>
                 <artifactId>fastjson2</artifactId>
                 <version>${fastjson2.version}</version>
-            </dependency>
-            <!-- For Jackson -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <!-- For Jackson -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <!-- For Jackson -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <!-- For Jackson -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jsr310</artifactId>
-                <version>${jackson.version}</version>
             </dependency>
             <!-- For Lombok -->
             <dependency>
