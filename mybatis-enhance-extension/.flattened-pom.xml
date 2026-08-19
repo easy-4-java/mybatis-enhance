@@ -42,7 +42,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
         <!-- 原生 MyBatis 插件、MappedStatement、Executor 与元对象 API。 -->
         <dependency>
