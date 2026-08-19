@@ -37,6 +37,185 @@
         </developer>
     </developers>
 
+    <properties>
+        <!-- ═══ 第一段: 基础属性（自然排序）═══ -->
+        <java.version>17</java.version>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
+        <maven.version>3.9.16</maven.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <revision>2.0.x.20260630-SNAPSHOT</revision>
+        <!-- Dependency versions -->
+        <commons-beanutils.version>1.11.0</commons-beanutils.version>
+        <commons-lang3.version>3.20.0</commons-lang3.version>
+        <fastjson2.version>2.0.56</fastjson2.version>
+        <hutool.version>5.8.40</hutool.version>
+        <jackson-bom.version>2.22.1</jackson-bom.version>
+        <jsqlparser.version>3.1</jsqlparser.version>
+        <junit-jupiter.version>6.1.0</junit-jupiter.version>
+        <junit.version>4.13.2</junit.version>
+        <lombok.version>1.18.46</lombok.version>
+        <mybatis.version>3.5.17</mybatis.version>
+        <slf4j.version>2.0.18</slf4j.version>
+        <spring-framework.version>6.2.11</spring-framework.version>
+        <!-- Maven Plugin versions -->
+        <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
+        <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
+        <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
+        <maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
+        <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
+        <maven-enforcer-plugin.version>3.6.3</maven-enforcer-plugin.version>
+        <maven-flatten-plugin.version>1.7.3</maven-flatten-plugin.version>
+        <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
+        <maven-install-plugin.version>3.1.4</maven-install-plugin.version>
+        <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
+        <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
+        <maven-nexus-staging-plugin.version>1.7.0</maven-nexus-staging-plugin.version>
+        <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
+        <maven-resources-plugin.version>3.5.0</maven-resources-plugin.version>
+        <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
+        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
+    </properties>
+
+    <!-- 依赖版本统一管理（dependencyManagement） -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- For Jackson BOM -->
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- For Fastjson2 -->
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
+            </dependency>
+            <!-- For Lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <!-- For Hutool -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <!-- For JSqlParser -->
+            <dependency>
+                <groupId>com.github.jsqlparser</groupId>
+                <artifactId>jsqlparser</artifactId>
+                <version>${jsqlparser.version}</version>
+            </dependency>
+            <!-- For Junit -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <!-- For Slf4j -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <!-- For Slf4j -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>test</scope>
+        </dependency>
+        <!-- For JUnit Jupiter -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- For AssertJ -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.27.3</version>
+            <scope>test</scope>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons-beanutils.version}</version>
+            </dependency>
+            <!-- For Commons Lang3 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <!-- For MyBatis -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <!-- For Spring Framework -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
+                <version>${spring-framework.version}</version>
+            </dependency>
+            <!-- For Spring Framework -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring-framework.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- 项目依赖（dependencies） -->
+    <dependencies>
+        <!-- For JUnit Jupiter -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- For AssertJ -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.27.3</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- For Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- For Slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!-- 项目子模块（modules） -->
+    <modules>
+        <module>mybatis-enhance-annotation</module>
+        <module>mybatis-enhance-core</module>
+        <module>mybatis-enhance-extension</module>
+        <module>mybatis-enhance-typehandler</module>
+        <module>mybatis-enhance-spring</module>
+    </modules>
+
     <!-- 制品发布仓库配置（distributionManagement） -->
     <distributionManagement>
         <repository>
@@ -544,185 +723,5 @@
         </profile>
     </profiles>
 
-    <!-- 版本属性定义：Java 版本、依赖版本与 Maven 插件版本统一管理 -->
-    <properties>
-        <!-- ═══ 第一段: 基础属性（自然排序）═══ -->
-        <java.version>17</java.version>
-        <maven.compiler.release>${java.version}</maven.compiler.release>
-        <maven.version>3.9.16</maven.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- Dependency versions -->
-        <commons-beanutils.version>1.11.0</commons-beanutils.version>
-        <commons-lang3.version>3.20.0</commons-lang3.version>
-        <fastjson2.version>2.0.56</fastjson2.version>
-        <hutool.version>5.8.40</hutool.version>
-        <jackson-bom.version>2.22.1</jackson-bom.version>
-        <jsqlparser.version>3.1</jsqlparser.version>
-        <junit.version>4.13.2</junit.version>
-        <lombok.version>1.18.46</lombok.version>
-        <mybatis.version>3.5.17</mybatis.version>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <revision>2.0.x.20260630-SNAPSHOT</revision>
-        <slf4j.version>2.0.18</slf4j.version>
-        <spring-framework.version>6.2.11</spring-framework.version>
-        <!-- Maven Plugin versions -->
-        <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
-        <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
-        <maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
-        <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
-        <maven-enforcer-plugin.version>3.6.3</maven-enforcer-plugin.version>
-        <maven-flatten-plugin.version>1.7.3</maven-flatten-plugin.version>
-        <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
-        <maven-install-plugin.version>3.1.4</maven-install-plugin.version>
-        <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
-        <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
-        <maven-nexus-staging-plugin.version>1.7.0</maven-nexus-staging-plugin.version>
-        <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
-        <maven-resources-plugin.version>3.5.0</maven-resources-plugin.version>
-        <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
-        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
-        <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
-        <junit-jupiter.version>6.1.0</junit-jupiter.version>
-    
-    </properties>
-
-
-    <!-- 依赖版本统一管理（dependencyManagement） -->
-    <dependencyManagement>
-        <dependencies>
-            <!-- For Jackson BOM -->
-            <dependency>
-                <groupId>com.fasterxml.jackson</groupId>
-                <artifactId>jackson-bom</artifactId>
-                <version>${jackson-bom.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <!-- For Fastjson2 -->
-            <dependency>
-                <groupId>com.alibaba.fastjson2</groupId>
-                <artifactId>fastjson2</artifactId>
-                <version>${fastjson2.version}</version>
-            </dependency>
-            <!-- For Lombok -->
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
-            </dependency>
-            <!-- For Hutool -->
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>${hutool.version}</version>
-            </dependency>
-            <!-- For JSqlParser -->
-            <dependency>
-                <groupId>com.github.jsqlparser</groupId>
-                <artifactId>jsqlparser</artifactId>
-                <version>${jsqlparser.version}</version>
-            </dependency>
-            <!-- For Junit -->
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-            </dependency>
-            <!-- For Slf4j -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <!-- For Slf4j -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-simple</artifactId>
-                <version>${slf4j.version}</version>
-                <scope>test</scope>
-        </dependency>
-        <!-- For JUnit Jupiter -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit-jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- For AssertJ -->
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.27.3</version>
-            <scope>test</scope>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
-            <dependency>
-                <groupId>commons-beanutils</groupId>
-                <artifactId>commons-beanutils</artifactId>
-                <version>${commons-beanutils.version}</version>
-            </dependency>
-            <!-- For Commons Lang3 -->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${commons-lang3.version}</version>
-            </dependency>
-            <!-- For MyBatis -->
-            <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis</artifactId>
-                <version>${mybatis.version}</version>
-            </dependency>
-            <!-- For Spring Framework -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-tx</artifactId>
-                <version>${spring-framework.version}</version>
-            </dependency>
-            <!-- For Spring Framework -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${spring-framework.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <!-- 项目依赖（dependencies） -->
-    <dependencies>
-        <!-- For JUnit Jupiter -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit-jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- For AssertJ -->
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.27.3</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- For Lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <!-- For Slf4j -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-    </dependencies>
-
-    <!-- 项目子模块（modules） -->
-    <modules>
-        <module>mybatis-enhance-annotation</module>
-        <module>mybatis-enhance-core</module>
-        <module>mybatis-enhance-extension</module>
-        <module>mybatis-enhance-typehandler</module>
-        <module>mybatis-enhance-spring</module>
-    </modules>
 </project>
+
