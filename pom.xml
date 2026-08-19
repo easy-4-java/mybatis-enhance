@@ -39,7 +39,7 @@
 
     <properties>
         <!-- ═══ 第一段: 基础属性（自然排序）═══ -->
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <maven.version>3.9.16</maven.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -50,15 +50,15 @@
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <fastjson2.version>2.0.56</fastjson2.version>
         <hutool.version>5.8.40</hutool.version>
-        <jackson-bom.version>2.18.9</jackson-bom.version>
+        <jackson-bom.version>2.22.1</jackson-bom.version>
         <jsqlparser.version>3.1</jsqlparser.version>
         <junit.version>4.13.2</junit.version>
         <lombok.version>1.18.46</lombok.version>
         <mybatis.version>3.5.17</mybatis.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <revision>1.0.x.20260630-SNAPSHOT</revision>
+        <revision>2.0.x.20260630-SNAPSHOT</revision>
         <slf4j.version>2.0.18</slf4j.version>
-        <spring-framework.version>5.3.39</spring-framework.version>
+        <spring-framework.version>6.2.11</spring-framework.version>
         <!-- Maven Plugin versions -->
         <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
@@ -76,7 +76,7 @@
         <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
         <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
         <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
-        <junit-jupiter.version>5.11.4</junit-jupiter.version>
+        <junit-jupiter.version>6.1.0</junit-jupiter.version>
     </properties>
 
     <dependencyManagement>
@@ -131,6 +131,20 @@
                 <artifactId>slf4j-simple</artifactId>
                 <version>${slf4j.version}</version>
                 <scope>test</scope>
+        </dependency>
+        <!-- For JUnit Jupiter -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- For AssertJ -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.27.3</version>
+            <scope>test</scope>
             </dependency>
             <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
             <dependency>
@@ -166,12 +180,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- For Junit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
         <!-- For JUnit Jupiter -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -203,22 +211,10 @@
         <repository>
             <id>2624322-release-6F6h6R</id>
             <url>https://packages.aliyun.com/6927b116e6c3e0425dbdf60d/maven/2624322-release-6f6h6r</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
         </repository>
         <snapshotRepository>
             <id>2624322-snapshot-3EoOv3</id>
             <url>https://packages.aliyun.com/6927b116e6c3e0425dbdf60d/maven/2624322-snapshot-3eoov3</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
         </snapshotRepository>
     </distributionManagement>
 
