@@ -38,7 +38,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
         <commons-beanutils.version>1.11.0</commons-beanutils.version>
-        <commons-lang3.version>3.18.0</commons-lang3.version>
+        <commons-lang3.version>3.20.0</commons-lang3.version>
         <fastjson2.version>2.0.62</fastjson2.version>
         <hutool.version>5.8.46</hutool.version>
         <jackson-bom.version>3.2.1</jackson-bom.version>
@@ -490,7 +490,7 @@
                 
                 <additionalparam>-Xdoclint:none</additionalparam>
                 <commons-beanutils.version>1.11.0</commons-beanutils.version>
-                <commons-lang3.version>3.18.0</commons-lang3.version>
+                <commons-lang3.version>3.20.0</commons-lang3.version>
                 <commons-lang.version>2.6</commons-lang.version>
                 <fastjson2.version>2.0.62</fastjson2.version>
                 <jackson-bom.version>3.2.1</jackson-bom.version>
