@@ -5,7 +5,7 @@
     <artifactId>mybatis-enhance</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
     <url>https://github.com/easy-4-java/${project.artifactId}</url>
-    <version>1.0.x.20260630-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <licenses>
         <license>
@@ -41,15 +41,15 @@
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <fastjson2.version>2.0.62</fastjson2.version>
         <hutool.version>5.8.46</hutool.version>
-        <jackson-bom.version>3.2.1</jackson-bom.version>
-        <jsqlparser.version>5.3</jsqlparser.version>
+        <jackson-bom.version>2.22.2</jackson-bom.version>
+        <jsqlparser.version>4.6</jsqlparser.version>
         <junit.version>4.13.2</junit.version>
         <lombok.version>1.18.46</lombok.version>
         <mybatis.version>3.5.19</mybatis.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <revision>3.0.x.20260630-SNAPSHOT</revision>
+        <revision>1.0.x.20260630-SNAPSHOT</revision>
         <slf4j.version>2.0.18</slf4j.version>
-        <spring-framework.version>6.2.16</spring-framework.version>
+        <spring-framework.version>5.3.39</spring-framework.version>
         
         <maven-central-publishing-plugin.version>0.11.0</maven-central-publishing-plugin.version>
         <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
@@ -68,13 +68,13 @@
         <maven-resources-plugin.version>3.5.0</maven-resources-plugin.version>
         <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
         <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
-        <junit-jupiter.version>6.1.0</junit-jupiter.version>
+        <junit-jupiter.version>5.11.4</junit-jupiter.version>
     </properties>
     <dependencyManagement>
         <dependencies>
             
             <dependency>
-                <groupId>tools.jackson</groupId>
+                <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
                 <version>${jackson-bom.version}</version>
                 <type>pom</type>
@@ -257,8 +257,8 @@
                             <configuration>
                                 <rules>
                                     <requireMavenVersion>
-                                        <message>You are running an older version of Maven. This application requires at least Maven 4.</message>
-                                        <version>[4.0.0,)</version>
+                                        <message>This application requires at least Maven 3.9.</message>
+                                        <version>[3.9.0,)</version>
                                     </requireMavenVersion>
                                     <requireJavaVersion>
                                         <message>
@@ -493,8 +493,8 @@
                 <commons-lang3.version>3.20.0</commons-lang3.version>
                 <commons-lang.version>2.6</commons-lang.version>
                 <fastjson2.version>2.0.62</fastjson2.version>
-                <jackson-bom.version>3.2.1</jackson-bom.version>
-                <junit-jupiter.version>6.1.0</junit-jupiter.version>
+                <jackson-bom.version>2.22.2</jackson-bom.version>
+                <junit-jupiter.version>5.11.4</junit-jupiter.version>
                 <junit.version>4.13.2</junit.version>
                 <lombok.version>1.18.46</lombok.version>
                 <slf4j.version>2.0.18</slf4j.version>

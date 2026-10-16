@@ -194,7 +194,8 @@ public final class SqlParserTool {
             return ((PlainSelect) selectBody).getFromItem();
         }
         if (selectBody instanceof WithItem) {
-            return getFromItem(((WithItem) selectBody).getSelectBody());
+            SubSelect subSelect = ((WithItem) selectBody).getSubSelect();
+            return Objects.isNull(subSelect) ? null : getFromItem(subSelect.getSelectBody());
         }
         return null;
     }
