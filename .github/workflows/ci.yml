@@ -4,8 +4,8 @@
 #   - push / pull_request on the feature/3.0.x branch
 #   - manual workflow_dispatch
 #
-# Runs `mvn -B clean verify` which includes the JaCoCo coverage gate
-# (90% line coverage, haltOnFailure=false) configured in the POM.
+# Runs the repository Maven 4 wrapper with `clean verify` which includes the JaCoCo coverage check
+# (90% line coverage, currently nonblocking) configured in the POM.
 name: CI
 
 on:
@@ -34,15 +34,25 @@ jobs:
           java-version: '21'
           cache: maven
 
-      - name: Build and verify with JaCoCo coverage gate
-        run: mvn -B --no-transfer-progress clean verify
+      - name: Build and verify with JaCoCo coverage check
+        run: sh ./mvnw -B --no-transfer-progress clean verify
+
+      - name: Confirm TypeHandler contract tests ran
+        run: |
+          python3 - <<'PYTEST'
+          from xml.etree import ElementTree
+          report = 'mybatis-enhance-typehandler/target/surefire-reports/TEST-org.apache.ibatis.enhance.typehandler.TypeHandlerContractTest.xml'
+          tests = int(ElementTree.parse(report).getroot().attrib['tests'])
+          assert tests > 0, f'No TypeHandler contract tests executed: {report}'
+          print(f'TypeHandler contract tests executed: {tests}')
+          PYTEST
 
       - name: Upload JaCoCo coverage report
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: jacoco-coverage
-          path: target/site/jacoco
+          path: '**/target/site/jacoco'
           retention-days: 14
 
       - name: Upload surefire reports
@@ -50,5 +60,5 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: surefire-reports
-          path: target/surefire-reports
+          path: '**/target/surefire-reports'
           retention-days: 14

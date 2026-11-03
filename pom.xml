@@ -50,7 +50,7 @@
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <fastjson2.version>2.0.62</fastjson2.version>
         <hutool.version>5.8.46</hutool.version>
-        <jackson-bom.version>3.2.1</jackson-bom.version>
+        <jackson-bom.version>3.2.4</jackson-bom.version>
         <jsqlparser.version>5.3</jsqlparser.version>
         <junit.version>4.13.2</junit.version>
         <lombok.version>1.18.46</lombok.version>
@@ -161,6 +161,12 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
@@ -315,7 +321,7 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven-surefire-plugin.version}</version>
                     <configuration>
-                        <argLine>-Xmx1024m -Dfile.encoding=UTF-8</argLine>
+                        <argLine>@{argLine} -Xmx1024m -Dfile.encoding=UTF-8</argLine>
                         <additionalClasspathElements>
                             <additionalClasspathElement>${basedir}/target/test-classes</additionalClasspathElement>
                         </additionalClasspathElements>
@@ -451,7 +457,7 @@
                 <commons-lang3.version>3.20.0</commons-lang3.version>
                 <commons-lang.version>2.6</commons-lang.version>
                 <fastjson2.version>2.0.62</fastjson2.version>
-                <jackson-bom.version>3.2.1</jackson-bom.version>
+                <jackson-bom.version>3.2.4</jackson-bom.version>
                 <junit-jupiter.version>6.1.0</junit-jupiter.version>
                 <junit.version>4.13.2</junit.version>
                 <lombok.version>1.18.46</lombok.version>
