@@ -37,12 +37,19 @@ jobs:
       - name: Build and verify with JaCoCo coverage gate
         run: mvn -B --no-transfer-progress clean verify
 
+      - name: Verify JaCoCo data and reports
+        run: |
+          for module in mybatis-enhance-core mybatis-enhance-extension mybatis-enhance-typehandler mybatis-enhance-spring; do
+            test -s "$module/target/jacoco.exec"
+            test -s "$module/target/site/jacoco/jacoco.xml"
+          done
+
       - name: Upload JaCoCo coverage report
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: jacoco-coverage
-          path: target/site/jacoco
+          path: '**/target/site/jacoco/**'
           retention-days: 14
 
       - name: Upload surefire reports
@@ -50,5 +57,5 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: surefire-reports
-          path: target/surefire-reports
+          path: '**/target/surefire-reports/**'
           retention-days: 14
