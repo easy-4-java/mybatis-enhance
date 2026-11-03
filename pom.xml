@@ -393,6 +393,12 @@
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
+                        <configuration>
+                            <!-- Generated JSQLParser method exceeds the JVM size limit after instrumentation. -->
+                            <excludes>
+                                <exclude>net/sf/jsqlparser/parser/CCJSqlParserTokenManager</exclude>
+                            </excludes>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>report</id>

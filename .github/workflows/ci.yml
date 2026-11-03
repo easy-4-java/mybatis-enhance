@@ -37,14 +37,24 @@ jobs:
       - name: Build and verify with JaCoCo coverage check
         run: sh ./mvnw -B --no-transfer-progress clean verify
 
-      - name: Confirm TypeHandler contract tests ran
+      - name: Confirm TypeHandler and Jackson tests ran with coverage
         run: |
           python3 - <<'PYTEST'
+          from pathlib import Path
           from xml.etree import ElementTree
-          report = 'mybatis-enhance-typehandler/target/surefire-reports/TEST-org.apache.ibatis.enhance.typehandler.TypeHandlerContractTest.xml'
-          tests = int(ElementTree.parse(report).getroot().attrib['tests'])
-          assert tests > 0, f'No TypeHandler contract tests executed: {report}'
-          print(f'TypeHandler contract tests executed: {tests}')
+          module = Path('mybatis-enhance-typehandler/target')
+          for suite, minimum in [('TypeHandlerContractTest', 16), ('JacksonTypeHandlerTest', 7)]:
+              report = module / 'surefire-reports' / f'TEST-org.apache.ibatis.enhance.typehandler.{suite}.xml'
+              tests = int(ElementTree.parse(report).getroot().attrib['tests'])
+              assert tests >= minimum, f'{suite}: expected at least {minimum} tests, got {tests}'
+              print(f'{suite}: {tests} tests executed')
+          coverage = ElementTree.parse(module / 'site/jacoco/jacoco.xml').getroot()
+          classes = {node.attrib['name'].rsplit('/', 1)[-1]: node for node in coverage.findall('.//class')}
+          for name in ('AbstractJacksonJsonTypeHandler', 'MyJacksonTypeHandler',
+                       'JsonStringTypeHandler', 'ListTypeHandler'):
+              covered = int(classes[name].find("counter[@type='LINE']").attrib['covered'])
+              assert covered > 0, f'{name}: no Jackson handler lines covered'
+              print(f'{name}: {covered} lines covered')
           PYTEST
 
       - name: Upload JaCoCo coverage report
