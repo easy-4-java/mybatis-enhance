@@ -4,8 +4,8 @@
 #   - push / pull_request on the feature/2.0.x branch
 #   - manual workflow_dispatch
 #
-# Runs `mvn -B clean verify` which includes the JaCoCo coverage gate
-# (90% line coverage, haltOnFailure=false) configured in the POM.
+# Runs `mvn -B clean verify` which includes the JaCoCo coverage check
+# (90% line coverage, currently nonblocking) configured in the POM.
 name: CI
 
 on:
@@ -34,15 +34,35 @@ jobs:
           java-version: '17'
           cache: maven
 
-      - name: Build and verify with JaCoCo coverage gate
+      - name: Build and verify with JaCoCo coverage check
         run: mvn -B --no-transfer-progress clean verify
+
+      - name: Confirm TypeHandler and Jackson tests ran with coverage
+        run: |
+          python3 - <<'PYTEST'
+          from pathlib import Path
+          from xml.etree import ElementTree
+          module = Path('mybatis-enhance-typehandler/target')
+          for suite, minimum in [('TypeHandlerContractTest', 16), ('JacksonTypeHandlerTest', 7)]:
+              report = module / 'surefire-reports' / f'TEST-org.apache.ibatis.enhance.typehandler.{suite}.xml'
+              tests = int(ElementTree.parse(report).getroot().attrib['tests'])
+              assert tests >= minimum, f'{suite}: expected at least {minimum} tests, got {tests}'
+              print(f'{suite}: {tests} tests executed')
+          coverage = ElementTree.parse(module / 'site/jacoco/jacoco.xml').getroot()
+          classes = {node.attrib['name'].rsplit('/', 1)[-1]: node for node in coverage.findall('.//class')}
+          for name in ('AbstractJacksonJsonTypeHandler', 'MyJacksonTypeHandler',
+                       'JsonStringTypeHandler', 'ListTypeHandler'):
+              covered = int(classes[name].find("counter[@type='LINE']").attrib['covered'])
+              assert covered > 0, f'{name}: no Jackson handler lines covered'
+              print(f'{name}: {covered} lines covered')
+          PYTEST
 
       - name: Upload JaCoCo coverage report
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: jacoco-coverage
-          path: target/site/jacoco
+          path: '**/target/site/jacoco'
           retention-days: 14
 
       - name: Upload surefire reports
@@ -50,5 +70,5 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: surefire-reports
-          path: target/surefire-reports
+          path: '**/target/surefire-reports'
           retention-days: 14
