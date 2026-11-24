@@ -1,11 +1,13 @@
 package org.apache.ibatis.enhance.plugins;
 
 import org.apache.ibatis.builder.StaticSqlSource;
+import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.Invocation;
+import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
@@ -21,6 +23,53 @@ import java.util.List;
 import java.util.Objects;
 
 public class MybatisEnhanceInterceptorTest {
+
+    @Test
+    public void shouldRebuildCacheKeyForRewrittenSixArgumentQuery() throws Throwable {
+        MybatisEnhanceInterceptor interceptor = new MybatisEnhanceInterceptor();
+        interceptor.addInterceptor(new EnhanceInnerInterceptor() {
+            @Override
+            public void beforeQuery(Executor executor, MappedStatement statement, Object parameter,
+                                    RowBounds bounds, ResultHandler<?> handler, BoundSql sql) {
+                SystemMetaObject.forObject(sql).setValue("sql", "SELECT 2");
+            }
+        });
+        CacheKey replacement = new CacheKey();
+        Executor target = (Executor) Proxy.newProxyInstance(getClass().getClassLoader(),
+                new Class<?>[]{Executor.class}, (proxy, method, args) -> {
+                    if ("createCacheKey".equals(method.getName())) {
+                        Assert.assertEquals("SELECT 2", ((BoundSql) args[3]).getSql());
+                        return replacement;
+                    }
+                    Assert.assertEquals("query", method.getName());
+                    Assert.assertSame(replacement, args[4]);
+                    Assert.assertEquals("SELECT 2", ((BoundSql) args[5]).getSql());
+                    return Collections.singletonList("rewritten");
+                });
+        MappedStatement statement = statement(SqlCommandType.SELECT);
+        Method query = Executor.class.getMethod("query", MappedStatement.class, Object.class,
+                RowBounds.class, ResultHandler.class, CacheKey.class, BoundSql.class);
+        Object result = interceptor.intercept(new Invocation(target, query, new Object[]{statement, null,
+                RowBounds.DEFAULT, null, new CacheKey(), statement.getBoundSql(null)}));
+        Assert.assertEquals(Collections.singletonList("rewritten"), result);
+    }
+
+    @Test
+    public void shouldKeepCachedListUnchangedDuringResultEnhancement() throws Throwable {
+        MybatisEnhanceInterceptor interceptor = new MybatisEnhanceInterceptor();
+        interceptor.addInterceptor(new EnhanceInnerInterceptor() {
+            @Override
+            public void afterQuery(Executor executor, MappedStatement statement, Object parameter,
+                                   RowBounds bounds, ResultHandler<?> handler, BoundSql sql, List<Object> results) {
+                results.set(0, "decrypted");
+            }
+        });
+        Method query = Executor.class.getMethod("query", MappedStatement.class, Object.class,
+                RowBounds.class, ResultHandler.class);
+        Object result = interceptor.intercept(new Invocation(executor(), query,
+                new Object[]{statement(SqlCommandType.SELECT), null, RowBounds.DEFAULT, null}));
+        Assert.assertEquals(Collections.singletonList("decrypted"), result);
+    }
 
     @Test
     public void shouldExecuteUpdateLifecycleInRegistrationOrder() throws Throwable {

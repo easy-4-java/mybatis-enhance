@@ -14,4 +14,6 @@ class SqlTypeTest {
     @Test void shouldHaveAllExpectedValues() { assertThat(SqlType.values()).hasSize(15); }
     @Test void shouldParseSelectFromString() { assertThat(SqlType.valueOf("SELECT")).isEqualTo(SqlType.SELECT); }
     @Test void shouldParseInsertFromString() { assertThat(SqlType.valueOf("INSERT")).isEqualTo(SqlType.INSERT); }
+    @Test void shouldParseUpdateFromString() { assertThat(SqlType.valueOf("UPDATE")).isEqualTo(SqlType.UPDATE); }
+    @Test void shouldParseDeleteFromString() { assertThat(SqlType.valueOf("DELETE")).isEqualTo(SqlType.DELETE); }
 }

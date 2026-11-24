@@ -117,6 +117,42 @@ public class CryptoSignatureIntegrationTest {
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
     }
 
+    @Test
+    public void repeatedCachedQueryMustVerifyCiphertextAndDecryptIndependentResults() {
+        try (SqlSession session = sqlSessionFactory.openSession(true)) {
+            CryptoMapper mapper = session.getMapper(CryptoMapper.class);
+            CryptoRecord record = new CryptoRecord();
+            record.setMobile("13800138000");
+            record.setEmail("cache@example.com");
+            mapper.insert(record);
+            CryptoRecord first = mapper.selectById(record.getId());
+            assertEquals("13800138000", first.getMobile());
+            CryptoRecord second = mapper.selectById(record.getId());
+            assertEquals("13800138000", second.getMobile());
+            assertNotSame(first, second);
+        }
+    }
+
+    @Test
+    public void modifiedStoredCiphertextMustFailSignatureVerification() throws Exception {
+        try (SqlSession session = sqlSessionFactory.openSession(true)) {
+            CryptoMapper mapper = session.getMapper(CryptoMapper.class);
+            CryptoRecord record = new CryptoRecord();
+            record.setMobile("13800138000");
+            record.setEmail("original@example.com");
+            mapper.insert(record);
+            try (Statement statement = session.getConnection().createStatement()) {
+                statement.executeUpdate("UPDATE crypto_record SET email = 'changed@example.com'");
+            }
+            try {
+                mapper.selectById(record.getId());
+                fail("tampered signature must fail");
+            } catch (org.apache.ibatis.exceptions.PersistenceException expected) {
+                assertTrue(expected.getMessage().contains("signature mismatch"));
+            }
+        }
+    }
+
     @After
     public void tearDown() throws SQLException {
         if (Objects.nonNull(dataSource)) {

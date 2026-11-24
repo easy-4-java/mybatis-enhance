@@ -39,7 +39,7 @@ public class MapResultHandler implements ResultHandler<String> {
      *
      */
     public MapResultHandler() {
-        list = new ArrayList<Map<String, String>>();
+        list = new ArrayList<>();
     }
 
     /**

@@ -24,7 +24,7 @@ import net.sf.jsqlparser.util.TablesNamesFinder;
 import java.util.*;
 
 /**
- * JSqlParser 3.1 SQL 结构访问工具。
+ * JSqlParser 5.3 SQL 结构访问工具。
  *
  * <p>所有方法基于官方 AST 类型，不通过正则判断 SQL 类型或表结构。</p>
  */

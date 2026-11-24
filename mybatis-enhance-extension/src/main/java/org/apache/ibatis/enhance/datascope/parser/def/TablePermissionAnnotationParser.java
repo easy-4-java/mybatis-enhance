@@ -81,7 +81,7 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
         String parsedSQL = sql;
         try {
             Statement statement = CCJSqlParserUtil.parse(sql);
-            if (null != statement && statement instanceof Select) {
+            if (statement instanceof Select) {
                 Select select = (Select) statement;
                 // 动态修改SQL
                 select.accept((StatementVisitor<?>) new SelectAnnotationPermissionsParser(metaHandler, permissions));
@@ -110,7 +110,7 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
         String parsedSQL = sql;
         try {
             Statement statement = CCJSqlParserUtil.parse(sql);
-            if (null != statement && statement instanceof Select) {
+            if (statement instanceof Select) {
                 Select select = (Select) statement;
                 // 动态修改SQL
                 select.accept((StatementVisitor<?>) new SelectAnnotationPermissionParser(metaHandler, permission));
@@ -139,7 +139,7 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
         String parsedSQL = sql;
         try {
             Statement statement = CCJSqlParserUtil.parse(sql);
-            if (null != statement && statement instanceof Select) {
+            if (statement instanceof Select) {
                 Select select = (Select) statement;
                 // 动态修改SQL
                 select.accept((StatementVisitor<?>) new SelectAnnotationSpecialPermissionsParser(metaHandler, permissions));
@@ -168,7 +168,7 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
         String parsedSQL = sql;
         try {
             Statement statement = CCJSqlParserUtil.parse(sql);
-            if (null != statement && statement instanceof Select) {
+            if (statement instanceof Select) {
                 Select select = (Select) statement;
                 // 动态修改SQL
                 select.accept((StatementVisitor<?>) new SelectAnnotationSpecialPermissionParser(metaHandler, permission));

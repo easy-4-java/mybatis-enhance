@@ -3,6 +3,7 @@ package org.apache.ibatis.enhance.plugins;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
+import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.*;
@@ -10,6 +11,7 @@ import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
+import java.sql.Connection;
 import java.util.*;
 
 /**
@@ -23,13 +25,10 @@ import java.util.*;
  */
 @Slf4j
 @Intercepts({
-        @Signature(type = Executor.class, method = "update",
-                args = {MappedStatement.class, Object.class}),
-        @Signature(type = Executor.class, method = "query",
-                args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class}),
-        @Signature(type = Executor.class, method = "query",
-                args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class,
-                        CacheKey.class, BoundSql.class})
+        @Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class}),
+        @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class}),
+        @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class}),
+        @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class, CacheKey.class, BoundSql.class})
 })
 public class MybatisEnhanceInterceptor implements Interceptor {
 
@@ -64,6 +63,13 @@ public class MybatisEnhanceInterceptor implements Interceptor {
     @Override
     @SuppressWarnings("unchecked")
     public Object intercept(Invocation invocation) throws Throwable {
+        if (invocation.getTarget() instanceof StatementHandler) {
+            StatementHandler handler = (StatementHandler) invocation.getTarget();
+            for (EnhanceInnerInterceptor interceptor : interceptors) {
+                interceptor.beforePrepare(handler);
+            }
+            return invocation.proceed();
+        }
         Executor executor = (Executor) invocation.getTarget();
         Object[] args = invocation.getArgs();
         MappedStatement mappedStatement = (MappedStatement) args[0];
@@ -75,6 +81,7 @@ public class MybatisEnhanceInterceptor implements Interceptor {
                 ? mappedStatement.getBoundSql(parameter)
                 : (args.length == 6 ? (BoundSql) args[5] : mappedStatement.getBoundSql(parameter));
 
+        String originalSql = boundSql.getSql();
         if (isUpdate) {
             for (EnhanceInnerInterceptor interceptor : interceptors) {
                 interceptor.beforeUpdate(executor, mappedStatement, parameter);
@@ -91,7 +98,15 @@ public class MybatisEnhanceInterceptor implements Interceptor {
         Throwable failure = null;
         Object result;
         try {
-            result = invocation.proceed();
+            if (!isUpdate && !Objects.equals(originalSql, boundSql.getSql())) {
+                // 权限改写后的 SQL 必须参与缓存键，不能重新生成原始 BoundSql。
+                RowBounds rowBounds = (RowBounds) args[2];
+                ResultHandler<?> handler = (ResultHandler<?>) args[3];
+                CacheKey key = executor.createCacheKey(mappedStatement, parameter, rowBounds, boundSql);
+                result = executor.query(mappedStatement, parameter, rowBounds, handler, key, boundSql);
+            } else {
+                result = invocation.proceed();
+            }
         } catch (Throwable throwable) {
             failure = throwable;
             result = null;
@@ -99,7 +114,7 @@ public class MybatisEnhanceInterceptor implements Interceptor {
         long elapsedNanos = System.nanoTime() - startNanos;
 
         // 结果增强仅在成功路径执行；异常直接跳到 afterExecution 旁路通知
-        if (failure == null) {
+        if (Objects.isNull(failure)) {
             try {
                 if (isUpdate) {
                     int affectedRows = (Integer) result;
@@ -109,7 +124,8 @@ public class MybatisEnhanceInterceptor implements Interceptor {
                 } else {
                     RowBounds rowBounds = (RowBounds) args[2];
                     ResultHandler<?> resultHandler = (ResultHandler<?>) args[3];
-                    List<Object> results = (List<Object>) result;
+                    List<Object> results = new ArrayList<>((List<Object>) result);
+                    result = results;
                     for (EnhanceInnerInterceptor interceptor : interceptors) {
                         interceptor.afterQuery(executor, mappedStatement, parameter, rowBounds, resultHandler, boundSql, results);
                     }
@@ -129,7 +145,7 @@ public class MybatisEnhanceInterceptor implements Interceptor {
             }
         }
 
-        if (failure != null) {
+        if (Objects.nonNull(failure)) {
             throw failure;
         }
         return result;
@@ -143,7 +159,8 @@ public class MybatisEnhanceInterceptor implements Interceptor {
      */
     @Override
     public Object plugin(Object target) {
-        return target instanceof Executor ? Plugin.wrap(target, this) : target;
+        return target instanceof Executor || target instanceof StatementHandler
+                ? Plugin.wrap(target, this) : target;
     }
 
     /**

@@ -78,7 +78,7 @@ public class TablePermissionAutowireParser implements ITablePermissionParser {
         String parsedSQL = sql;
         try {
             Statement statement = CCJSqlParserUtil.parse(sql);
-            if (null != statement && statement instanceof Select) {
+            if (statement instanceof Select) {
                 Select select = (Select) statement;
                 // 动态修改SQL
                 select.accept((StatementVisitor<?>) new SelectAutowirePermissionParser(this.getTablePermissionHandler(), metaHandler));
