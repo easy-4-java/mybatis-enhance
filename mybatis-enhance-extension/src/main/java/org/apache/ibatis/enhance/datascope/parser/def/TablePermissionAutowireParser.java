@@ -80,7 +80,7 @@ public class TablePermissionAutowireParser implements ITablePermissionParser {
             if (null != statement && statement instanceof Select) {
                 Select select = (Select) statement;
                 // 动态修改SQL
-                select.accept(new SelectAutowirePermissionParser(this.getTablePermissionHandler(), metaHandler));
+                select.accept((net.sf.jsqlparser.statement.StatementVisitor<?>) new SelectAutowirePermissionParser(this.getTablePermissionHandler(), metaHandler));
                 // 获取处理后的SQL
                 parsedSQL = select.getSelectBody().toString();
             }

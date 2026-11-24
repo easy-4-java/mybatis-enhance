@@ -20,6 +20,10 @@ import java.util.List;
  */
 public interface EnhanceInnerInterceptor {
 
+    /** 在 JDBC 准备语句前处理写入 SQL；查询改写应在 beforeQuery 完成以隔离缓存键。 */
+    default void beforePrepare(org.apache.ibatis.executor.statement.StatementHandler handler) throws SQLException {
+    }
+
     /**
      * 在 Executor 执行查询前处理查询参数或 SQL 上下文。
      *

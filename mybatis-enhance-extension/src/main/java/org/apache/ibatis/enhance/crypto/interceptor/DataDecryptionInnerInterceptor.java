@@ -1,6 +1,7 @@
 package org.apache.ibatis.enhance.crypto.interceptor;
 
 import lombok.Getter;
+import cn.hutool.core.bean.BeanUtil;
 import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 import org.apache.ibatis.enhance.util.MapperMethodUtils;
 import org.apache.ibatis.enhance.util.ParameterUtils;
@@ -68,9 +69,13 @@ public class DataDecryptionInnerInterceptor implements EnhanceInnerInterceptor {
                 || MapperMethodUtils.hasAnnotation(mappedStatement, IgnoreEncrypted.class)) {
             return;
         }
-        for (Object result : results) {
+        for (int index = 0; index < results.size(); index++) {
+            Object result = results.get(index);
             if (ParameterUtils.isComplexObject(result)) {
-                dataEncryptionHandler.doRawObjectDecrypt(result, result.getClass());
+                // 缓存保存密文快照，解密仅修改本次调用的副本。
+                Object copy = BeanUtil.copyProperties(result, result.getClass());
+                dataEncryptionHandler.doRawObjectDecrypt(copy, copy.getClass());
+                results.set(index, copy);
             }
         }
     }

@@ -83,7 +83,7 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
             if (null != statement && statement instanceof Select) {
                 Select select = (Select) statement;
                 // 动态修改SQL
-                select.accept(new SelectAnnotationPermissionsParser(metaHandler, permissions));
+                select.accept((net.sf.jsqlparser.statement.StatementVisitor<?>) new SelectAnnotationPermissionsParser(metaHandler, permissions));
                 // 获取处理后的SQL
                 parsedSQL = select.getSelectBody().toString();
             }
@@ -112,7 +112,7 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
             if (null != statement && statement instanceof Select) {
                 Select select = (Select) statement;
                 // 动态修改SQL
-                select.accept(new SelectAnnotationPermissionParser(metaHandler, permission));
+                select.accept((net.sf.jsqlparser.statement.StatementVisitor<?>) new SelectAnnotationPermissionParser(metaHandler, permission));
                 // 获取处理后的SQL
                 parsedSQL = select.getSelectBody().toString();
             }
@@ -141,7 +141,7 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
             if (null != statement && statement instanceof Select) {
                 Select select = (Select) statement;
                 // 动态修改SQL
-                select.accept(new SelectAnnotationSpecialPermissionsParser(metaHandler, permissions));
+                select.accept((net.sf.jsqlparser.statement.StatementVisitor<?>) new SelectAnnotationSpecialPermissionsParser(metaHandler, permissions));
                 // 获取处理后的SQL
                 parsedSQL = select.getSelectBody().toString();
             }
@@ -170,7 +170,7 @@ public class TablePermissionAnnotationParser implements ITablePermissionParser {
             if (null != statement && statement instanceof Select) {
                 Select select = (Select) statement;
                 // 动态修改SQL
-                select.accept(new SelectAnnotationSpecialPermissionParser(metaHandler, permission));
+                select.accept((net.sf.jsqlparser.statement.StatementVisitor<?>) new SelectAnnotationSpecialPermissionParser(metaHandler, permission));
                 // 获取处理后的SQL
                 parsedSQL = select.getSelectBody().toString();
             }

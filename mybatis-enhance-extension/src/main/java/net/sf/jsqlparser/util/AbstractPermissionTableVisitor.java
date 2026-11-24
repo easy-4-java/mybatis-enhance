@@ -11,10 +11,20 @@ import java.util.*;
  * <p>复用 JSqlParser 官方 {@link TablesNamesFinder} 的完整 AST 遍历能力，仅重写
  * {@link #visit(Table)} 注入权限子查询，避免为每个权限策略复制数百个 visit 方法。</p>
  */
-abstract class AbstractPermissionTableVisitor extends TablesNamesFinder {
+abstract class AbstractPermissionTableVisitor extends TablesNamesFinder<Void> {
 
     private final Set<String> processedTables = new HashSet<>();
     private final Map<String, String> replacements = new HashMap<>();
+
+    protected AbstractPermissionTableVisitor() {
+        init(false);
+    }
+
+    @Override
+    public <S> Void visit(Table table, S context) {
+        visit(table);
+        return null;
+    }
 
     /**
      * 完成 {@code visit} 对应的框架处理。
