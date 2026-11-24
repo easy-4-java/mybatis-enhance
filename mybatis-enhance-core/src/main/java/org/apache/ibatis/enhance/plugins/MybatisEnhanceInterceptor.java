@@ -11,6 +11,7 @@ import org.apache.ibatis.enhance.plugins.inner.EnhanceInnerInterceptor;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
+import java.sql.Connection;
 import java.util.*;
 
 /**
@@ -24,7 +25,7 @@ import java.util.*;
  */
 @Slf4j
 @Intercepts({
-        @Signature(type = StatementHandler.class, method = "prepare", args = {java.sql.Connection.class, Integer.class}),
+        @Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class}),
         @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class}),
         @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class}),
         @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class, CacheKey.class, BoundSql.class})
@@ -113,7 +114,7 @@ public class MybatisEnhanceInterceptor implements Interceptor {
         long elapsedNanos = System.nanoTime() - startNanos;
 
         // 结果增强仅在成功路径执行；异常直接跳到 afterExecution 旁路通知
-        if (failure == null) {
+        if (Objects.isNull(failure)) {
             try {
                 if (isUpdate) {
                     int affectedRows = (Integer) result;
@@ -144,7 +145,7 @@ public class MybatisEnhanceInterceptor implements Interceptor {
             }
         }
 
-        if (failure != null) {
+        if (Objects.nonNull(failure)) {
             throw failure;
         }
         return result;
@@ -158,7 +159,7 @@ public class MybatisEnhanceInterceptor implements Interceptor {
      */
     @Override
     public Object plugin(Object target) {
-        return target instanceof Executor || target instanceof org.apache.ibatis.executor.statement.StatementHandler
+        return target instanceof Executor || target instanceof StatementHandler
                 ? Plugin.wrap(target, this) : target;
     }
 

@@ -142,8 +142,15 @@ public final class TenantLineInnerInterceptor implements EnhanceInnerInterceptor
         if (expression instanceof JdbcParameter) {
             int index = ((JdbcParameter) expression).getIndex() - 1;
             String property = sql.getParameterMappings().get(index).getProperty();
-            value = sql.hasAdditionalParameter(property) ? sql.getAdditionalParameter(property)
-                    : ms.getConfiguration().newMetaObject(parameter).getValue(property);
+            // 与 MyBatis DefaultParameterHandler 保持一致：额外参数优先，其次为标量参数或 Bean 属性。
+            if (sql.hasAdditionalParameter(property)) {
+                value = sql.getAdditionalParameter(property);
+            } else if (Objects.isNull(parameter)
+                    || ms.getConfiguration().getTypeHandlerRegistry().hasTypeHandler(parameter.getClass())) {
+                value = parameter;
+            } else {
+                value = ms.getConfiguration().newMetaObject(parameter).getValue(property);
+            }
         } else if (expression instanceof StringValue) {
             value = ((StringValue) expression).getValue();
         } else if (expression instanceof LongValue) {

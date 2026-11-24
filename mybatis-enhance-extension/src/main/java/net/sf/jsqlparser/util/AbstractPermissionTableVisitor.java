@@ -20,12 +20,6 @@ abstract class AbstractPermissionTableVisitor extends TablesNamesFinder<Void> {
         init(false);
     }
 
-    @Override
-    public <S> Void visit(Table table, S context) {
-        visit(table);
-        return null;
-    }
-
     /**
      * 完成 {@code visit} 对应的框架处理。
      *
@@ -33,6 +27,16 @@ abstract class AbstractPermissionTableVisitor extends TablesNamesFinder<Void> {
      */
     @Override
     public void visit(Table table) {
+        replaceTable(table);
+    }
+
+    @Override
+    public <S> Void visit(Table table, S context) {
+        replaceTable(table);
+        return null;
+    }
+
+    private void replaceTable(Table table) {
         String tableName = StringUtils.lowerCase(extractTableName(table));
         if (processedTables.add(tableName)) {
             Optional<String> replacement = replacement(tableName);

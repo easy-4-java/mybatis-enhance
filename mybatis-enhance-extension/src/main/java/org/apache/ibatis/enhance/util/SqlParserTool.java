@@ -18,6 +18,7 @@ import net.sf.jsqlparser.statement.select.*;
 import net.sf.jsqlparser.statement.truncate.Truncate;
 import net.sf.jsqlparser.statement.update.Update;
 import net.sf.jsqlparser.statement.upsert.Upsert;
+import net.sf.jsqlparser.statement.upsert.UpsertType;
 import net.sf.jsqlparser.util.TablesNamesFinder;
 
 import java.util.*;
@@ -78,8 +79,11 @@ public final class SqlParserTool {
             return SqlType.UPDATE;
         }
         if (statement instanceof Upsert) {
-            return ((Upsert) statement).getUpsertType() == net.sf.jsqlparser.statement.upsert.UpsertType.REPLACE
-                    ? SqlType.REPLACE : SqlType.UPSERT;
+            UpsertType upsertType = ((Upsert) statement).getUpsertType();
+            if (UpsertType.REPLACE.equals(upsertType) || UpsertType.REPLACE_SET.equals(upsertType)) {
+                return SqlType.REPLACE;
+            }
+            return SqlType.UPSERT;
         }
         return SqlType.NONE;
     }
@@ -189,6 +193,9 @@ public final class SqlParserTool {
     public static FromItem getFromItem(Select selectBody) {
         if (selectBody instanceof PlainSelect) {
             return ((PlainSelect) selectBody).getFromItem();
+        }
+        if (selectBody instanceof ParenthesedSelect) {
+            return getFromItem(((ParenthesedSelect) selectBody).getSelect());
         }
         return null;
     }
