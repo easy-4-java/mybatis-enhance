@@ -4,7 +4,7 @@
 #   - push / pull_request on the feature/2.0.x branch
 #   - manual workflow_dispatch
 #
-# Runs `mvn -B clean verify` which includes the JaCoCo coverage check
+# Runs `bash mvnw -B clean verify` which includes the JaCoCo coverage check
 # (90% line coverage, currently nonblocking) configured in the POM.
 name: CI
 
@@ -35,7 +35,7 @@ jobs:
           cache: maven
 
       - name: Build and verify with JaCoCo coverage check
-        run: mvn -B --no-transfer-progress clean verify
+        run: bash mvnw -B --no-transfer-progress clean verify
 
       - name: Confirm TypeHandler and Jackson tests ran with coverage
         run: |
