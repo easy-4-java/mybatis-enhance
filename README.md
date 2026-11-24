@@ -30,7 +30,7 @@ What it is:
 
 - A unified MyBatis interceptor chain (`MybatisEnhanceInterceptor` + `EnhanceInnerInterceptor` SPI) that lets you order write-time encryption, write-time signature, post-query verification and post-query decryption in one plugin registration;
 - Standalone interceptors for pagination (`PaginationInterceptor` + `Dialect`), `INSERT IGNORE` rewriting, long-SQL detection and SQL observation;
-- Data-scope (row-level permission), i18n, field encryption / signature and field-fill capabilities in `mybatis-enhance-extension`, backed by JSqlParser 3.1 SQL AST tooling;
+- Data-scope (row-level permission), i18n, field encryption / signature and field-fill capabilities in `mybatis-enhance-extension`, backed by JSqlParser 4.9 SQL AST tooling;
 - A generic `TypeHandler` collection (arrays, JSON via Fastjson2/Jackson/Hutool, collections, Blob, Date, RSA templates) that is reusable from MyBatis-Plus projects too;
 - Spring-transaction-aware service semantics (`IEnhanceService`) with save/update-then-sign workflows.
 
@@ -73,7 +73,7 @@ Typical scenarios:
 | JDK | 8+ |
 | Maven | 3.9.6+ (Maven Wrapper `mvnw` included) |
 | MyBatis | 3.5.17 |
-| JSqlParser | 3.1 (intentional compatibility baseline for the SQL AST tooling) |
+| JSqlParser | 4.9 (intentional compatibility baseline for the SQL AST tooling) |
 | Other deps (managed in root pom) | fastjson2 2.0.62, hutool 5.8.40, jackson 2.17.2, commons-lang3, slf4j-api 2.0.18, lombok (provided) |
 | Multi-module versioning | `${revision}` + flatten-maven-plugin |
 
@@ -255,3 +255,6 @@ Cross-line sync targets 1:1 capability parity, but dependency versions, compile 
 ## 11. Contributing & License
 
 Contributions are welcome — open an issue or pull request on GitHub. All source files are licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt).
+
+
+Tenant isolation, query cache safety and maintenance-line parity are described in [COMPATIBILITY.md](COMPATIBILITY.md). JSqlParser 4.9 matches the DDD4J 1.x baseline; direct SqlParserTool consumers must recompile for Select/ParenthesedSelect.

@@ -1,6 +1,7 @@
 package org.apache.ibatis.enhance.plugins.inner;
 
 import org.apache.ibatis.executor.Executor;
+import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.session.ResultHandler;
@@ -19,6 +20,10 @@ import java.util.List;
  * @since 1.0.x
  */
 public interface EnhanceInnerInterceptor {
+
+    /** 在 JDBC 准备语句前处理写入 SQL；查询改写应在 beforeQuery 完成以隔离缓存键。 */
+    default void beforePrepare(StatementHandler handler) throws SQLException {
+    }
 
     /**
      * 在 Executor 执行查询前处理查询参数或 SQL 上下文。

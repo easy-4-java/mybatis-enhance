@@ -20,6 +20,7 @@ import lombok.experimental.Accessors;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
+import net.sf.jsqlparser.statement.StatementVisitor;
 import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.util.SelectAutowirePermissionParser;
 import org.apache.ibatis.binding.MetaStatementHandler;
@@ -77,10 +78,10 @@ public class TablePermissionAutowireParser implements ITablePermissionParser {
         String parsedSQL = sql;
         try {
             Statement statement = CCJSqlParserUtil.parse(sql);
-            if (null != statement && statement instanceof Select) {
+            if (statement instanceof Select) {
                 Select select = (Select) statement;
                 // 动态修改SQL
-                select.accept(new SelectAutowirePermissionParser(this.getTablePermissionHandler(), metaHandler));
+                select.accept((StatementVisitor) new SelectAutowirePermissionParser(this.getTablePermissionHandler(), metaHandler));
                 // 获取处理后的SQL
                 parsedSQL = select.getSelectBody().toString();
             }

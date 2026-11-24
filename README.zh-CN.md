@@ -30,7 +30,7 @@ mybatis-enhance 是面向**原生 MyBatis** 的增强组件。
 
 - 统一的 MyBatis 拦截器链（`MybatisEnhanceInterceptor` + `EnhanceInnerInterceptor` SPI）——在同一个插件注册中即可编排写入前加密、写入前签名、查询后验签与查询后解密；
 - 独立拦截器——分页（`PaginationInterceptor` + `Dialect`）、`INSERT IGNORE` 改写、长 SQL 检测与 SQL 观测；
-- `mybatis-enhance-extension` 中的数据权限（行级）、国际化、字段加解密/签名与字段填充能力，底层使用 JSqlParser 3.1 SQL AST 工具；
+- `mybatis-enhance-extension` 中的数据权限（行级）、国际化、字段加解密/签名与字段填充能力，底层使用 JSqlParser 4.9 SQL AST 工具；
 - 通用 `TypeHandler` 集合（数组、Fastjson2/Jackson/Hutool JSON、集合、Blob、Date、RSA 模板），也可被 MyBatis-Plus 项目直接复用；
 - 基于 Spring 事务的服务语义（`IEnhanceService`），提供"保存/更新后签名"工作流。
 
@@ -73,7 +73,7 @@ mybatis-enhance 是面向**原生 MyBatis** 的增强组件。
 | JDK | 8+ |
 | Maven | 3.9.6+（内置 Maven Wrapper `mvnw`） |
 | MyBatis | 3.5.17 |
-| JSqlParser | 3.1（SQL AST 工具的有意兼容基线） |
+| JSqlParser | 4.9（SQL AST 工具的有意兼容基线） |
 | 其他依赖（根 pom 统一管理） | fastjson2 2.0.62、hutool 5.8.40、jackson 2.17.2、commons-lang3、slf4j-api 2.0.18、lombok（provided） |
 | 多模块版本管理 | `${revision}` + flatten-maven-plugin |
 
@@ -255,3 +255,6 @@ service.saveBatchSigned(userList);     // 批量插入 + 签名（默认批大�
 ## 11. 贡献与许可
 
 欢迎通过 GitHub Issue 或 Pull Request 参与贡献。所有源码基于 [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt) 许可。
+
+
+租户隔离、查询缓存保护及三分支一致性契约见 [COMPATIBILITY.md](COMPATIBILITY.md)。JSqlParser 4.9 与 DDD4J 1.x 基线一致；直接使用 SqlParserTool 的消费者须针对 Select/ParenthesedSelect 重新编译。

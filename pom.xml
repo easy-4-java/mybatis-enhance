@@ -42,7 +42,7 @@
         <fastjson2.version>2.0.62</fastjson2.version>
         <hutool.version>5.8.46</hutool.version>
         <jackson-bom.version>2.22.4</jackson-bom.version>
-        <jsqlparser.version>4.6</jsqlparser.version>
+        <jsqlparser.version>4.9</jsqlparser.version>
         <junit.version>4.13.2</junit.version>
         <lombok.version>1.18.46</lombok.version>
         <mybatis.version>3.5.19</mybatis.version>
